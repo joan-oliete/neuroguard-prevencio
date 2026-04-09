@@ -1,0 +1,319 @@
+{
+    "landing": {
+        "nav": {
+            "login": "Iniciar Sessió",
+            "back": "Tornar"
+        },
+        "hero": {
+            "badge": "Serenitat Digital",
+            "title_1": "Resiliència",
+            "title_2": "tranquil·la.",
+            "subtitle": "Tecnologia dissenyada per desaparèixer en la teva recuperació.\nMaterials càlids, suport silenciós, progrés natural.",
+            "cta": "Comença el teu Camí"
+        },
+        "values": {
+            "title": "No estàs sol",
+            "subtitle": "NeuroGuard combina la psicologia clínica amb la tecnologia per donar-te les eines que necessites, quan les necessites.",
+            "cards": {
+                "therapy": {
+                    "title": "Suport 24/7",
+                    "desc": "Accedeix al teu assistent terapèutic personalitzat. Tècniques TCC per gestionar l'ansietat en temps real."
+                },
+                "progress": {
+                    "title": "Progrés Motivant",
+                    "desc": "Visualitza la teva evolució. Celebra cada dia net i converteix la recuperació en positiu."
+                },
+                "privacy": {
+                    "title": "Seguretat Total",
+                    "desc": "El teu espai segur, sempre disponible. Planes de crisi offline, privadesa garantida i eines d'emergència."
+                }
+            }
+        },
+        "dashboard_preview": {
+            "badge": "Control Total",
+            "title_1": "El teu centre de",
+            "title_2": "recuperació.",
+            "desc": "Tot d'un cop d'ull. Registra el teu estat d'ànim, gestiona la teva bateria de vitalitat i accedeix a eines ràpides per a la gestió de crisis.",
+            "list": {
+                "check_ins": "Check-ins Diaris",
+                "battery": "Bateria de Vitalitat Intel·ligent",
+                "crisis": "Mode Crisi"
+            }
+        },
+        "tools": {
+            "title": "Suport Terapèutic",
+            "subtitle": "Accedeix a eines clíniques especialitzades per al teu viatge de recuperació.",
+            "assistant": "Assistent Virtual",
+            "planner": "Planificador",
+            "crisis": "Pla de Crisi",
+            "profile": "Perfil de Progrés",
+            "library": "Biblioteca de Recursos"
+        },
+        "gym": {
+            "title": "Gimnàs Mental",
+            "subtitle": "Entrena la teva ment amb exercicis dissenyats científicament.",
+            "training": "Entrenament Cognitiu",
+            "breathing": "Tècniques de Respiració",
+            "puzzles": "Puzzles Relaxants",
+            "memory": "Entrenament de Memòria"
+        },
+        "arcade": {
+            "badge": "Gamificació",
+            "title": "Neuro-Arcade",
+            "desc": "Experiències immersives que fan que la teràpia sigui atractiva. Lluita contra les distraccions o troba el teu flow.",
+            "play": "Juga Ara",
+            "game1": "Neuro-Strike",
+            "game2": "Neuro-Flight",
+            "game3": "Reptes Cognitius"
+        },
+        "features": {
+            "title": "El teu Gimnàs Mental",
+            "subtitle": "Entrena el teu cervell per resistir impulsos",
+            "game_title": "NeuroStrike",
+            "game_desc": "Teràpia gamificada. Talla els disparadors de l'addicció en un entorn basat en el ritme."
+        },
+        "footer": "© 2024 NeuroGuard Prevenció. Tecnologia Tranquil·la."
+    },
+    "hubs": {
+        "clinic": {
+            "title": "Clínica NeuroGuard",
+            "subtitle": "El teu espai segur per treballar la recuperació. Aquí trobaràs totes les eines terapèutiques essencials.",
+            "tools": {
+                "therapist": {
+                    "label": "Terapeuta Virtual",
+                    "desc": "Parla amb l'IA terapèutica"
+                },
+                "manual": {
+                    "label": "El Meu Manual",
+                    "desc": "La teva guia de recuperació"
+                },
+                "crisis": {
+                    "label": "Pla de Crisi",
+                    "desc": "Eines per moments difícils"
+                },
+                "diary": {
+                    "label": "Diari Emocional",
+                    "desc": "Registra els teus pensaments"
+                },
+                "map": {
+                    "label": "Mapa de Seguretat",
+                    "desc": "Gestió de zones de risc"
+                }
+            }
+        },
+        "gym": {
+            "title": "Gimnàs Neural",
+            "subtitle": "Entrena el teu cervell. Millora el control d'impulsos i diverteix-te mentre et recuperes.",
+            "training": {
+                "title": "Entrenament Cognitiu",
+                "desc": "Exercicis específics per millorar focus, memòria i control d'impulsos.",
+                "cta": "Entrar al Gym"
+            },
+            "arcade": {
+                "title": "Neuro-Arcade",
+                "desc": "Jocs, reptes i la gran batalla contra l'Ombra. Guanya XP!",
+                "cta": "Jugar"
+            }
+        },
+        "library": {
+            "title": "Biblioteca",
+            "subtitle": "Coneixement és poder. Aquí tens recursos per aprendre i créixer.",
+            "tools": {
+                "theory": {
+                    "label": "Teoria i Psicoeducació",
+                    "desc": "Entén millor com funciona l'addicció i el cervell."
+                },
+                "learning": {
+                    "label": "Formació",
+                    "desc": "Cursos i càpsules formatives."
+                },
+                "loot": {
+                    "label": "La Meva Galeria (Loot)",
+                    "desc": "Recull de moments positius i records."
+                },
+                "profile": {
+                    "label": "El Meu Perfil",
+                    "desc": "Configuració, nivell i estadístiques."
+                }
+            }
+        }
+    },
+    "dashboard": {
+        "welcome": "Hola, {{name}}",
+        "level": "Nivell {{level}}",
+        "hero": {
+            "default_name": "Heroi",
+            "next_milestone": "Següent fita: {{xp}} XP",
+            "coins": "NeuroCoins"
+        },
+        "map": {
+            "title": "El Teu Neuro-Mapa",
+            "nodes": {
+                "base": "Base",
+                "gym": "Gym Mental",
+                "emotions": "Lab Emocions",
+                "social": "Arena Social",
+                "mastery": "Mestratge"
+            }
+        },
+        "stats": {
+            "title": "Bateria de Vitalitat",
+            "last_7_days": "Últims 7 dies"
+        },
+        "quick_access": {
+            "planner": "Agenda",
+            "gallery": "Galeria",
+            "courses": "Cursos",
+            "arcade": "Arcade",
+            "map": "Mapa",
+            "emergency": "Emergència"
+        },
+        "boss": {
+            "title": "BOSS BATTLE",
+            "desc": "Lluita contra l'Ombra utilitzant les teves eines."
+        },
+        "memory": {
+            "title": "Moment de Calma",
+            "desc": "Generat per IA per reforçar el teu benestar."
+        },
+        "quests": {
+            "q1": {
+                "title": "Un Nou Començament",
+                "desc": "Obre l'aplicació (Diari)"
+            },
+            "q2": {
+                "title": "Reflexió Diària",
+                "desc": "Escriu una entrada al Diari"
+            },
+            "q3": {
+                "title": "Respiració",
+                "desc": "Fes un cicle de 4-7-8"
+            }
+        }
+    },
+    "app": {
+        "loading": "Carregant NeuroGuard...",
+        "level_up": {
+            "title": "LEVEL UP!",
+            "level": "Nivell {{level}}"
+        },
+        "crisis_center": {
+            "title": "Centre de Gestió de Crisi",
+            "subtitle": "Tens eines per superar aquest moment. Respira i segueix el teu pla.",
+            "protocol_title": "Protocol d'Emergència",
+            "protocol_desc": "Si sents que perds el control, activa l'Urge Surfing.",
+            "reflection_title": "Temps de Reflexió",
+            "reflection_desc": "Abans d'una compra o acció impulsiva, activa el comptador.",
+            "start_timer": "Iniciar 20 Min"
+        }
+    },
+    "nav": {
+        "dashboard": "Panell Principal",
+        "therapeutic_tools": "Eines Terapèutiques",
+        "my_manual": "El Meu Manual",
+        "planner": "Planificació",
+        "crisis_plan": "Pla de Crisi",
+        "breathing": "Respiració 4-7-8",
+        "diary": "Diari Personal",
+        "loot": "Àlbum (The Loot)",
+        "growth": "Creixement",
+        "theory": "Marc Teòric",
+        "learning": "Formació (Hub)",
+        "gym": "Entrenament",
+        "user_section": "Usuari",
+        "profile": "El Meu Perfil",
+        "cooling_off": "Pausa Reflexiva",
+        "logout": "Tancar Sessió"
+    },
+    "diary": {
+        "title": "El Meu Diari",
+        "placeholder": "Com et sents avui? Què has aconseguit?...",
+        "save_btn": "Guardar Entrada",
+        "analyze_btn": "Analitzar amb IA",
+        "history_title": "Entrades Anteriors",
+        "empty": "Encara no has escrit res.",
+        "analysis_label": "Anàlisi NeuroGuard:",
+        "mood_label": "Com estàs?",
+        "check_in_prompt": "Reflexió sobre: "
+    },
+    "crisis": {
+        "title": "Pla d'Acció Urgent",
+        "subtitle": "La teva guia per mantenir el control.",
+        "emergency_banner": "EN CAS D'EMERGÈNCIA IMMEDIATA: TRUCA AL 112",
+        "edit_btn": "Editar Targeta",
+        "cancel_btn": "Cancel·lar Edició",
+        "saving": "Guardant",
+        "save_card": "Guardar Targeta",
+        "labels": {
+            "signal": "1. Reconeixement (Quan noti...)",
+            "action": "2. Acció Immediata (Faré...)",
+            "contact": "3. Contacte Clau (Trucaré a...)",
+            "reminder": "4. Recordatori de Valor (M'acosta a...)"
+        },
+        "placeholders": {
+            "signal": "Ex: Tensió a l'estómac, pensaments repetitius...",
+            "action": "Ex: Sortir a caminar 15 minuts, respirar...",
+            "contact": "Ex: La meva parella, el terapeuta...",
+            "reminder": "Ex: La meva llibertat, la meva família..."
+        },
+        "chat_btn": {
+            "title": "Acompanyament (IA)",
+            "desc": "Parla amb el teu assistent de suport immediat."
+        },
+        "chat": {
+            "title": "Suport en Crisi",
+            "subtitle": "Espai Segur i Confidencial",
+            "welcome": "Sóc el teu assistent de suport immediat. Estic aquí per ajudar-te a calmar-te. Si estàs en perill, truca al 112.",
+            "placeholder": "Explica'm què està passant...",
+            "typing": "Escrivint...",
+            "error": "Error de connexió. Si és una emergència, truca al 112."
+        }
+    },
+    "breathing": {
+        "title": "Respiració 4-7-8",
+        "inhale": "Inspira",
+        "hold": "Aguanta",
+        "exhale": "Expira",
+        "close": "Tancar"
+    },
+    "loot": {
+        "title": "The Loot",
+        "subtitle": "Aquí guardem els teus èxits i els moments positius que has capturat. Genera art únic a partir dels teus records.",
+        "create_title": "Crear Nou Record (Art AI)",
+        "prompt_placeholder": "Descriu el teu moment positiu...",
+        "generate_btn": "Generar Art",
+        "generating": "Creant màgia...",
+        "gallery_title": "La teva Galeria",
+        "empty_gallery": "Encara no tens cap record guardat. Crea el primer avui!",
+        "trophies_title": "Trofeus Desbloquejats"
+    },
+    "profile": {
+        "title": "El Meu Perfil",
+        "subtitle": "Gestiona les teves dades i el teu progrés.",
+        "days_earned": "Dies Guanyats",
+        "personal_data": "Dades Personals",
+        "name": "Nom",
+        "surname": "Cognoms",
+        "phone": "Telèfon",
+        "last_consumption": "Últim Consum",
+        "save_changes": "Guardar Canvis",
+        "notifications": "Notificacions",
+        "allow_push": "Permetre Notificacions Push",
+        "manual_management": "Gestió del Manual",
+        "archive_desc": "Si vols començar de zero però guardar la feina feta, arxiva el manual actual per consultar-lo més tard.",
+        "archive_btn": "Arxivar i Reiniciar",
+        "history": "Historial",
+        "no_history": "No hi ha manuals arxivats.",
+        "active_badge": "Actiu",
+        "language": "Idioma / Language",
+        "alerts": {
+            "updated": "Perfil actualitzat!",
+            "error_save": "Error guardant perfil.",
+            "archive_confirm": "Vols guardar l'estat actual i començar un manual nou?",
+            "archived": "Manual arxivat i reiniciat.",
+            "delete_confirm": "Segur que vols esborrar aquest manual històric?",
+            "notifications_active": "Notificacions activades correctament.",
+            "notifications_error": "Error activant notificacions."
+        }
+    }
+}

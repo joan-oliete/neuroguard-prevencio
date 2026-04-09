@@ -1,0 +1,18 @@
+export const DEFAULT_PROMPTS = [
+    { id: 'prompt-0', color: '#9900ff', text: 'Bossa Nova' },
+    { id: 'prompt-1', color: '#5200ff', text: 'Chillwave' },
+    { id: 'prompt-2', color: '#ff25f6', text: 'Drum and Bass' },
+    { id: 'prompt-3', color: '#2af6de', text: 'Post Punk' },
+    { id: 'prompt-4', color: '#ffdd28', text: 'Shoegaze' },
+    { id: 'prompt-5', color: '#2af6de', text: 'Funk' },
+    { id: 'prompt-6', color: '#9900ff', text: 'Chiptune' },
+    { id: 'prompt-7', color: '#3dffab', text: 'Lush Strings' },
+    { id: 'prompt-8', color: '#d8ff3e', text: 'Sparkling Arpeggios' },
+    { id: 'prompt-9', color: '#d9b2ff', text: 'Staccato Rhythms' },
+    { id: 'prompt-10', color: '#3dffab', text: 'Punchy Kick' },
+    { id: 'prompt-11', color: '#ffdd28', text: 'Dubstep' },
+    { id: 'prompt-12', color: '#ff25f6', text: 'K Pop' },
+    { id: 'prompt-13', color: '#d8ff3e', text: 'Neo Soul' },
+    { id: 'prompt-14', color: '#5200ff', text: 'Trip Hop' },
+    { id: 'prompt-15', color: '#d9b2ff', text: 'Thrash' },
+];

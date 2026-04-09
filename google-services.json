@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "951816159080",
+    "project_id": "neuroguard-6fff8",
+    "storage_bucket": "neuroguard-6fff8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951816159080:android:cb66b708cf708fbe0e20dd",
+        "android_client_info": {
+          "package_name": "com.neuroguard.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiGJPddWtHCqYBkjkcZeyLt6SmnAfnT3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

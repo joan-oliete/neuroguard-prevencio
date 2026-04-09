@@ -1,0 +1,319 @@
+{
+    "landing": {
+        "nav": {
+            "login": "Member Login",
+            "back": "Back"
+        },
+        "hero": {
+            "badge": "Digital Serenity",
+            "title_1": "Quiet",
+            "title_2": "resilience.",
+            "subtitle": "Technology designed to disappear into your recovery.\nWarm materials, silent support, natural progress.",
+            "cta": "Start Your Journey"
+        },
+        "values": {
+            "title": "You are not alone",
+            "subtitle": "NeuroGuard combines clinical psychology with technology to give you the tools you need, when you need them.",
+            "cards": {
+                "therapy": {
+                    "title": "24/7 Support",
+                    "desc": "Access your personalized therapeutic assistant. CBT techniques to manage anxiety in real time."
+                },
+                "progress": {
+                    "title": "Motivating Progress",
+                    "desc": "Visualize your evolution. Celebrate every clean day and turn recovery into a positive experience."
+                },
+                "privacy": {
+                    "title": "Total Security",
+                    "desc": "Your safe space, always available. Offline crisis plans, guaranteed privacy, and emergency tools."
+                }
+            }
+        },
+        "dashboard_preview": {
+            "badge": "Total Control",
+            "title_1": "Your recovery",
+            "title_2": "center.",
+            "desc": "Everything in one glance. Track your mood, manage your vitality battery, and access quick tools for crisis management.",
+            "list": {
+                "check_ins": "Daily Check-ins",
+                "battery": "Smart Vitality Battery",
+                "crisis": "Crisis Mode"
+            }
+        },
+        "tools": {
+            "title": "Therapeutic Support",
+            "subtitle": "Access specialized clinical tools designed for your recovery journey.",
+            "assistant": "Virtual Assistant",
+            "planner": "Planner",
+            "crisis": "Crisis Plan",
+            "profile": "Progress Profile",
+            "library": "Resource Library"
+        },
+        "gym": {
+            "title": "Mental Gym",
+            "subtitle": "Train your mind with scientifically designed exercises to improve focus and memory.",
+            "training": "Cognitive Training",
+            "breathing": "Breathing Techniques",
+            "puzzles": "Relaxing Puzzles",
+            "memory": "Memory Training"
+        },
+        "arcade": {
+            "badge": "Gamification",
+            "title": "Neuro-Arcade",
+            "desc": "Immersive experiences that make therapy engaging. Fight distractions in Neuro-Strike or find your flow in Neuro-Flight.",
+            "play": "Play Now",
+            "game1": "Neuro-Strike",
+            "game2": "Neuro-Flight",
+            "game3": "Cognitive Challenges"
+        },
+        "features": {
+            "title": "Your Gym for the Mind",
+            "subtitle": "Train your brain to resist impulses",
+            "game_title": "NeuroStrike",
+            "game_desc": "Gamified therapy. Slash through addiction triggers in a rhythm-based environment."
+        },
+        "footer": "© 2024 NeuroGuard Prevention. Quiet Technology."
+    },
+    "hubs": {
+        "clinic": {
+            "title": "NeuroGuard Clinic",
+            "subtitle": "Your safe space to work on recovery. Here you'll find all essential therapeutic tools.",
+            "tools": {
+                "therapist": {
+                    "label": "Virtual Therapist",
+                    "desc": "Talk to the therapeutic AI"
+                },
+                "manual": {
+                    "label": "My Manual",
+                    "desc": "Your recovery guide"
+                },
+                "crisis": {
+                    "label": "Crisis Plan",
+                    "desc": "Tools for difficult moments"
+                },
+                "diary": {
+                    "label": "Emotional Diary",
+                    "desc": "Record your thoughts"
+                },
+                "map": {
+                    "label": "Safety Map",
+                    "desc": "Manage risk zones"
+                }
+            }
+        },
+        "gym": {
+            "title": "Neural Gym",
+            "subtitle": "Train your brain. Improve impulse control and have fun while recovering.",
+            "training": {
+                "title": "Cognitive Training",
+                "desc": "Specific exercises to improve focus, memory, and impulse control.",
+                "cta": "Enter Gym"
+            },
+            "arcade": {
+                "title": "Neuro-Arcade",
+                "desc": "Games, challenges, and the battle against the Shadow. Earn XP!",
+                "cta": "Play"
+            }
+        },
+        "library": {
+            "title": "Library",
+            "subtitle": "Knowledge is power. Here you have resources to learn and grow.",
+            "tools": {
+                "theory": {
+                    "label": "Theory & Psychoeducation",
+                    "desc": "Understand how addiction and the brain work."
+                },
+                "learning": {
+                    "label": "Learning",
+                    "desc": "Courses and training capsules."
+                },
+                "loot": {
+                    "label": "The Loot (Gallery)",
+                    "desc": "Collection of positive moments and memories."
+                },
+                "profile": {
+                    "label": "My Profile",
+                    "desc": "Settings, level, and statistics."
+                }
+            }
+        }
+    },
+    "dashboard": {
+        "welcome": "Hello, {{name}}",
+        "level": "Level {{level}}",
+        "hero": {
+            "default_name": "Hero",
+            "next_milestone": "Next milestone: {{xp}} XP",
+            "coins": "NeuroCoins"
+        },
+        "map": {
+            "title": "Your Neuro-Map",
+            "nodes": {
+                "base": "Base",
+                "gym": "Mind Gym",
+                "emotions": "Emotion Lab",
+                "social": "Social Arena",
+                "mastery": "Mastery"
+            }
+        },
+        "stats": {
+            "title": "Vitality Battery",
+            "last_7_days": "Last 7 days"
+        },
+        "quick_access": {
+            "planner": "Planner",
+            "gallery": "Gallery",
+            "courses": "Courses",
+            "arcade": "Arcade",
+            "map": "Map",
+            "emergency": "Emergency"
+        },
+        "boss": {
+            "title": "BOSS BATTLE",
+            "desc": "Fight the Shadow using your tools."
+        },
+        "memory": {
+            "title": "Moment of Calm",
+            "desc": "AI generated to reinforce your wellbeing."
+        },
+        "quests": {
+            "q1": {
+                "title": "A New Beginning",
+                "desc": "Open the app (Diary)"
+            },
+            "q2": {
+                "title": "Daily Reflection",
+                "desc": "Write a diary entry"
+            },
+            "q3": {
+                "title": "Breathing",
+                "desc": "Do a 4-7-8 cycle"
+            }
+        }
+    },
+    "app": {
+        "loading": "Loading NeuroGuard...",
+        "level_up": {
+            "title": "LEVEL UP!",
+            "level": "Level {{level}}"
+        },
+        "crisis_center": {
+            "title": "Crisis Management Center",
+            "subtitle": "You have the tools to overcome this moment. Breathe and follow your plan.",
+            "protocol_title": "Emergency Protocol",
+            "protocol_desc": "If you struggle to stay in control, activate Urge Surfing.",
+            "reflection_title": "Reflection Time",
+            "reflection_desc": "Before an impulse buy or action, activate the timer.",
+            "start_timer": "Start 20 Min Timer"
+        }
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "therapeutic_tools": "Therapeutic Tools",
+        "my_manual": "My Manual",
+        "planner": "Planner",
+        "crisis_plan": "Crisis Plan",
+        "breathing": "Breathing 4-7-8",
+        "diary": "Personal Diary",
+        "loot": "The Loot (Album)",
+        "growth": "Growth",
+        "theory": "Theoretical Framework",
+        "learning": "Learning Hub",
+        "gym": "Training",
+        "user_section": "User",
+        "profile": "My Profile",
+        "cooling_off": "Cooling Off",
+        "logout": "Logout"
+    },
+    "diary": {
+        "title": "My Diary",
+        "placeholder": "How are you feeling today? What have you achieved?...",
+        "save_btn": "Save Entry",
+        "analyze_btn": "Analyze with AI",
+        "history_title": "Past Entries",
+        "empty": "You haven't written anything yet.",
+        "analysis_label": "NeuroGuard Analysis:",
+        "mood_label": "How are you?",
+        "check_in_prompt": "Reflection on: "
+    },
+    "crisis": {
+        "title": "Urgent Action Plan",
+        "subtitle": "Your guide to staying in control.",
+        "emergency_banner": "IN CASE OF IMMEDIATE EMERGENCY: CALL 112",
+        "edit_btn": "Edit Card",
+        "cancel_btn": "Cancel Editing",
+        "saving": "Saving",
+        "save_card": "Save Card",
+        "labels": {
+            "signal": "1. Recognition (When I notice...)",
+            "action": "2. Immediate Action (I will...)",
+            "contact": "3. Key Contact (I will call...)",
+            "reminder": "4. Value Reminder (Brings me closer to...)"
+        },
+        "placeholders": {
+            "signal": "Ex: Stomach tension, repetitive thoughts...",
+            "action": "Ex: Walk for 15 min, breathe...",
+            "contact": "Ex: My partner, therapist...",
+            "reminder": "Ex: My freedom, my family..."
+        },
+        "chat_btn": {
+            "title": "Support Companion (AI)",
+            "desc": "Talk to your immediate support assistant."
+        },
+        "chat": {
+            "title": "Crisis Support",
+            "subtitle": "Safe & Confidential Space",
+            "welcome": "I am your immediate support assistant. I am here to help you calm down. If you are in danger, call 112.",
+            "placeholder": "Tell me what's happening...",
+            "typing": "Typing...",
+            "error": "Connection error. If emergency, call 112."
+        }
+    },
+    "breathing": {
+        "title": "Breathing 4-7-8",
+        "inhale": "Inhale",
+        "hold": "Hold",
+        "exhale": "Exhale",
+        "close": "Close"
+    },
+    "loot": {
+        "title": "The Loot",
+        "subtitle": "Here we store your achievements and positive moments. Generate unique AI art from your memories.",
+        "create_title": "Create New Memory (AI Art)",
+        "prompt_placeholder": "Describe your positive moment...",
+        "generate_btn": "Generate Art",
+        "generating": "Creating magic...",
+        "gallery_title": "Your Gallery",
+        "empty_gallery": "No memories saved yet. Create your first one today!",
+        "trophies_title": "Unlocked Trophies"
+    },
+    "profile": {
+        "title": "My Profile",
+        "subtitle": "Manage your data and progress.",
+        "days_earned": "Days Earned",
+        "personal_data": "Personal Data",
+        "name": "Name",
+        "surname": "Surname",
+        "phone": "Phone",
+        "last_consumption": "Last Consumption",
+        "save_changes": "Save Changes",
+        "notifications": "Notifications",
+        "allow_push": "Enable Push Notifications",
+        "manual_management": "Manual Management",
+        "archive_desc": "If you want to start over but save your work, archive the current manual to view it later.",
+        "archive_btn": "Archive and Restart",
+        "history": "History",
+        "no_history": "No archived manuals.",
+        "active_badge": "Active",
+        "language": "Idioma / Language",
+        "alerts": {
+            "updated": "Profile updated!",
+            "error_save": "Error saving profile.",
+            "archive_confirm": "Do you want to save current state and start a new manual?",
+            "archived": "Manual archived and restarted.",
+            "delete_confirm": "Are you sure you want to delete this historical manual?",
+            "notifications_active": "Notifications activated successfully.",
+            "notifications_error": "Error activating notifications."
+        }
+    }
+}

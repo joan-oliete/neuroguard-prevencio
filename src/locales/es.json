@@ -1,0 +1,319 @@
+{
+    "landing": {
+        "nav": {
+            "login": "Iniciar Sesión",
+            "back": "Volver"
+        },
+        "hero": {
+            "badge": "Serenidad Digital",
+            "title_1": "Resiliencia",
+            "title_2": "tranquila.",
+            "subtitle": "Tecnología diseñada para desaparecer en tu recuperación.\nMateriales cálidos, soporte silencioso, progreso natural.",
+            "cta": "Comienza tu Camino"
+        },
+        "values": {
+            "title": "No estás solo",
+            "subtitle": "NeuroGuard combina la psicología clínica con la tecnología para darte las herramientas que necesitas, cuando las necesitas.",
+            "cards": {
+                "therapy": {
+                    "title": "Soporte 24/7",
+                    "desc": "Accede a tu asistente terapéutico personalizado. Técnicas TCC para gestionar la ansiedad en tiempo real."
+                },
+                "progress": {
+                    "title": "Progreso Motivador",
+                    "desc": "Visualiza tu evolución. Celebra cada día limpio y convierte la recuperación en positivo."
+                },
+                "privacy": {
+                    "title": "Seguridad Total",
+                    "desc": "Tu espacio seguro, siempre disponible. Planes de crisis offline, privacidad garantizada y herramientas de emergencia."
+                }
+            }
+        },
+        "dashboard_preview": {
+            "badge": "Control Total",
+            "title_1": "Tu centro de",
+            "title_2": "recuperación.",
+            "desc": "Todo de un vistazo. Registra tu estado de ánimo, gestiona tu batería de vitalidad y accede a herramientas rápidas para la gestión de crisis.",
+            "list": {
+                "check_ins": "Check-ins Diarios",
+                "battery": "Batería de Vitalidad Inteligente",
+                "crisis": "Modo Crisis"
+            }
+        },
+        "tools": {
+            "title": "Apoyo Terapéutico",
+            "subtitle": "Accede a herramientas clínicas especializadas para tu viaje de recuperación.",
+            "assistant": "Asistente Virtual",
+            "planner": "Planificador",
+            "crisis": "Plan de Crisis",
+            "profile": "Perfil de Progreso",
+            "library": "Biblioteca de Recursos"
+        },
+        "gym": {
+            "title": "Gimnasio Mental",
+            "subtitle": "Entrena tu mente con ejercicios diseñados científicamente.",
+            "training": "Entrenamiento Cognitivo",
+            "breathing": "Técnicas de Respiración",
+            "puzzles": "Puzzles Relajantes",
+            "memory": "Entrenamiento de Memoria"
+        },
+        "arcade": {
+            "badge": "Gamificación",
+            "title": "Neuro-Arcade",
+            "desc": "Experiencias inmersivas que hacen que la terapia sea atractiva. Lucha contra las distracciones o encuentra tu flow.",
+            "play": "Jugar Ahora",
+            "game1": "Neuro-Strike",
+            "game2": "Neuro-Flight",
+            "game3": "Retos Cognitivos"
+        },
+        "features": {
+            "title": "Tu Gimnasio Mental",
+            "subtitle": "Entrena tu cerebro para resistir impulsos",
+            "game_title": "NeuroStrike",
+            "game_desc": "Terapia gamificada. Corta los disparadores de la adicción en un entorno basado en el ritmo."
+        },
+        "footer": "© 2024 NeuroGuard Prevenció. Tecnología Tranquila."
+    },
+    "hubs": {
+        "clinic": {
+            "title": "Clínica NeuroGuard",
+            "subtitle": "Tu espacio seguro para trabajar la recuperación. Aquí encontrarás todas las herramientas terapéuticas esenciales.",
+            "tools": {
+                "therapist": {
+                    "label": "Terapeuta Virtual",
+                    "desc": "Habla con la IA terapéutica"
+                },
+                "manual": {
+                    "label": "Mi Manual",
+                    "desc": "Tu guía de recuperación"
+                },
+                "crisis": {
+                    "label": "Plan de Crisis",
+                    "desc": "Herramientas para momentos difíciles"
+                },
+                "diary": {
+                    "label": "Diario Emocional",
+                    "desc": "Registra tus pensamientos"
+                },
+                "map": {
+                    "label": "Mapa de Seguridad",
+                    "desc": "Gestión de zonas de riesgo"
+                }
+            }
+        },
+        "gym": {
+            "title": "Gimnasio Mental",
+            "subtitle": "Entrena tu mente con ejercicios diseñados científicamente.",
+            "training": {
+                "title": "Entrenamiento Cognitivo",
+                "desc": "Ejercicios específicos para mejorar el foco, memoria y control de impulsos.",
+                "cta": "Entrar al Gym"
+            },
+            "arcade": {
+                "title": "Neuro-Arcade",
+                "desc": "Juegos, retos y la gran batalla contra la Sombra. ¡Gana XP!",
+                "cta": "Jugar"
+            }
+        },
+        "library": {
+            "title": "Biblioteca",
+            "subtitle": "El conocimiento es poder. Aquí tienes recursos para aprender y crecer.",
+            "tools": {
+                "theory": {
+                    "label": "Teoría y Psicoeducación",
+                    "desc": "Entiende mejor cómo funciona la adicción y el cerebro."
+                },
+                "learning": {
+                    "label": "Formación",
+                    "desc": "Cursos y cápsulas formativas."
+                },
+                "loot": {
+                    "label": "Mi Galería (Loot)",
+                    "desc": "Recopilación de momentos positivos y recuerdos."
+                },
+                "profile": {
+                    "label": "Mi Perfil",
+                    "desc": "Configuración, nivel y estadísticas."
+                }
+            }
+        }
+    },
+    "nav": {
+        "dashboard": "Panel Principal",
+        "therapeutic_tools": "Herramientas Terapéuticas",
+        "my_manual": "Mi Manual",
+        "planner": "Planificación",
+        "crisis_plan": "Plan de Crisis",
+        "breathing": "Respiración 4-7-8",
+        "diary": "Diario Personal",
+        "loot": "Álbum (The Loot)",
+        "growth": "Crecimiento",
+        "theory": "Marco Teórico",
+        "learning": "Formación (Hub)",
+        "gym": "Entrenamiento",
+        "user_section": "Usuario",
+        "profile": "Mi Perfil",
+        "cooling_off": "Pausa Reflexiva",
+        "logout": "Cerrar Sesión"
+    },
+    "diary": {
+        "title": "Mi Diario",
+        "placeholder": "¿Cómo te sientes hoy? ¿Qué has conseguido?...",
+        "save_btn": "Guardar Entrada",
+        "analyze_btn": "Analizar con IA",
+        "history_title": "Entradas Anteriores",
+        "empty": "Aún no has escrito nada.",
+        "analysis_label": "Análisis NeuroGuard:",
+        "mood_label": "¿Cómo estás?",
+        "check_in_prompt": "Reflexión sobre: "
+    },
+    "crisis": {
+        "title": "Plan de Acción Urgente",
+        "subtitle": "Tu guía para mantener el control.",
+        "emergency_banner": "EN CASO DE EMERGENCIA INMEDIATA: LLAMA AL 112",
+        "edit_btn": "Editar Tarjeta",
+        "cancel_btn": "Cancelar Edición",
+        "saving": "Guardando",
+        "save_card": "Guardar Tarjeta",
+        "labels": {
+            "signal": "1. Reconocimiento (Cuando note...)",
+            "action": "2. Acción Inmediata (Haré...)",
+            "contact": "3. Contacto Clave (Llamaré a...)",
+            "reminder": "4. Recordatorio de Valor (Me acerca a...)"
+        },
+        "placeholders": {
+            "signal": "Ej: Tensión estomacal, pensamientos repetitivos...",
+            "action": "Ej: Salir a caminar 15 min, respirar...",
+            "contact": "Ej: Mi pareja, el terapeuta...",
+            "reminder": "Ej: Mi libertad, mi familia..."
+        },
+        "chat_btn": {
+            "title": "Acompañamiento (IA)",
+            "desc": "Habla con tu asistente de soporte inmediato."
+        },
+        "chat": {
+            "title": "Soporte de Crisis",
+            "subtitle": "Espacio Seguro y Confidencial",
+            "welcome": "Soy tu asistente de soporte inmediato. Estoy aquí para ayudarte a calmarte. Si estás en peligro, llama al 112.",
+            "placeholder": "Cuéntame qué te pasa...",
+            "typing": "Escribiendo...",
+            "error": "Error de conexión. Si es emergencia, llama al 112."
+        }
+    },
+    "breathing": {
+        "title": "Respiración 4-7-8",
+        "inhale": "Inspira",
+        "hold": "Aguanta",
+        "exhale": "Expira",
+        "close": "Cerrar"
+    },
+    "dashboard": {
+        "welcome": "Hola, {{name}}",
+        "level": "Nivel {{level}}",
+        "hero": {
+            "default_name": "Héroe",
+            "next_milestone": "Siguiente hito: {{xp}} XP",
+            "coins": "NeuroCoins"
+        },
+        "map": {
+            "title": "Tu Neuro-Mapa",
+            "nodes": {
+                "base": "Base",
+                "gym": "Gym Mental",
+                "emotions": "Lab Emociones",
+                "social": "Arena Social",
+                "mastery": "Maestría"
+            }
+        },
+        "stats": {
+            "title": "Batería de Vitalidad",
+            "last_7_days": "Últimos 7 días"
+        },
+        "quick_access": {
+            "planner": "Agenda",
+            "gallery": "Galería",
+            "courses": "Cursos",
+            "arcade": "Arcade",
+            "map": "Mapa",
+            "emergency": "Emergencia"
+        },
+        "boss": {
+            "title": "BOSS BATTLE",
+            "desc": "Lucha contra la Sombra utilizando tus herramientas."
+        },
+        "memory": {
+            "title": "Momento de Calma",
+            "desc": "Generado por IA para reforzar tu bienestar."
+        },
+        "quests": {
+            "q1": {
+                "title": "Un Nuevo Comienzo",
+                "desc": "Abre la aplicación (Diario)"
+            },
+            "q2": {
+                "title": "Reflexión Diaria",
+                "desc": "Escribe una entrada en el Diario"
+            },
+            "q3": {
+                "title": "Respiración",
+                "desc": "Haz un ciclo de 4-7-8"
+            }
+        }
+    },
+    "app": {
+        "loading": "Cargando NeuroGuard...",
+        "level_up": {
+            "title": "¡SUBIDA DE NIVEL!",
+            "level": "Nivel {{level}}"
+        },
+        "crisis_center": {
+            "title": "Centro de Gestión de Crisis",
+            "subtitle": "Tienes herramientas para superar este momento. Respira y sigue tu plan.",
+            "protocol_title": "Protocolo de Emergencia",
+            "protocol_desc": "Si sientes que pierdes el control, activa el Urge Surfing.",
+            "reflection_title": "Tiempo de Reflexión",
+            "reflection_desc": "Antes de una compra o acción impulsiva, activa el contador.",
+            "start_timer": "Iniciar 20 Min"
+        }
+    },
+    "loot": {
+        "title": "The Loot",
+        "subtitle": "Aquí guardamos tus éxitos y los momentos positivos que has capturado. Genera arte único a partir de tus recuerdos.",
+        "create_title": "Crear Nuevo Recuerdo (Arte AI)",
+        "prompt_placeholder": "Describe tu momento positivo...",
+        "generate_btn": "Generar Arte",
+        "generating": "Creando magia...",
+        "gallery_title": "Tu Galería",
+        "empty_gallery": "Aún no tienes ningún recuerdo guardado. ¡Crea el primero hoy!",
+        "trophies_title": "Trofeos Desbloqueados"
+    },
+    "profile": {
+        "title": "Mi Perfil",
+        "subtitle": "Gestiona tus datos y tu progreso.",
+        "days_earned": "Días Ganados",
+        "personal_data": "Datos Personales",
+        "name": "Nombre",
+        "surname": "Apellidos",
+        "phone": "Teléfono",
+        "last_consumption": "Último Consumo",
+        "save_changes": "Guardar Cambios",
+        "notifications": "Notificaciones",
+        "allow_push": "Permitir Notificaciones Push",
+        "manual_management": "Gestión del Manual",
+        "archive_desc": "Si quieres empezar de cero pero guardar el trabajo hecho, archiva el manual actual para consultarlo más tarde.",
+        "archive_btn": "Archivar y Reiniciar",
+        "history": "Historial",
+        "no_history": "No hay manuales archivados.",
+        "active_badge": "Activo",
+        "language": "Idioma / Language",
+        "alerts": {
+            "updated": "¡Perfil actualizado!",
+            "error_save": "Error guardando perfil.",
+            "archive_confirm": "¿Quieres guardar el estado actual y empezar un manual nuevo?",
+            "archived": "Manual archivado y reiniciado.",
+            "delete_confirm": "¿Seguro que quieres borrar este manual histórico?",
+            "notifications_active": "Notificaciones activadas correctamente.",
+            "notifications_error": "Error activando notificaciones."
+        }
+    }
+}

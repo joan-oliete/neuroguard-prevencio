@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NeuroGuard | Comunitat Terapèutica Digital</title>
+  <meta name="theme-color" content="#4f46e5">
+  <!-- Manifest link is injected by vite-plugin-pwa -->
+  <!-- Google Fonts: Inter & Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    /* Custom scrollbar for cyberpunk feel in adolescent mode */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+  </style>
+
+</head>
+
+<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+  <div id="root"></div>
+  <script>
+    // DEBUG: Prove that HTML loads
+    // alert('DEBUG: HTML Loaded');
+    window.onerror = function (msg, url, line) {
+      document.body.innerHTML += '<div style="color:red; background:white; font-size:20px; padding:20px; z-index:9999; position:fixed; top:0;">ERROR: ' + msg + '</div>';
+    };
+  </script>
+  <script>
+    // Vite PWA auto-update handles SW registration
+  </script>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NeuroGuard</string>
+    <string name="title_activity_main">NeuroGuard</string>
+    <string name="package_name">com.neuroguard.app</string>
+    <string name="custom_url_scheme">com.neuroguard.app</string>
+</resources>

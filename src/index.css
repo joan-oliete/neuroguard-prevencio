@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-surface-main text-text-primary antialiased font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply tracking-tight font-bold text-text-primary;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 active:scale-95;
+  }
+
+  .btn-primary {
+    @apply bg-brand-600 text-white hover:bg-brand-700 shadow-soft hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-surface-card text-text-primary border border-slate-200 hover:bg-slate-50;
+  }
+
+  .card {
+    @apply bg-surface-card rounded-2xl border border-slate-100 shadow-soft p-6;
+  }
+
+  .card-hover {
+    @apply hover:border-brand-200 hover:shadow-lg transition-all duration-300;
+  }
+}
+
+/* Custom scrollbar for cyberpunk feel in adolescent mode */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
