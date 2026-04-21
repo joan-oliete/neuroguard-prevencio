@@ -2,8 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, User, Bot, Sparkles, X, MapPin } from 'lucide-react';
 import { useVirtualTherapist } from '../../context/VirtualTherapistContext';
 import { useMapData } from '../../context/MapContext';
+import { useAuth } from '../../context/AuthContext';
+import { updateDoc, doc, db } from '../../services/firebase';
 
 export const TherapistChat: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+    const { user, userProfile } = useAuth();
     const { chatHistory, isTyping, sendMessage } = useVirtualTherapist();
     const { addLocation } = useMapData();
     const [input, setInput] = useState('');
@@ -26,36 +29,64 @@ export const TherapistChat: React.FC<{ isOpen: boolean; onClose: () => void }> =
         // Only check AI messages that are new or updated
         if (lastMsg.role === 'model' && chatHistory.length > lastProcessedLength) {
             const text = lastMsg.text;
-            const tagRegex = /\[ADD_LOCATION:\s*(\{.*\})\]/;
-            const match = text.match(tagRegex);
+            const locRegex = /\[ADD_LOCATION:\s*(\{.*\})\]/;
+            const eventRegex = /\[ADD_EVENT:\s*(\{.*\})\]/;
 
-            if (match) {
+            const locMatch = text.match(locRegex);
+            if (locMatch) {
                 try {
-                    const jsonStr = match[1];
-                    const locationData = JSON.parse(jsonStr);
-
-                    // Execute Action
+                    const locationData = JSON.parse(locMatch[1]);
                     addLocation(locationData);
                     console.log("AI Added Location:", locationData);
-
-                    // Optional: You could clean the message here, but handling streams clean-up dynamically is tricky.
-                    // For now, let's just let it be or maybe visually hide it with CSS if we rendered markdown.
-                    // A better approach is to have the VirtualTherapistContext strip it before adding to history, 
-                    // but for this MVP, checking it here works.
-
-                    // We mark this history length as processed to avoid duplicate Adds
-                    setLastProcessedLength(chatHistory.length);
-
                 } catch (e) {
                     console.error("Failed to parse AI Location tag:", e);
                 }
             }
+
+            const eventMatch = text.match(eventRegex);
+            if (eventMatch) {
+                try {
+                    const eventData = JSON.parse(eventMatch[1]);
+                    if (user && userProfile?.activeManualId) {
+                         const dateKey = `${eventData.area}-${eventData.date}`;
+                         updateDoc(doc(db, `users/${user.uid}/manuals`, userProfile.activeManualId), {
+                             [`selfCarePlan.${dateKey}`]: eventData.text
+                         }).then(() => console.log("AI Added Event:", eventData))
+                           .catch(console.error);
+                           
+                         // Generate ICS Calendar Download
+                         const startDate = eventData.date.replace(/-/g, '') + 'T090000';
+                         const endDate = eventData.date.replace(/-/g, '') + 'T100000';
+                         const icsContent = [
+                           'BEGIN:VCALENDAR', 'VERSION:2.0', 'BEGIN:VEVENT',
+                           `DTSTART:${startDate}`, `DTEND:${endDate}`,
+                           `SUMMARY:NeuroGuard: ${eventData.title || eventData.area}`,
+                           `DESCRIPTION:${eventData.text}`,
+                           'END:VEVENT', 'END:VCALENDAR'
+                         ].join('\n');
+                         const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                         const url = window.URL.createObjectURL(blob);
+                         const link = document.createElement('a');
+                         link.href = url;
+                         link.setAttribute('download', `neuroguard-${eventData.date}.ics`);
+                         document.body.appendChild(link);
+                         link.click();
+                         document.body.removeChild(link);
+                    }
+                } catch (e) {
+                    console.error("Failed to parse AI Event tag:", e);
+                }
+            }
+
+            if (locMatch || eventMatch) {
+               setLastProcessedLength(chatHistory.length);
+            }
+
         } else if (lastMsg.role === 'user') {
-            // Reset parser check when user types
             if (chatHistory.length !== lastProcessedLength) setLastProcessedLength(chatHistory.length);
         }
 
-    }, [chatHistory, addLocation, lastProcessedLength]);
+    }, [chatHistory, addLocation, lastProcessedLength, user, userProfile]);
 
     const handleSend = async () => {
         if (!input.trim() || isTyping) return;
@@ -66,7 +97,9 @@ export const TherapistChat: React.FC<{ isOpen: boolean; onClose: () => void }> =
 
     // Helper to clean text for display (hides the raw tag)
     const cleanDisplay = (text: string) => {
-        return text.replace(/\[ADD_LOCATION:\s*\{.*\}\]/g, '📍 *He afegit un nou lloc al teu mapa!*');
+        let clean = text.replace(/\[ADD_LOCATION:\s*\{.*\}\]/g, '📍 *He afegit un nou lloc al teu mapa social!*');
+        clean = clean.replace(/\[ADD_EVENT:\s*\{.*\}\]/g, "📅 *Aquest pla s'ha agendat al teu planificador i s'ha descarregat al teu calendari!*");
+        return clean;
     };
 
     if (!isOpen) return null;
@@ -116,8 +149,8 @@ export const TherapistChat: React.FC<{ isOpen: boolean; onClose: () => void }> =
                             </div>
                             <div className="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none shadow-sm flex gap-1 items-center h-10">
                                 <span className="w-2 h-2 bg-brand-400 rounded-full animate-bounce"></span>
-                                <span className="w-2 h-2 bg-brand-400 rounded-full animate-bounce delay-100"></span>
-                                <span className="w-2 h-2 bg-brand-400 rounded-full animate-bounce delay-200"></span>
+                                <span className="w-2 h-2 bg-brand-400 rounded-full animate-bounce delay-150"></span>
+                                <span className="w-2 h-2 bg-brand-400 rounded-full animate-bounce delay-300"></span>
                             </div>
                         </div>
                     )}

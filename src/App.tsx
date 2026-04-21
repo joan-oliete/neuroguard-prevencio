@@ -14,19 +14,11 @@ import Dashboard from './components/features/Dashboard';
 import Profile from './components/features/Profile';
 import ManualLoader from './components/features/ManualLoader';
 import CrisisComponent from './components/features/CrisisComponent';
-import { GymDashboard } from './components/features/gym/GymDashboard';
 import CorporateLearningHub from './components/features/CorporateLearningHub';
 import { NotificationManager } from './components/features/NotificationManager';
 import TheLoot from './components/features/TheLoot';
 import Theory from './components/features/Theory';
-
 import SafetyMap from './components/features/map/SafetyMap';
-import { GameCenter } from './components/features/arcade/GameCenter';
-import RoleplayGame from './components/features/RoleplayGame';
-import { RemoteTuner } from './components/features/admin/RemoteTuner';
-import { NeuroRunnerGame } from './components/features/arcade/NeuroRunner';
-import { ZenPuzzle } from './components/features/arcade/ZenPuzzle';
-import { BossBattle } from './components/features/arcade/BossBattle';
 import Planner from './components/features/Planner';
 import { TherapistSession } from './components/features/therapy/TherapistSession';
 
@@ -135,10 +127,6 @@ const AppContent = () => {
           <ManualLoader manualId={userProfile.activeManualId} userId={user.uid} />
         ) : <div className="p-8 text-center">No active manual</div>;
 
-      case 'gym-hub':
-      case 'gym':
-        return <GymDashboard onBack={() => setCurrentView('dashboard')} onUpdateStats={() => { }} />;
-
       case 'library':
         return <CorporateLearningHub user={userProfile} />;
 
@@ -163,33 +151,6 @@ const AppContent = () => {
 
       case 'theory': return <Theory />;
       case 'safety-map': return <SafetyMap onBack={() => setCurrentView('dashboard')} />;
-
-      // --- GAMES & ARCADE ---
-      case 'game-center':
-        return <GameCenter
-          onNavigate={setCurrentView}
-          onBack={() => setCurrentView('gym-hub')}
-          hasDailyDiary={memories.length > 0}
-          userLevel={userProfile.level}
-          onScoreUpdate={(points) => console.log("Score update logic todo:", points)}
-        />;
-
-      case 'roleplay':
-        return <RoleplayGame onUpdateStats={() => { }} />;
-
-      case 'remote-tuner':
-        return <RemoteTuner onBack={() => setCurrentView('game-center')} />;
-
-      case 'game-runner':
-      case 'runner':
-        return <NeuroRunnerGame onBack={() => setCurrentView('game-center')} onComplete={() => { }} userProfile={userProfile} />;
-
-      case 'game-puzzle':
-      case 'puzzle':
-        return <ZenPuzzle onBack={() => setCurrentView('game-center')} onComplete={() => { }} />;
-
-      case 'boss':
-        return <BossBattle onBack={() => setCurrentView('game-center')} onComplete={() => { }} />;
 
       // --- LIBRARY & TOOLS ---
       case 'planner':

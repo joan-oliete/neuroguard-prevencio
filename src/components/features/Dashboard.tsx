@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { UserAvatar } from './gamification/UserAvatar';
-import { QuestBoard } from './gamification/QuestBoard';
-import { StreakFlame } from './gamification/StreakFlame';
+
 import { useTranslation } from 'react-i18next';
 import {
   AreaChart, Area, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { UserProfile, DailyStat } from '../../types';
-import { Map, Trophy, Zap, Activity, Brain, Shield, Lock, Camera, GraduationCap, User as UserIcon, Sparkles } from 'lucide-react';
+import { Map, Trophy, Zap, Activity, Brain, Shield, Lock, Camera, GraduationCap, User as UserIcon, Sparkles, Flame } from 'lucide-react';
 import { generateMemoryImage } from '../../services/geminiService';
 
 interface DashboardProps {
@@ -46,7 +44,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/20 rounded-full blur-[80px] -mr-16 -mt-16"></div>
 
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-          <UserAvatar user={user} size="lg" className="ring-4 ring-white/10 rounded-full shadow-2xl" />
+          <div className="w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center ring-4 ring-white/10 shadow-2xl shrink-0">
+            <UserIcon size={48} className="text-slate-400" />
+          </div>
 
           <div className="flex-1 w-full">
             <div className="flex justify-between items-end mb-3">
@@ -67,7 +67,10 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
                   <span className="text-3xl font-black text-brand-400 block leading-none">{user.currency || 0}</span>
                   <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">{t('dashboard.hero.coins')}</span>
                 </div>
-                <StreakFlame days={user.streak || 0} />
+                <div className="flex flex-col items-center">
+                  <Flame className="text-orange-400 w-8 h-8" />
+                  <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">{user.streak || 0} dies</span>
+                </div>
               </div>
             </div>
 
@@ -197,14 +200,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
         ))}
       </div>
 
-      {/* QUEST BOARD */}
-      <QuestBoard
-        quests={[
-          { id: 'q1', title: t('dashboard.quests.q1.title'), description: t('dashboard.quests.q1.desc'), xpReward: 10, isCompleted: true },
-          { id: 'q2', title: t('dashboard.quests.q2.title'), description: t('dashboard.quests.q2.desc'), xpReward: 50, isCompleted: false },
-          { id: 'q3', title: t('dashboard.quests.q3.title'), description: t('dashboard.quests.q3.desc'), xpReward: 10, isCompleted: false }
-        ]}
-      />
 
       {/* BOSS BATTLE BANNER */}
       <div

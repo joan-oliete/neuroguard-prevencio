@@ -79,6 +79,18 @@ export const VirtualTherapistProvider: React.FC<{ children: ReactNode }> = ({ ch
         setChatHistory(newHistory);
         setIsTyping(true);
 
+        if (user) {
+            try {
+                await addDoc(collection(db, `users/${user.uid}/therapist_messages`), {
+                    role: 'user',
+                    text: text,
+                    createdAt: serverTimestamp()
+                });
+            } catch (err) {
+                console.error("Failed to save user message:", err);
+            }
+        }
+
         try {
             // Prepare context
             // Fetch aggregated stats
@@ -121,6 +133,18 @@ export const VirtualTherapistProvider: React.FC<{ children: ReactNode }> = ({ ch
                     }
                     return newH;
                 });
+            }
+
+            if (user && fullResponse) {
+                try {
+                    await addDoc(collection(db, `users/${user.uid}/therapist_messages`), {
+                        role: 'model',
+                        text: fullResponse,
+                        createdAt: serverTimestamp()
+                    });
+                } catch (err) {
+                    console.error("Failed to save model message:", err);
+                }
             }
 
         } catch (error) {

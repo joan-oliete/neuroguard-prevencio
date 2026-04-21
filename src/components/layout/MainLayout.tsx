@@ -94,7 +94,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     const mobileNavItems = [
         { id: 'dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
         { id: 'clinic', label: 'Clínica', icon: Shield },
-        { id: 'gym-hub', label: 'Gym', icon: Zap },
         { id: 'library', label: 'Biblio', icon: BookOpen },
     ];
 
@@ -125,7 +124,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
                     <p className="px-4 text-[10px] font-bold text-text-muted uppercase tracking-wider mb-2 opacity-80">Pius Principals</p>
                     <NavItem id="clinic" label="Clínica" icon={Shield} isActive={isClinicActive} currentView={currentView} onClick={() => handleNavClick('clinic')} />
-                    <NavItem id="gym-hub" label="Gimnàs Neural" icon={Zap} isActive={isGymActive} currentView={currentView} onClick={() => handleNavClick('gym-hub')} />
                     <NavItem id="library" label="Biblioteca" icon={BookOpen} isActive={isLibraryActive} currentView={currentView} onClick={() => handleNavClick('library')} />
 
                     <div className="my-4 border-t border-slate-100 mx-4"></div>

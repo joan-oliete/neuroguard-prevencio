@@ -1,6 +1,4 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { getGenerativeModel } from "firebase/vertexai";
-import { vertexAI } from "./firebase";
 import { RoleplayScenario } from "../types";
 
 // Note: For Veo (Video), we need to ensure the API key is passed dynamically if possible,
@@ -363,63 +361,43 @@ export const streamTherapistChat = async (messages: ChatMessage[], context: Ther
     3. LINKING: Si l'usuari està a la pàgina "${context.pageContext}", ofereix consells específics per aquesta eina.
     4. PERSONALITAT: Ets càlid, pacient i optimista. Utilitza metàfores visuals calmants. Ets conscient del progrés de l'usuari en els jocs.
     
-    \n--- EINES DISPONIBLES (TOOLS) ---
-    SI l'usuari et demana afegir un nou lloc al mapa o trobes un lloc rellevant a la conversa que l'usuari hauria de guardar:
-    
-    GENERA EL SEGÜENT TAG AL FINAL DE LA TEVA RESPOSTA:
+    --- EINES DISPONIBLES (TOOLS) ---
+    SI l'usuari et demana afegir un nou lloc al mapa o trobes un lloc rellevant a la conversa que l'usuari hauria de guardar, genera:
     [ADD_LOCATION: {"name": "Nom del Lloc", "type": "safe", "category": "Categoria", "description": "Breu descripció", "lat": 41.3851, "lng": 2.1734}]
     
-    NOTA: Inventa't coordenades properes a Barcelona (entre lat 41.38-41.40 i lng 2.15-2.20) si no tens dades exactes, però digues-li a l'usuari que després podrà moure el marcador si cal.
-    Tipus pot ser 'safe' (Verd) o 'risk' (Vermell).
+    SI l'usuari vol agendar una activitat o proposeu junts un pla que s'ha d'agendar, genera:
+    [ADD_EVENT: {"date": "YYYY-MM-DD", "area": "Física", "text": "Córrer pel parc", "title": "Sortida a córrer"}]
+    (Àrees vàlides: Física, Emocional, Social, De sentit. Posa la data d'avui o demà segons correspongui).
     `;
 
-  // Use Firebase Vertex AI Model
-  const model = getGenerativeModel(vertexAI, {
-    model: "gemini-2.0-flash",
-    systemInstruction: dynamicPrompt
-  });
-
   try {
-    // Validation: Vertex AI history MUST start with 'user'.
-    // We filter out any initial 'model' messages (like the greeting).
-    const validHistory = messages.slice(0, -1).filter((m, index, arr) => {
-      // Keep if it's user, or if it's model but preceded by user (handled by natural flow, but start check is key)
-      if (index === 0 && m.role === 'model') return false;
-      return true;
-    }).map(m => ({
+    const validHistory = messages.slice(0, -1).map(m => ({
       role: m.role,
       parts: [{ text: m.text }]
     }));
+    
+    const lastMessage = messages[messages.length - 1].text;
+    const streamContents = [...validHistory, { role: 'user', parts: [{ text: lastMessage }] }];
 
-    // Double check: if after filtering the first is still model (unlikely but possible if multiple model msgs start), remove it.
-    while (validHistory.length > 0 && validHistory[0].role === 'model') {
-      validHistory.shift();
-    }
-
-    const chat = model.startChat({
-      history: validHistory
+    const resultStream = await ai.models.generateContentStream({
+      model: "gemini-2.5-flash",
+      contents: streamContents,
+      config: {
+        systemInstruction: dynamicPrompt
+      }
     });
 
-    const lastMessage = messages[messages.length - 1].text;
-    const result = await chat.sendMessageStream(lastMessage);
-    return result.stream;
+    return resultStream;
 
   } catch (error) {
     console.warn("Therapist model failed. Switching to EMERGENCY MOCK MODE.", error);
 
-    // Mock Generator
     async function* mockGenerator() {
-      const responses = [
-        "T'escolto atentament. Com et fa sentir això?",
-        "Sembla que estàs passant per un moment intens. Estic aquí.",
-        "Podem explorar això junts. Què necessites ara mateix?",
-        "La teva bateria sembla baixa. Què tal si descansem una mica?"
-      ];
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      const randomResponse = "Em sap greu, hi ha un error de comunicació amb els sistemes d'intel·ligència artificial. Pots revisar la teva API Key o mirar si tens prou saldo al projecte?";
       const step = 20;
       for (let i = 0; i < randomResponse.length; i += step) {
         await new Promise(resolve => setTimeout(resolve, 50));
-        yield { text: () => randomResponse.substring(i, i + step) };
+        yield { text: randomResponse.substring(i, i + step) };
       }
     }
     return mockGenerator();
@@ -435,11 +413,7 @@ export interface SessionSummary {
 export const generateSessionSummary = async (messages: ChatMessage[]): Promise<SessionSummary | null> => {
   try {
     const ai = getAiClient();
-    const model = getGenerativeModel(vertexAI, {
-      model: "gemini-2.0-flash",
-      systemInstruction: "Ets un expert en psicologia clínica. Analitza la següent conversa i extreu-ne un resum estructurat."
-    });
-
+    
     // Filter only relevant messages content
     const conversationText = messages.map(m => `${m.role}: ${m.text}`).join('\n');
 
@@ -458,8 +432,15 @@ export const generateSessionSummary = async (messages: ChatMessage[]): Promise<S
         Si la conversa és massa curta, inventa un resum plausible basat en el poc context.
         `;
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: {
+        systemInstruction: "Ets un expert en psicologia clínica. Analitza la següent conversa i extreu-ne un resum estructurat.",
+      }
+    });
+    
+    const text = result.text || "";
 
     // Clean markdown code blocks if present
     const jsonText = text.replace(/```json/g, '').replace(/```/g, '').trim();
