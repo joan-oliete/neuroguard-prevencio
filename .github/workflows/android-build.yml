@@ -35,10 +35,12 @@ jobs:
       - name: Ensure Executable Permission for Gradlew
         run: chmod +x android/gradlew
 
-      - name: Generate Release Keystore
+      - name: Setup Keystore Properties
         run: |
           cd android
-          keytool -genkey -v -keystore app/release.keystore -alias release -keyalg RSA -keysize 2048 -validity 10000 -storepass neuroguard2026 -keypass neuroguard2026 -dname "CN=NeuroGuard, OU=App, O=NeuroGuard, L=Barcelona, ST=Catalunya, C=ES"
+          # Si existeix el fitxer permanent, el renombra a release.keystore perquè ho agafi Gradle
+          mv app/permanent-release.keystore app/release.keystore 2>/dev/null || true
+          
           echo "storeFile=release.keystore" > keystore.properties
           echo "storePassword=neuroguard2026" >> keystore.properties
           echo "keyAlias=release" >> keystore.properties
