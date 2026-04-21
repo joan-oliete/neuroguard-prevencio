@@ -42,7 +42,7 @@ export const NotificationManager: React.FC = () => {
     if (permissionGranted) return null;
 
     return (
-        <div className="fixed bottom-4 right-4 z-50 animate-bounce-slow">
+        <div className="fixed bottom-24 right-4 md:bottom-28 md:right-8 z-50 animate-bounce-slow">
             <button
                 onClick={handleRequestPermission}
                 className="bg-teal-600 hover:bg-teal-700 text-white p-3 rounded-full shadow-lg flex items-center gap-2 transition-all"

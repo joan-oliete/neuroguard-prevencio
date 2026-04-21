@@ -24,6 +24,7 @@ export interface UserProfile {
     currentXp: number;
     nextLevelXp: number;
   };
+  photoUrl?: string;
   hasCompletedTutorial?: boolean;
 }
 

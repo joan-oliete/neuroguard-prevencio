@@ -226,6 +226,47 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
             explanation: "El grounding o arrelament utilitza els sentits físics per treure l'atenció dels pensaments ansiosos i portar-la a la realitat immediata."
         }
     ]
+  },
+  {
+    id: 'c6',
+    title: 'Mindfulness i Autocontrol',
+    category: 'Salut Mental',
+    duration: '25 min',
+    imageColor: 'from-amber-500 to-orange-600',
+    icon: '🧘',
+    completed: false,
+    points: 700,
+    difficulty: 'Intermedi',
+    description: "Aprèn a observar els teus impulsos sense actuar. Tècniques de consciència plena basades en l'evidència per prevenir recaigudes i enfortir la resistència mental.",
+    modules: [
+        {
+            id: 1,
+            title: "Urge Surfing (Surfejar l'Impuls)",
+            duration: "8:00",
+            thumbnail: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
+            content: "Els impulsos són com onades: pugen, arriben al cim i acaben trencant i desapareixent. 'Surfejar' vol dir observar l'onada emocional sense lluitar contra ella ni deixar-te arrossegar, sabent que passarà."
+        },
+        {
+            id: 2,
+            title: "El buit existencial",
+            duration: "7:00",
+            thumbnail: "https://images.unsplash.com/photo-1517409282362-e64e9a8f4c3f?auto=format&fit=crop&q=80&w=800",
+            content: "Moltes vegades s'utilitza una conducta addictiva per tapar el buit, l'avorriment o la soledat. El mindfulness t'ajuda a estar present amb incomoditat de manera segura, cultivant la pau interior."
+        }
+    ],
+    resources: [
+        { title: "Diari de Mindfulness (PDF)", type: "pdf", size: "2.1 MB" },
+        { title: "Vídeo: Què és el Mindfulness", type: "link" }
+    ],
+    quiz: [
+        {
+            id: 1,
+            question: "Aplicant l'estratègia 'Urge Surfing', què fas quan sents l'impuls?",
+            options: ["Lluitar fortament per no pensar-hi", "Cedeixes ràpid per acabar amb l'ansietat", "L'observes com una onada que passarà sense actuar", "T'enfades amb tu mateix"],
+            correctAnswer: 2,
+            explanation: "Urge Surfing consisteix a acceptar i observar l'impuls sense resistència directa, sabent que té un inici i un final natural."
+        }
+    ]
   }
 ];
 

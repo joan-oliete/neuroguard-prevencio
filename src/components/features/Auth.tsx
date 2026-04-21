@@ -12,7 +12,6 @@ import TermsOfService from './legal/TermsOfService';
 const ASSETS = {
   hero: "/assets/landing-demo.webp",
   dashboard: "/assets/captura-panell-principal.png",
-  neuroarcade: "/assets/captura-neuroarcade.png",
 
   therapy: [
     { src: "/assets/captura-assistent-terapeuta.png", key: "assistant" },
@@ -20,20 +19,6 @@ const ASSETS = {
     { src: "/assets/captura-pla-crisi.png", key: "crisis" },
     { src: "/assets/captura-perfil.png", key: "profile" },
     { src: "/assets/captura-marc-teoric.png", key: "library" },
-  ],
-
-  gym: [
-    { src: "/assets/captura-gimnas-mental.png", key: "title" },
-    { src: "/assets/captura-entrenament.png", key: "training" },
-    { src: "/assets/captura-respira.png", key: "breathing" },
-    { src: "/assets/captura-puzzle.png", key: "puzzles" },
-    { src: "/assets/captura-memori.png", key: "memory" },
-  ],
-
-  games_videos: [
-    { src: "/assets/video-pantalla-joc-1.mp4", key: "game1", type: 'video' },
-    { src: "/assets/video-pantalla-joc-2.mp4", key: "game2", type: 'video' },
-    { src: "/assets/video-pantalla-joc-3.mp4", key: "game3", type: 'video' },
   ]
 };
 
@@ -221,13 +206,6 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
                   {t('landing.hero.cta')} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </button>
-
-              <button
-                onClick={() => onOpenMedia(ASSETS.games_videos[0].src, 'video')}
-                className="px-10 py-5 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-all w-full sm:w-auto flex items-center justify-center gap-2"
-              >
-                <Play size={16} fill="currentColor" /> Demo Video
-              </button>
             </div>
           </motion.div>
         </div>
@@ -262,7 +240,7 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
               {t('landing.dashboard_preview.desc')}
             </p>
             <ul className="space-y-4 pt-4">
-              {[t('landing.dashboard_preview.list.check_ins'), t('landing.dashboard_preview.list.battery'), t('landing.dashboard_preview.list.crisis')].map((feat, i) => (
+              {[t('landing.dashboard_preview.list.check_ins'), 'Diari Clínic i Reflexions', t('landing.dashboard_preview.list.crisis')].map((feat, i) => (
                 <li key={i} className="flex items-center gap-3 text-slate-700 font-medium">
                   <div className="w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-xs">✓</div>
                   {feat}
@@ -287,74 +265,7 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
       </section>
 
 
-      {/* MENTAL GYM (GIMNAS MENTAL) CAROUSEL */}
-      <section className="py-24 bg-slate-50 relative">
-        <div className="text-center mb-16 px-6">
-          <div className="inline-flex items-center gap-2 text-indigo-600 font-bold tracking-widest uppercase text-xs mb-2">
-            <Brain size={16} /> <span>Cognitive Training</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-serif text-slate-800 mb-6">{t('landing.gym.title')}</h2>
-          <p className="text-xl text-slate-500 font-light max-w-2xl mx-auto">{t('landing.gym.subtitle')}</p>
-        </div>
 
-        <div className="px-6 md:px-12">
-          <ImageCarousel items={ASSETS.gym} section="gym" />
-        </div>
-      </section>
-
-
-      {/* GAMES / ARCADE SECTION */}
-      <section className="py-32 bg-[#0F172A] text-white overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] mix-blend-screen"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] mix-blend-screen"></div>
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-20 items-center mb-20">
-            <div className="space-y-8">
-              <span className="text-blue-400 font-bold tracking-widest uppercase text-xs">{t('landing.arcade.badge')}</span>
-              <h2 className="text-4xl md:text-6xl font-serif leading-tight">
-                {t('landing.arcade.title')}
-              </h2>
-              <p className="text-lg text-slate-300 font-light leading-relaxed max-w-md">
-                {t('landing.arcade.desc')}
-              </p>
-              <div className="flex gap-4">
-                <button className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold uppercase tracking-widest transition-all shadow-lg hover:shadow-blue-500/40">
-                  {t('landing.arcade.play')}
-                </button>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-slate-700 bg-slate-800 transform rotate-[2deg] hover:rotate-0 transition-transform duration-700 aspect-video group cursor-pointer" onClick={() => onOpenMedia(ASSETS.neuroarcade, 'image')}>
-                {/* Play Overlay */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
-                  <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                    <Play fill="white" className="text-white ml-1" />
-                  </div>
-                </div>
-                <img src={ASSETS.neuroarcade} alt="Neuro Arcade" className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
-              </div>
-            </div>
-          </div>
-
-          {/* GAME VIDEOS GRID */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {ASSETS.games_videos.map((vid, i) => (
-              <div key={i} className="group relative rounded-2xl overflow-hidden aspect-video bg-slate-800 border border-slate-700 cursor-pointer hover:border-blue-500/50 transition-all" onClick={() => onOpenMedia(vid.src, 'video')}>
-                {/* Placeholder for video thumbnail - using video tag paused at 0s could work or just black */}
-                <video src={vid.src} className="w-full h-full object-cover opacity-60 group-hover:opacity-90 transition-opacity" muted playsInline />
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-blue-600/80 text-white flex items-center justify-center mb-3 transform group-hover:scale-110 transition-transform shadow-lg shadow-blue-900/50">
-                    <Play size={20} fill="currentColor" className="ml-1" />
-                  </div>
-                  <span className="text-white text-sm font-bold tracking-wide">{t(`landing.arcade.${vid.key}`)}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* FOOTER CTA */}
       <section className="py-32 bg-teal-600 relative overflow-hidden text-center">

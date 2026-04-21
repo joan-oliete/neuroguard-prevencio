@@ -18,7 +18,8 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
     name: user.name || '',
     surname: user.surname || '',
     phone: user.phone || '',
-    lastConsumptionDate: user.lastConsumptionDate || ''
+    lastConsumptionDate: user.lastConsumptionDate || '',
+    photoUrl: user.photoUrl || ''
   });
   const [manualHistory, setManualHistory] = useState<any[]>([]);
   const [daysSober, setDaysSober] = useState(0);
@@ -51,7 +52,8 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
         name: formData.name,
         surname: formData.surname,
         phone: formData.phone,
-        lastConsumptionDate: formData.lastConsumptionDate
+        lastConsumptionDate: formData.lastConsumptionDate,
+        photoUrl: formData.photoUrl
       });
       calculateDays();
       alert("Perfil actualitzat!");
@@ -194,21 +196,36 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
     <div className="space-y-8 animate-fadeIn max-w-5xl mx-auto">
       {/* Header */}
       <div className="card flex flex-col md:flex-row justify-between items-center gap-6 p-8">
-        <div>
-          <h2 className="text-3xl font-bold text-slate-800 tracking-tight">El Meu Perfil</h2>
-          <p className="text-slate-500 font-medium">Gestiona les teves dades i el teu progrés.</p>
+        <div className="flex items-center gap-6">
+          <div className="relative group cursor-pointer w-24 h-24 rounded-full bg-slate-100 border-4 border-white shadow-lg overflow-hidden flex items-center justify-center shrink-0" onClick={() => document.getElementById('photoUpload')?.click()}>
+            {formData.photoUrl ? (
+               <img src={formData.photoUrl} alt="Perfil" className="w-full h-full object-cover" />
+            ) : (
+               <User className="w-10 h-10 text-slate-400" />
+            )}
+            <div className="absolute inset-0 bg-black/50 hidden group-hover:flex flex-col items-center justify-center transition-all">
+               <span className="text-white text-xs font-bold">Canviar</span>
+            </div>
+          </div>
+          <input type="file" id="photoUpload" className="hidden" accept="image/*" onChange={(e) => {
+             const file = e.target.files?.[0];
+             if (file) {
+               const reader = new FileReader();
+               reader.onloadend = () => {
+                 setFormData({ ...formData, photoUrl: reader.result as string });
+               };
+               reader.readAsDataURL(file);
+             }
+          }} />
+          <div>
+            <h2 className="text-3xl font-bold text-slate-800 tracking-tight">El Meu Perfil</h2>
+            <p className="text-slate-500 font-medium">Gestiona les teves dades i el teu progrés.</p>
+          </div>
         </div>
         <div className="bg-accent-50 border border-accent-200 px-8 py-4 rounded-2xl text-center shadow-sm">
           <p className="text-xs text-accent-600 font-bold uppercase tracking-widest mb-1">{t('profile.days_earned')}</p>
           <p className="text-4xl font-black text-accent-700">{daysSober}</p>
         </div>
-      </div>
-
-      {/* Admin Quick Access */}
-      <div className="flex justify-end">
-        <button onClick={() => setShowAssetManager(true)} className="text-xs text-slate-400 hover:text-brand-600 underline">
-          Admin: Gestor Multimèdia
-        </button>
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">

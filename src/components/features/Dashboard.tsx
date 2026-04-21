@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   AreaChart, Area, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { UserProfile, DailyStat } from '../../types';
-import { Map, Trophy, Zap, Activity, Brain, Shield, Lock, Camera, GraduationCap, User as UserIcon, Sparkles, Flame } from 'lucide-react';
-import { generateMemoryImage } from '../../services/geminiService';
+import { Map, Shield, Calendar, Image as ImageIcon, Sparkles, HeartPulse, Brain, Sunrise, Footprints, BookOpen } from 'lucide-react';
+import { usePedometer } from '../../hooks/usePedometer';
 
 interface DashboardProps {
   user: UserProfile;
@@ -16,255 +15,117 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
   const { t } = useTranslation();
-  const [activeNode, setActiveNode] = useState<string | null>(null);
-  const [memoryImage, setMemoryImage] = useState<string | null>(null);
-  const [generatingImg, setGeneratingImg] = useState(false);
+  const [greeting, setGreeting] = useState('');
+  const { steps, isActive } = usePedometer();
 
-  // Gamification Levels defined as Map Nodes
-  const levels = [
-    { id: 'start', label: t('dashboard.map.nodes.base'), x: 10, y: 80, unlocked: true, icon: Shield, target: 'profile' },
-    { id: 'cognition', label: t('dashboard.map.nodes.gym'), x: 30, y: 60, unlocked: true, icon: Brain, target: 'gym' },
-    { id: 'emotional', label: t('dashboard.map.nodes.emotions'), x: 50, y: 40, unlocked: user.level >= 3, icon: Activity, target: 'diary' },
-    { id: 'social', label: t('dashboard.map.nodes.social'), x: 70, y: 70, unlocked: true, icon: Map, target: 'roleplay' },
-    { id: 'mastery', label: t('dashboard.map.nodes.mastery'), x: 90, y: 20, unlocked: user.level >= 10, icon: Trophy, target: 'loot' },
-  ];
-
-  const handleGenMemory = async () => {
-    setGeneratingImg(true);
-    // Hardcoded memorable moment for demo, or prompts user
-    const img = await generateMemoryImage("Una platja tranquil·la al capvespre amb colors liles i taronges, estil Ghibli");
-    if (img) setMemoryImage(img);
-    setGeneratingImg(false);
-  };
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting('Bon dia');
+    else if (hour < 20) setGreeting('Bona tarda');
+    else setGreeting('Bona nit');
+  }, []);
 
   return (
-    <div className="space-y-8 animate-fadeIn max-w-7xl mx-auto">
-      {/* 1. HERO HEADER (Avatar) */}
-      <div className="overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 shadow-xl p-8 relative text-white">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/20 rounded-full blur-[80px] -mr-16 -mt-16"></div>
+    <div className="space-y-8 animate-fadeIn max-w-7xl mx-auto pb-12">
+      {/* 1. HERO HEADER (Zen & Clean) */}
+      <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 shadow-2xl p-8 md:p-12 relative text-white">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-teal-500/10 rounded-full blur-[100px] -ml-20 -mb-20 pointer-events-none"></div>
 
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-          <div className="w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center ring-4 ring-white/10 shadow-2xl shrink-0">
-            <UserIcon size={48} className="text-slate-400" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-6">
+            <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center ring-1 ring-white/20 shadow-xl shrink-0 overflow-hidden">
+               {user.photoUrl ? (
+                   <img src={user.photoUrl} alt="Perfil" className="w-full h-full object-cover" />
+               ) : (
+                   <Sunrise size={40} className="text-brand-300" />
+               )}
+            </div>
+            <div>
+              <p className="text-brand-200 text-sm font-medium tracking-wider uppercase mb-1">{greeting}</p>
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-2 text-white drop-shadow-md">
+                {user.name || 'Benvingut/da'}
+              </h2>
+              <p className="text-brand-100 text-sm md:text-base max-w-md">
+                Aquest és el teu espai segur. Tria una eina per continuar cuidant el teu benestar avui.
+              </p>
+            </div>
           </div>
-
-          <div className="flex-1 w-full">
-            <div className="flex justify-between items-end mb-3">
-              <div>
-                <h2 className="text-3xl font-bold tracking-tight mb-1">
-                  {t('dashboard.welcome', { name: user.name || t('dashboard.hero.default_name') })}
-                </h2>
-                <div className="flex items-center gap-2 text-slate-400 text-sm">
-                  <span className="bg-brand-600/30 border border-brand-500/50 text-brand-300 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
-                    {t('dashboard.level', { level: user.level || 1 })}
-                  </span>
-                  <span>·</span>
-                  <span>{t('dashboard.hero.next_milestone', { xp: (user.level || 1) * 100 })}</span>
-                </div>
-              </div>
-              <div className="flex items-end gap-6">
-                <div className="text-right">
-                  <span className="text-3xl font-black text-brand-400 block leading-none">{user.currency || 0}</span>
-                  <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">{t('dashboard.hero.coins')}</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Flame className="text-orange-400 w-8 h-8" />
-                  <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">{user.streak || 0} dies</span>
-                </div>
-              </div>
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex items-center gap-4 border border-white/20 self-start md:self-center">
+            <div className="bg-gradient-to-br from-emerald-400 to-teal-500 w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+                <Footprints className="text-white" size={24} />
             </div>
-
-            {/* XP Bar */}
-            <div className="h-4 bg-slate-800 rounded-full overflow-hidden border border-white/5 relative shadow-inner">
-              <div
-                className="h-full bg-gradient-to-r from-brand-600 to-purple-500 transition-all duration-1000 ease-out relative"
-                style={{ width: `${Math.min(((user.avatar?.currentXp || 0) / ((user.level || 1) * 100)) * 100, 100)}%` }}
-              >
-                <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-              </div>
+            <div>
+              <p className="text-sm font-medium text-slate-300 uppercase tracking-wide">Passos d'avui</p>
+              <p className="text-3xl font-black">{steps}</p>
             </div>
-
-            {/* Quick Access Grid (Within Hero for visibility) */}
-            <div className="grid grid-cols-4 sm:grid-cols-4 gap-4 mt-8">
-              <button onClick={() => onNavigate('planner')} className="flex flex-col items-center gap-2 group">
-                <div className="bg-white/10 p-3 rounded-xl border border-white/10 group-hover:bg-brand-500 group-hover:border-brand-400 transition-all">
-                  <Activity className="text-brand-200 group-hover:text-white" size={20} />
-                </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 group-hover:text-white transition-colors">{t('dashboard.quick_access.planner')}</span>
-              </button>
-
-              <button onClick={() => onNavigate('loot')} className="flex flex-col items-center gap-2 group">
-                <div className="bg-white/10 p-3 rounded-xl border border-white/10 group-hover:bg-teal-500 group-hover:border-teal-400 transition-all">
-                  <Camera className="text-teal-200 group-hover:text-white" size={20} />
-                </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 group-hover:text-white transition-colors">{t('dashboard.quick_access.gallery')}</span>
-              </button>
-
-              <button onClick={() => onNavigate('learning')} className="flex flex-col items-center gap-2 group">
-                <div className="bg-white/10 p-3 rounded-xl border border-white/10 group-hover:bg-blue-500 group-hover:border-blue-400 transition-all">
-                  <GraduationCap className="text-blue-200 group-hover:text-white" size={20} />
-                </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 group-hover:text-white transition-colors">{t('dashboard.quick_access.courses')}</span>
-              </button>
-
-              <button onClick={() => onNavigate('game-center')} className="flex flex-col items-center gap-2 group">
-                <div className="bg-violet-500/20 p-3 rounded-xl border border-violet-500/50 group-hover:bg-violet-500 group-hover:border-violet-400 transition-all relative overflow-hidden">
-                  <div className="absolute inset-0 bg-violet-500/20 animate-pulse"></div>
-                  <Zap className="text-violet-300 group-hover:text-white relative z-10" size={20} />
-                </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-violet-300 group-hover:text-violet-200 transition-colors">{t('dashboard.quick_access.arcade')}</span>
-              </button>
-            </div>
-
-            {/* Extended Grid Row 2 */}
-            <div className="grid grid-cols-4 sm:grid-cols-4 gap-4 mt-4">
-              <button onClick={() => onNavigate('safety-map')} className="flex flex-col items-center gap-2 group col-span-1">
-                <div className="bg-white/10 p-3 rounded-xl border border-white/10 group-hover:bg-emerald-500 group-hover:border-emerald-400 transition-all">
-                  <Map className="text-emerald-200 group-hover:text-white" size={20} />
-                </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 group-hover:text-white transition-colors">{t('dashboard.quick_access.map')}</span>
-              </button>
-
-              <button onClick={() => onNavigate('therapy-session')} className="flex flex-col items-center gap-2 group col-span-1">
-                <div className="bg-white/10 p-3 rounded-xl border border-white/10 group-hover:bg-brand-500 group-hover:border-brand-400 transition-all">
-                  <Sparkles className="text-brand-200 group-hover:text-white" size={20} />
-                </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 group-hover:text-white transition-colors">AI Chat</span>
-              </button>
-
-              <button onClick={() => onNavigate('profile')} className="flex flex-col items-center gap-2 group col-span-1">
-                <div className="bg-white/10 p-3 rounded-xl border border-white/10 group-hover:bg-indigo-500 group-hover:border-indigo-400 transition-all">
-                  <UserIcon className="text-indigo-200 group-hover:text-white" size={20} />
-                </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 group-hover:text-white transition-colors">{t('nav.profile')}</span>
-              </button>
-            </div>
-
           </div>
         </div>
       </div>
 
-      {/* 2. NEURO-MAP (Clean Interactive Journey) */}
-      <div
-        onClick={() => onNavigate('gym-hub')}
-        className="relative h-72 rounded-3xl bg-white border border-slate-100 shadow-soft overflow-hidden group cursor-pointer hover:border-brand-200 transition-colors"
-      >
-        <div className="absolute inset-0 bg-slate-50/50"></div>
-        {/* Subtle grid */}
-        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #cbd5e1 1px, transparent 0)', backgroundSize: '40px 40px', opacity: 0.4 }}></div>
+      {/* 2. THERAPEUTIC TOOLS GRID */}
+      <div>
+         <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+             <HeartPulse className="text-rose-500" /> Les meves Eines
+         </h3>
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Clinical Manual */}
+            <button onClick={() => onNavigate('clinic')} className="group flex flex-col text-left bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-brand-200 hover:-translate-y-1 transition-all duration-300">
+               <div className="bg-brand-50 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Shield className="text-brand-600" size={28} />
+               </div>
+               <h4 className="text-lg font-bold text-slate-800 mb-2">Manual de Prevenció</h4>
+               <p className="text-slate-500 text-sm leading-relaxed">El teu lloc de treball principal. Revisa els teus valors, patrons i kit d'emergència.</p>
+            </button>
 
-        {/* Path Line */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path
-            d={`M ${levels.map(l => `${l.x} ${l.y}`).join(' L ')}`}
-            fill="none"
-            stroke="#e2e8f0"
-            strokeWidth="2"
-            strokeDasharray="6 6"
-          />
-          <path
-            d={`M ${levels.map(l => `${l.x} ${l.y}`).join(' L ')}`}
-            fill="none"
-            stroke="#6366f1"
-            strokeWidth="2"
-            strokeDasharray="6 6"
-            className="opacity-20"
-          />
-        </svg>
+            {/* AI Therapy Chat */}
+            <button onClick={() => onNavigate('therapy-session')} className="group flex flex-col text-left bg-gradient-to-br from-indigo-50 to-white rounded-3xl p-6 border border-indigo-100 shadow-sm hover:shadow-xl hover:border-indigo-300 hover:-translate-y-1 transition-all duration-300">
+               <div className="bg-indigo-100 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform relative overflow-hidden">
+                  <div className="absolute inset-0 bg-indigo-200/50 animate-pulse"></div>
+                  <Sparkles className="text-indigo-600 relative z-10" size={28} />
+               </div>
+               <h4 className="text-lg font-bold text-indigo-900 mb-2">Terapeuta d'IA</h4>
+               <p className="text-slate-600 text-sm leading-relaxed">Parla amb el teu assistent personal per rebre orientació o planificar activitats.</p>
+            </button>
 
-        {/* Nodes */}
-        {levels.map((level) => (
-          <div
-            key={level.id}
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 group/node"
-            style={{ left: `${level.x}%`, top: `${level.y}%` }}
-            onMouseEnter={() => setActiveNode(level.id)}
-            onMouseLeave={() => setActiveNode(null)}
-            onClick={() => level.unlocked && onNavigate(level.target)}
-          >
-            <div className={`w-14 h-14 rounded-2xl rotate-45 flex items-center justify-center shadow-md transition-all duration-300 cursor-pointer 
-                    ${level.unlocked
-                ? 'bg-white border-2 border-brand-100 text-brand-600 hover:border-brand-300 hover:scale-110 hover:shadow-lg hover:shadow-brand-100'
-                : 'bg-slate-100 border-2 border-slate-200 text-slate-400 cursor-default'
-              }`}>
-              <div className="-rotate-45">
-                {level.unlocked ? <level.icon size={22} /> : <Lock size={18} />}
-              </div>
-            </div>
+            {/* Diary */}
+            <button onClick={() => onNavigate('diary')} className="group flex flex-col text-left bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-orange-200 hover:-translate-y-1 transition-all duration-300">
+               <div className="bg-orange-50 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <BookOpen className="text-orange-600" size={28} />
+               </div>
+               <h4 className="text-lg font-bold text-slate-800 mb-2">El meu Diari</h4>
+               <p className="text-slate-500 text-sm leading-relaxed">Accedeix als resums del teu terapeuta o escriu petites reflexions sobre el que sents.</p>
+            </button>
 
-            {/* Label */}
-            <div className={`absolute top-full mt-4 left-1/2 -translate-x-1/2 bg-white border border-slate-100 shadow-xl text-slate-700 text-xs font-bold px-3 py-1.5 rounded-lg whitespace-nowrap transition-all duration-300 pointer-events-none z-20 ${activeNode === level.id ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
-              {level.label}
-            </div>
-          </div>
-        ))}
+            {/* Planner */}
+            <button onClick={() => onNavigate('planner')} className="group flex flex-col text-left bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-teal-200 hover:-translate-y-1 transition-all duration-300">
+               <div className="bg-teal-50 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Calendar className="text-teal-600" size={28} />
+               </div>
+               <h4 className="text-lg font-bold text-slate-800 mb-2">Agenda Activa</h4>
+               <p className="text-slate-500 text-sm leading-relaxed">Organitza les teves rutes segures i activitats de benestar programades.</p>
+            </button>
+
+            {/* Safety Map */}
+            <button onClick={() => onNavigate('safety-map')} className="group flex flex-col text-left bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-emerald-200 hover:-translate-y-1 transition-all duration-300">
+               <div className="bg-emerald-50 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Map className="text-emerald-600" size={28} />
+               </div>
+               <h4 className="text-lg font-bold text-slate-800 mb-2">Mapa de Seguretat</h4>
+               <p className="text-slate-500 text-sm leading-relaxed">Visualitza i afegeix zones segures o punts de risc per a la teva navegació diària.</p>
+            </button>
+
+            {/* Gallery / Loot */}
+            <button onClick={() => onNavigate('loot')} className="group flex flex-col text-left bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-pink-200 hover:-translate-y-1 transition-all duration-300">
+               <div className="bg-pink-50 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <ImageIcon className="text-pink-600" size={28} />
+               </div>
+               <h4 className="text-lg font-bold text-slate-800 mb-2">Galeria de Records</h4>
+               <p className="text-slate-500 text-sm leading-relaxed">Revisa imatges i records generats que et serveixen d'ancoratge positiu.</p>
+            </button>
+         </div>
       </div>
 
-
-      {/* BOSS BATTLE BANNER */}
-      <div
-        onClick={() => onNavigate('boss')}
-        className="cursor-pointer group relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 p-8 text-white shadow-xl shadow-purple-900/20 border border-purple-500/30 hover:border-purple-400 transition-all hover:scale-[1.01]"
-      >
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-        <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-500 rounded-full blur-[60px] opacity-40 group-hover:opacity-60 transition-opacity"></div>
-
-        <div className="relative z-10 flex items-center justify-between">
-          <div>
-            <h3 className="text-2xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-pink-300">
-              {t('dashboard.boss.title')}
-            </h3>
-            <p className="text-purple-200 font-medium mt-1">
-              {t('dashboard.boss.desc')}
-            </p>
-          </div>
-          <div className="bg-white/10 backdrop-blur-sm p-3 rounded-full border border-white/20 group-hover:bg-white/20 transition-colors">
-            <Zap className="text-yellow-400 w-8 h-8 animate-pulse" fill="currentColor" />
-          </div>
-        </div>
-      </div>
-
-      {/* 3. GENERATED MEMORY CARD */}
-      {
-        memoryImage && (
-          <div className="animate-scaleIn rounded-3xl overflow-hidden shadow-xl shadow-brand-500/10 border border-slate-100 bg-white group">
-            <div className="relative h-64 overflow-hidden">
-              <img src={memoryImage} alt="Visualització" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-white">
-                <h3 className="font-bold text-lg mb-1">{t('dashboard.memory.title')}</h3>
-                <p className="text-white/80 text-xs">{t('dashboard.memory.desc')}</p>
-              </div>
-            </div>
-          </div>
-        )
-      }
-
-      {/* 4. CHARTS (Clean) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white border border-slate-100 shadow-soft p-6 rounded-3xl">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-slate-700 font-bold">{t('dashboard.stats.title')}</h3>
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">{t('dashboard.stats.last_7_days')}</span>
-          </div>
-
-          <div className="w-full h-[250px]">
-            {/* Recharts sometimes fails to get width in flex/grid if not explicit. We force a min-height. */}
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data}>
-                <defs>
-                  <linearGradient id="colorAnx" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #f1f5f9', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }} itemStyle={{ color: '#0f172a', fontWeight: 'bold' }} labelStyle={{ color: '#64748b' }} />
-                <Area type="monotone" dataKey="anxiety" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorAnx)" activeDot={{ r: 6, fill: '#4f46e5', stroke: '#fff', strokeWidth: 2 }} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
     </div >
   );
 };

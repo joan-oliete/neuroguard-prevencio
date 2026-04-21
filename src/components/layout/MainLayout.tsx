@@ -84,7 +84,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     // Navigation Groups
     const clinicViews = ['clinic', 'manual', 'crisis', 'diary', 'safety-map', 'therapy', 'therapy-session'];
     const gymViews = ['gym-hub', 'gym', 'game-center', 'game-runner', 'game-puzzle', 'remote-tuner', 'boss', 'roleplay'];
-    const libraryViews = ['library', 'theory', 'learning', 'loot', 'profile'];
+    const libraryViews = ['library', 'theory', 'learning', 'profile'];
 
     const isClinicActive = clinicViews.includes(currentView);
     const isGymActive = gymViews.includes(currentView);

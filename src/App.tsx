@@ -21,6 +21,7 @@ import Theory from './components/features/Theory';
 import SafetyMap from './components/features/map/SafetyMap';
 import Planner from './components/features/Planner';
 import { TherapistSession } from './components/features/therapy/TherapistSession';
+import Diary from './components/features/Diary';
 
 // --- LOADING SPINNER ---
 const LoadingSpinner = ({ fullScreen = false, text }: { fullScreen?: boolean; text?: string }) => (
@@ -49,6 +50,7 @@ const AppContent = () => {
   const [crisisPlan, setCrisisPlan] = useState<CrisisPlan>({ signal: '', action: '', contact: '', value: '' });
   const [memories, setMemories] = useState<Memory[]>([]);
   const [manual, setManual] = useState<RelapseManual | null>(null);
+  const [activeDiaryLink, setActiveDiaryLink] = useState<{ date: string; area: string; text: string } | undefined>();
 
   useEffect(() => {
     if (!user) return;
@@ -116,7 +118,7 @@ const AppContent = () => {
   };
 
   const renderContent = () => {
-    if (!userProfile) return <LoadingSpinner text="Carregant perfil..." />;
+    if (!userProfile || !user) return <LoadingSpinner text="Carregant perfil..." />;
 
     switch (currentView) {
       case 'dashboard':
@@ -159,10 +161,17 @@ const AppContent = () => {
           manualId={userProfile.activeManualId || 'default_manual'}
           userId={user.uid}
           onNavigateToDiary={(link) => {
-            console.log("Navigating to diary with link:", link);
+            setActiveDiaryLink(link);
             setCurrentView('diary');
           }}
           onBack={() => setCurrentView('dashboard')}
+        />;
+
+      case 'diary':
+        return <Diary 
+           user={user as any} 
+           linkedActivity={activeDiaryLink} 
+           onClearLink={() => setActiveDiaryLink(undefined)} 
         />;
 
       case 'therapy-session':
