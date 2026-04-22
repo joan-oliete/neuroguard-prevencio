@@ -267,6 +267,100 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
             explanation: "Urge Surfing consisteix a acceptar i observar l'impuls sense resistència directa, sabent que té un inici i un final natural."
         }
     ]
+  },
+  {
+    id: 'c7',
+    title: 'FOMO i Desconnexió Digital',
+    category: 'Benestar',
+    duration: '20 min',
+    imageColor: 'from-pink-500 to-rose-600',
+    icon: '📵',
+    completed: false,
+    points: 500,
+    difficulty: 'Principiant',
+    description: "Aprèn a gestionar la por a perdre't coses (FOMO), la necessitat de connexió constant i el Phubbing, per establir límits digitals saludables en el teu dia a dia.",
+    modules: [
+        {
+            id: 1,
+            title: "Què és el FOMO i la Nomofòbia?",
+            duration: "6:00",
+            thumbnail: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop",
+            content: "FOMO ('Fear Of Missing Out') és l'ansietat que neix de pensar que altres viuen experiències positives sense nosaltres. Això, sumat a la 'Nomofòbia' (por a no tenir mòbil), fa que el reflex constant de comprovar les notificacions mantingui el problema. L'alleujament és curt, però l'hàbit arruïna el nostre benestar a llarg termini."
+        },
+        {
+            id: 2,
+            title: "Phubbing i l'art d'estar present",
+            duration: "7:00",
+            thumbnail: "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?q=80&w=800&auto=format&fit=crop",
+            content: "El 'Phubbing' (Phone + Snubbing) és ignorar la persona que tenim al davant per prestar atenció al mòbil. Té un fort impacte en l'autoestima dels qui l'experimenten i minva la qualitat emocional de les nostres relacions properes."
+        },
+        {
+            id: 3,
+            title: "Estratègies per un Detox Suau",
+            duration: "7:00",
+            thumbnail: "https://images.unsplash.com/photo-1496302662116-25d14f2f1e17?q=80&w=800&auto=format&fit=crop",
+            content: "Prova el 'Detox de 4 setmanes': Setmana 1: Llegeix el teu ús (audita hores). Setmana 2: Crea espais lliures de pantalles (habitació, àpats). Setmana 3: Canvia l'scroll per activitats enriquidores (llegir, esport). Setmana 4: Gaudeix de les noves rutines consolidades!"
+        }
+    ],
+    resources: [
+        { title: "Diari d'Hàbits de Connexió (PDF)", type: "pdf", size: "1.5 MB" }
+    ],
+    quiz: [
+        {
+            id: 1,
+            question: "Què descriu adequadament el fenomen de 'Phubbing'?",
+            options: ["Publicar fotos constantment a les xarxes socials", "Ignorar a algú en una interacció social per estar pendent del mòbil", "Buscar informació de salut a internet de forma compulsiva", "Jugar a videojocs online amb amics"],
+            correctAnswer: 1,
+            explanation: "El Phubbing és la pràctica d'ignorar les persones presents a favor de prestar atenció als dispositius mòbils."
+        }
+    ]
+  },
+  {
+    id: 'c8',
+    title: 'Habilitats de Comunicació',
+    category: 'Relacions',
+    duration: '22 min',
+    imageColor: 'from-blue-600 to-indigo-500',
+    icon: '🗣️',
+    completed: false,
+    points: 600,
+    difficulty: 'Intermedi',
+    description: "Comunica't millor per millorar les teves relacions. Tècniques pràctiques per dir 'no', escolta activa (OARS) i reduir la impulsivitat.",
+    modules: [
+        {
+            id: 1,
+            title: "Assertivitat: Com dir 'no' sense culpa (Model DESO)",
+            duration: "8:00",
+            thumbnail: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop",
+            content: "Utilitza el Model DESO per posar límits des del respecte i l'empatia: (D)escriu la situació, (E)xpressa com et sents, demana una (S)olució clara, i recorda l'(O)utcome positiu. Exemple: 'Quan m'escrius a la nit, em poso ansiós. Preferiria que m'enviis els missatges pel matí. Així dormirem millor els dos.'"
+        },
+        {
+            id: 2,
+            title: "Escolta Activa (Mètode OARS)",
+            duration: "8:00",
+            thumbnail: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop",
+            content: "OARS són eines pel diàleg: O (Preguntes Obertes: 'Com t'has sentit?'), A (Afirmacions: 'Valoro que hagis compartit això'), R (Reflexions: 'Així que sents pressió quan...'), i S (Sumari: 'Resumint, busquem X per millorar'). Ajuden a minimitzar els conflictes."
+        },
+        {
+            id: 3,
+            title: "Entendre les Bandes Roges (Red Flags)",
+            duration: "6:00",
+            thumbnail: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&auto=format&fit=crop",
+            content: "Si detectes en mi o en l'altre: mentides sobre temps utilitzat, irritabilitat en demanar-li deixar el mòbil, aïllament o desinterès pel voltant. És important obrir converses honestes abans que les 'red flags' generin una bretxa insalvable."
+        }
+    ],
+    resources: [
+        { title: "Plantilles per missatges assertius (Link)", type: "link" }
+    ],
+    quiz: [
+        {
+            id: 1,
+            question: "Dins del mètode DESO d'assertivitat, quina és la finalitat de l'Objectiu ('O' d'Outcome)?",
+            options: ["Dir a la persona l'error comès", "Aclarir els beneficis que suposarà aquest nou funcionament a la relació", "Ignorar completament a l'interlocutor", "Buscar com castigar-lo"],
+            correctAnswer: 1,
+            explanation: "L'Outcome s'enfoca als aspectes i beneficis positius si es resol la situació; l'objectiu no és imposar, sinó protegir la relació."
+        }
+    ]
   }
 ];
 
