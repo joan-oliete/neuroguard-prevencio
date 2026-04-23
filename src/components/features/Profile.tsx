@@ -275,6 +275,23 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
               <button onClick={() => i18n.changeLanguage('en')} className={`py-2 rounded-lg font-bold text-sm transition-all ${i18n.language === 'en' ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-50 text-slate-600 hover:bg-white border border-slate-200'}`}>English</button>
             </div>
           </div>
+
+          <div className="mt-8 pt-6 border-t border-slate-100">
+            <h3 className="font-bold text-lg mb-4 flex items-center gap-3 text-slate-800">
+              <span className="p-2 bg-slate-100 rounded-lg text-slate-500"><User className="w-5 h-5" /></span> Opcions de Desenvolupador
+            </h3>
+            <div>
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 block">Clau API d'Intel·ligència Artificial (Opcional)</label>
+              <input 
+                 type="password" 
+                 placeholder="Enganxa la teva API Key de Gemini aquí" 
+                 defaultValue={localStorage.getItem('neuro_ai_key') || ''} 
+                 onChange={e => localStorage.setItem('neuro_ai_key', e.target.value)} 
+                 className="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-slate-500 outline-none transition-all font-medium text-slate-700 text-sm" 
+              />
+              <p className="text-xs text-slate-400 mt-2">Només necessari si la compilació automàtica falla.</p>
+            </div>
+          </div>
         </div>
 
         {/* Manual Actions & History */}
