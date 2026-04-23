@@ -21,6 +21,8 @@ jobs:
         run: rm package-lock.json && npm install --legacy-peer-deps
 
       - name: Build Web App
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
         run: npm run build
 
       - name: Setup Java
