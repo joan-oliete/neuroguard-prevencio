@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { NotificationService } from '../../services/notificationService';
 import { Bell } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { db, doc, updateDoc } from '../../services/firebase';
 
 export const NotificationManager: React.FC = () => {
+    const { user } = useAuth();
     const [permissionGranted, setPermissionGranted] = useState(false);
 
     useEffect(() => {
@@ -15,27 +18,37 @@ export const NotificationManager: React.FC = () => {
         });
 
         // Register if already granted
-        if (permissionGranted) {
+        if (permissionGranted && user) {
             NotificationService.register().then(token => {
-                if (token) console.log("Push Token:", token);
+                if (token) {
+                    console.log("Push Token:", token);
+                    updateDoc(doc(db, "users", user.uid), { fcmToken: token }).catch(console.error);
+                }
             });
         }
-    }, [permissionGranted]);
+    }, [permissionGranted, user]);
 
     const checkPermission = async () => {
         const status = await NotificationService.checkPermissions();
         setPermissionGranted(status.granted);
-        if (status.granted) {
-            NotificationService.register();
+        if (status.granted && user) {
+            const token = await NotificationService.register();
+            if (token) {
+                updateDoc(doc(db, "users", user.uid), { fcmToken: token }).catch(console.error);
+            }
         }
     };
 
     const handleRequestPermission = async () => {
         const status = await NotificationService.requestPermissions();
         setPermissionGranted(status.granted);
-        if (status.granted) {
+        if (status.granted && user) {
             const token = await NotificationService.register();
             console.log("Registered Push Token:", token);
+            if (token) {
+                await updateDoc(doc(db, "users", user.uid), { fcmToken: token });
+                // Don't alert here to avoid interrupting the UI, it's just a floating button
+            }
         }
     };
 
