@@ -380,7 +380,7 @@ export const streamTherapistChat = async (messages: ChatMessage[], context: Ther
     const streamContents = [...validHistory, { role: 'user', parts: [{ text: lastMessage }] }];
 
     const resultStream = await ai.models.generateContentStream({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.0-flash",
       contents: streamContents,
       config: {
         systemInstruction: dynamicPrompt
@@ -433,7 +433,7 @@ export const generateSessionSummary = async (messages: ChatMessage[]): Promise<S
         `;
 
     const result = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.0-flash",
       contents: prompt,
       config: {
         systemInstruction: "Ets un expert en psicologia clínica. Analitza la següent conversa i extreu-ne un resum estructurat.",
