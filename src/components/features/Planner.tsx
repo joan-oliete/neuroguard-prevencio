@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { RelapseManual, DiaryEntry } from '../../types';
 import { updateDoc, doc, db, collection, query, orderBy, onSnapshot } from '../../services/firebase';
 import { Calendar, Save, RefreshCw, ChevronLeft, ChevronRight, Layout, Maximize, BookOpen, PenTool, ArrowLeft } from 'lucide-react';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { Capacitor } from '@capacitor/core';
 
 interface PlannerProps {
   manual: RelapseManual;
@@ -107,7 +110,7 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
     );
   };
 
-  const addToCalendar = (dateStr: string, area: string, text: string) => {
+  const addToCalendar = async (dateStr: string, area: string, text: string) => {
     if (!text) return;
 
     // Create ICS content
@@ -126,14 +129,36 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
       'END:VCALENDAR'
     ].join('\n');
 
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `neuroguard-${dateStr}.ics`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const fileName = `neuroguard-${dateStr}.ics`;
+
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await Filesystem.writeFile({
+          path: fileName,
+          data: icsContent,
+          directory: Directory.Cache,
+          encoding: Encoding.UTF8
+        });
+
+        await Share.share({
+          title: `NeuroGuard: ${area}`,
+          text: `Afegeix l'activitat al calendari`,
+          url: result.uri,
+          dialogTitle: 'Compartir Calendari'
+        });
+      } catch (e) {
+        console.error('Error sharing calendar native:', e);
+      }
+    } else {
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (

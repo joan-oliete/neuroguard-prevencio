@@ -45,6 +45,10 @@ const AppContent = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [showCoolingOff, setShowCoolingOff] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentView]);
+
   // Data State
   const [stats, setStats] = useState<DailyStat[]>([]);
   const [crisisPlan, setCrisisPlan] = useState<CrisisPlan>({ signal: '', action: '', contact: '', value: '' });

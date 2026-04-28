@@ -16,6 +16,16 @@ export const usePedometer = () => {
 
         const init = async () => {
             try {
+                const permStatus = await CapacitorPedometer.checkPermissions();
+                if (permStatus.activity !== 'granted') {
+                    const reqStatus = await CapacitorPedometer.requestPermissions();
+                    if (reqStatus.activity !== 'granted') {
+                        console.warn('Pedometer permission denied');
+                        setIsActive(false);
+                        return;
+                    }
+                }
+
                 // Many Capacitor plugins have a permissions request phase.
                 // Depending on the plugin version, `start()` may ask automatically.
                 await CapacitorPedometer.start();

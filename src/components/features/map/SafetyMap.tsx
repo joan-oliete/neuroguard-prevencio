@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Shield, AlertTriangle, MapPin, Navigation, Plus, X, Save } from 'lucide-react';
 import { useMapData } from '../../../context/MapContext';
+import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor } from '@capacitor/core';
 
 // Fix for default marker icons in React Leaflet
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -64,10 +66,33 @@ function LocationMarker() {
     const map = useMap();
 
     useEffect(() => {
-        map.locate().on("locationfound", function (e) {
-            setPosition(e.latlng);
-            map.flyTo(e.latlng, map.getZoom());
-        });
+        const fetchLocation = async () => {
+            if (Capacitor.isNativePlatform()) {
+                try {
+                    const permStatus = await Geolocation.checkPermissions();
+                    if (permStatus.location !== 'granted') {
+                        const reqStatus = await Geolocation.requestPermissions();
+                        if (reqStatus.location !== 'granted') {
+                            console.warn('Geolocation permission denied');
+                            return;
+                        }
+                    }
+                    const coordinates = await Geolocation.getCurrentPosition();
+                    const latlng = L.latLng(coordinates.coords.latitude, coordinates.coords.longitude);
+                    setPosition(latlng);
+                    map.flyTo(latlng, map.getZoom());
+                } catch (e) {
+                    console.error('Error getting location native:', e);
+                }
+            } else {
+                map.locate().on("locationfound", function (e) {
+                    setPosition(e.latlng);
+                    map.flyTo(e.latlng, map.getZoom());
+                });
+            }
+        };
+
+        fetchLocation();
     }, [map]);
 
     return position === null ? null : (
