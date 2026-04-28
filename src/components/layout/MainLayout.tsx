@@ -150,7 +150,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             </aside>
 
             {/* Mobile Header (Simplified) */}
-            <div className="md:hidden fixed top-0 w-full bg-surface-card/90 backdrop-blur-md border-b border-slate-200/60 z-30 px-4 py-3 flex justify-between items-center shadow-sm">
+            <div className="md:hidden fixed top-0 w-full bg-surface-card/90 backdrop-blur-md border-b border-slate-200/60 z-50 px-4 py-3 flex justify-between items-center shadow-sm">
                 <div className="flex items-center gap-2">
                     <img
                         src="/assets/NeuroGuard_Icona_Final.png"
@@ -210,7 +210,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: '100%' }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="md:hidden fixed inset-0 bg-surface-main z-30 pt-20 px-4 pb-24 overflow-y-auto"
+                        className="md:hidden fixed inset-0 bg-surface-main z-40 pt-20 px-4 pb-24 overflow-y-auto"
                     >
                         <nav className="space-y-4">
                             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-2">Accés Directe</p>

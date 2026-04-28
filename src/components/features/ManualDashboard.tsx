@@ -324,6 +324,31 @@ const SupportSection = ({ manual, manualRef }: { manual: RelapseManual, manualRe
   );
 };
 
+const ReviewSection = ({ manual, manualRef }: { manual: RelapseManual, manualRef: any }) => {
+  const [review, setReview] = useState(manual.weeklyReview || '');
+
+  const saveReview = async () => {
+    await updateDoc(manualRef, { weeklyReview: review });
+    alert("Revisió guardada correctament.");
+  };
+
+  return (
+    <div className="space-y-4 animate-fadeIn">
+      <h3 className="text-xl font-bold text-slate-800">5. Revisió de la Setmana</h3>
+      <p className="text-slate-500">Avalua com ha anat aquesta setmana. Quins reptes has superat? Què pots millorar?</p>
+      <textarea 
+        value={review} 
+        onChange={e => setReview(e.target.value)} 
+        className="w-full border border-slate-200 focus:ring-2 focus:ring-indigo-200 outline-none p-4 rounded-xl h-40 bg-slate-50/50 resize-none" 
+        placeholder="Escriu la teva revisió aquí..." 
+      />
+      <button onClick={saveReview} className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-md">
+        Guardar Revisió
+      </button>
+    </div>
+  );
+};
+
 const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, userId }) => {
   const [activeSection, setActiveSection] = useState('motivations');
   const manualRef = doc(db, `users/${userId}/manuals`, manualId);
@@ -357,7 +382,12 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
           Xarxa de Suport
         </button>
 
-        <button onClick={() => setActiveSection('prevention')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 ${activeSection === 'prevention' ? 'bg-indigo-900 text-white shadow-lg' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+        <button onClick={() => setActiveSection('review')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 ${activeSection === 'review' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs ${activeSection === 'review' ? 'bg-white/20' : 'bg-slate-200'}`}>5</span>
+          Revisió Setmanal
+        </button>
+
+        <button onClick={() => setActiveSection('prevention')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 mt-4 ${activeSection === 'prevention' ? 'bg-indigo-900 text-white shadow-lg' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
           <LifeBuoy size={18} className={activeSection === 'prevention' ? 'animate-pulse' : ''} />
           Kit d'Emergència
         </button>
@@ -369,6 +399,7 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
         {activeSection === 'values' && <ValuesSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'patterns' && <PatternsSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'support' && <SupportSection manual={manual} manualRef={manualRef} />}
+        {activeSection === 'review' && <ReviewSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'prevention' && <PreventionSection />}
       </div>
     </div>

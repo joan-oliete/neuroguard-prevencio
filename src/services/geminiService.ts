@@ -132,7 +132,7 @@ export const generateMemoryImage = async (memoryText: string): Promise<string | 
     // Gemini does not support text-to-image in this SDK version yet.
     // We use Pollinations AI (free tier) for valid AI image generation in this demo.
     const encodedPrompt = encodeURIComponent(memoryText + ", soothing, aesthetic, minimal, watercolor style, 8k");
-    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
+    const imageUrl = `https://pollinations.ai/p/${encodedPrompt}?width=1024&height=1024&nologo=true`;
 
     // Simulate a short delay to feel like "generating"
     await new Promise(resolve => setTimeout(resolve, 1500));

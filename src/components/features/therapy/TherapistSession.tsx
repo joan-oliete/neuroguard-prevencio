@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useVirtualTherapist } from '../../../context/VirtualTherapistContext';
-import { Send, User, Bot, Mic, MicOff, X, CheckCircle, Volume2, VolumeX } from 'lucide-react';
+import { Send, User, Bot, Mic, MicOff, X, CheckCircle, Volume2, VolumeX, ArrowLeft } from 'lucide-react';
 import { SessionSummary } from '../../../services/geminiService';
 import { useSpeechRecognition } from '../../../hooks/useSpeechRecognition';
 import { useSpeechSynthesis } from '../../../hooks/useSpeechSynthesis';
@@ -152,13 +152,22 @@ export const TherapistSession: React.FC<rsProps> = ({ onBack }) => {
 
             {/* Header - Fixed to top */}
             <header className="fixed top-0 left-0 right-0 w-full p-6 z-50 flex justify-between items-center bg-gradient-to-b from-slate-900 via-slate-900/80 to-transparent">
-                <button
-                    onClick={handleEndSession}
-                    disabled={isEnding || chatHistory.length < 2}
-                    className="p-3 bg-white/10 hover:bg-rose-500/20 hover:text-rose-200 rounded-full transition-all flex items-center gap-2 text-sm font-medium backdrop-blur-md border border-white/10 shadow-lg"
-                >
-                    {isEnding ? <span className="animate-pulse">Generant Resum...</span> : <><X size={18} /> Tancar Sessió</>}
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={onBack}
+                        disabled={isEnding}
+                        className="p-3 bg-white/10 hover:bg-slate-500/20 hover:text-slate-200 rounded-full transition-all flex items-center gap-2 text-sm font-medium backdrop-blur-md border border-white/10 shadow-lg"
+                    >
+                        <ArrowLeft size={18} /> Sortir
+                    </button>
+                    <button
+                        onClick={handleEndSession}
+                        disabled={isEnding || chatHistory.length < 2}
+                        className="p-3 bg-brand-500/80 hover:bg-brand-500 hover:text-white rounded-full transition-all flex items-center gap-2 text-sm font-medium backdrop-blur-md border border-brand-400 shadow-lg"
+                    >
+                        {isEnding ? <span className="animate-pulse">Resumint...</span> : <><CheckCircle size={18} /> Finalitzar</>}
+                    </button>
+                </div>
                 <div className="flex flex-col items-end pointer-events-none">
                     <span className="text-xl font-bold tracking-tight text-white drop-shadow-md">Espai Segur</span>
                     <span className="text-xs text-slate-400 uppercase tracking-widest">Connectat amb NeuroGuard AI</span>

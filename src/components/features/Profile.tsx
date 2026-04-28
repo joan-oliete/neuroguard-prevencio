@@ -22,6 +22,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
   const [manualHistory, setManualHistory] = useState<any[]>([]);
   const [therapySessions, setTherapySessions] = useState<any[]>([]);
   const [daysSober, setDaysSober] = useState(0);
+  const [previewManual, setPreviewManual] = useState<any | null>(null);
 
   useEffect(() => {
     loadHistory();
@@ -103,96 +104,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
   };
 
   const handlePreviewManual = (manual: any) => {
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) return alert("Si us plau, permet les finestres emergents per veure el manual.");
-
-    const dateStr = manual.createdAt?.toDate ? manual.createdAt.toDate().toLocaleDateString() : 'Data desconeguda';
-
-    const content = `
-      <html>
-        <head>
-          <title>Manual NeuroGuard - ${dateStr}</title>
-          <style>
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; color: #333; }
-            h1 { color: #ea580c; border-bottom: 2px solid #ea580c; padding-bottom: 10px; margin-bottom: 20px; }
-            h2 { color: #1e293b; margin-top: 30px; background: #f8fafc; padding: 10px; border-radius: 8px; border-left: 4px solid #ea580c; }
-            h3 { color: #475569; margin-top: 20px; font-size: 1.1em; }
-            p, li { line-height: 1.6; }
-            ul { padding-left: 20px; }
-            .meta { color: #64748b; font-size: 0.9em; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-            .card { border: 1px solid #cbd5e1; padding: 15px; border-radius: 8px; margin-bottom: 10px; background: #fff; page-break-inside: avoid; }
-            .tag { display: inline-block; background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; color: #475569; margin-left: 8px; }
-            .crisis-card { background-color: #fef2f2; border: 1px solid #fca5a5; padding: 20px; border-radius: 8px; }
-            .crisis-label { font-weight: bold; color: #991b1b; display: block; margin-top: 10px; }
-            @media print {
-              body { padding: 0; }
-              h2 { background: none; border-bottom: 1px solid #ccc; border-left: none; padding-left: 0; }
-              .no-print { display: none; }
-            }
-          </style>
-        </head>
-        <body>
-          <h1>Manual de Prevenció NeuroGuard</h1>
-          <div class="meta">
-            <p><strong>Usuari:</strong> ${formData.name} ${formData.surname}</p>
-            <p><strong>Data del manual:</strong> ${dateStr}</p>
-            <p><strong>ID:</strong> ${manual.id}</p>
-          </div>
-
-          <h2>1. Motivacions (Punt de Partida)</h2>
-          <ul>
-            ${(manual.motivations || []).map((m: any) => `<li>${m.text}</li>`).join('') || '<li>Sense motivacions registrades.</li>'}
-          </ul>
-
-          <h2>2. Els Meus Valors</h2>
-          <div>
-            ${(manual.values?.selected || []).map((v: string) => {
-      const details = manual.values?.details?.[v] || {};
-      return `<div class="card">
-                <h3>${v}</h3>
-                <p><em>"${details.definition || 'Sense definició'}"</em></p>
-                <p><strong>Importància:</strong> ${details.importance || 5}/10 &nbsp;|&nbsp; <strong>Alineació:</strong> ${details.alignment || 5}/10</p>
-              </div>`;
-    }).join('') || '<p>No s\'han seleccionat valors.</p>'}
-          </div>
-
-          <h2>3. Patrons i Senyals d'Alerta</h2>
-          <h3>Senyals d'Alerta</h3>
-          <ul>
-             ${(manual.triggers || []).map((t: any) => `<li>${t.external || t.internal || t.physical} <span class="tag">${t.external ? 'EXT' : t.internal ? 'INT' : 'FIS'}</span></li>`).join('') || '<li>Cap senyal registrat.</li>'}
-          </ul>
-          <h3>Pensaments Trampa</h3>
-          <ul>
-             ${(manual.trapThoughts || []).map((t: any) => `<li><strong>"${t.thought}"</strong><br/><span style="color:#059669">➔ Resposta: ${t.reframe || '(Pendent)'}</span></li>`).join('') || '<li>Cap pensament registrat.</li>'}
-          </ul>
-
-          <h2>4. Xarxa de Suport</h2>
-          <ul>
-             ${(manual.supportNetwork || []).map((s: any) => `<li><strong>${s.name}</strong> <span class="tag">${s.role}</span><br/>Contacte: ${s.contact}</li>`).join('') || '<li>Sense xarxa definida.</li>'}
-          </ul>
-
-          <h2>5. Pla de Crisi</h2>
-          <div class="crisis-card">
-            <span class="crisis-label">SI NOTO (Senyal):</span> ${manual.crisisPlan?.signal || '-'}
-            <span class="crisis-label">FARÉ (Acció):</span> ${manual.crisisPlan?.action || '-'}
-            <span class="crisis-label">TRUCARÉ A (Contacte):</span> ${manual.crisisPlan?.contact || '-'}
-            <span class="crisis-label">RECORDATORI (Valor):</span> ${manual.crisisPlan?.reminder || '-'}
-          </div>
-
-          <h2>6. Revisió Setmanal</h2>
-          <div class="card">
-            <p style="white-space: pre-wrap;">${manual.weeklyReview || 'Sense revisió registrada.'}</p>
-          </div>
-
-          <div style="margin-top: 50px; text-align: center; font-size: 0.8em; color: #94a3b8;" class="no-print">
-            <button onclick="window.print()" style="padding: 10px 20px; background: #ea580c; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Imprimir / Guardar PDF</button>
-          </div>
-        </body>
-      </html>
-    `;
-
-    printWindow.document.write(content);
-    printWindow.document.close();
+    setPreviewManual(manual);
   };
 
   return (
@@ -359,6 +271,109 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
 
         </div>
       </div>
+
+      {previewManual && (
+        <div className="fixed inset-0 bg-slate-900/95 z-[100] overflow-y-auto flex justify-center p-4">
+          <div className="bg-white max-w-3xl w-full my-8 p-8 rounded-2xl shadow-2xl relative print:m-0 print:p-0 print:shadow-none print:w-full">
+            <button 
+              onClick={() => setPreviewManual(null)} 
+              className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-rose-100 hover:text-rose-600 rounded-full print:hidden transition-colors"
+            >
+              Tancar
+            </button>
+            <div className="print:hidden text-center mb-8 pb-6 border-b">
+              <h2 className="text-2xl font-bold mb-2 text-slate-800">Visualització del Manual</h2>
+              <button 
+                onClick={() => window.print()} 
+                className="bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-6 rounded-xl inline-flex items-center gap-2 transition-colors"
+              >
+                <Printer size={18} /> Imprimir / Guardar PDF
+              </button>
+            </div>
+            
+            <div className="prose prose-slate max-w-none">
+              <h1 className="text-3xl text-brand-600 border-b-2 border-brand-500 pb-2 mb-6">Manual de Prevenció NeuroGuard</h1>
+              
+              <div className="text-slate-500 mb-8 pb-4 border-b">
+                <p><strong>Usuari:</strong> {formData.name} {formData.surname}</p>
+                <p><strong>Data:</strong> {previewManual.createdAt?.toDate ? previewManual.createdAt.toDate().toLocaleDateString() : 'Data desconeguda'}</p>
+                <p><strong>ID:</strong> {previewManual.id}</p>
+              </div>
+
+              <h2 className="bg-slate-50 p-3 rounded-lg border-l-4 border-brand-500 mt-8 mb-4 font-bold text-xl text-slate-800">1. Motivacions (Punt de Partida)</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                {(previewManual.motivations?.length ? previewManual.motivations : [{id:1, text: 'Sense motivacions registrades.'}]).map((m: any) => (
+                  <li key={m.id}>{m.text}</li>
+                ))}
+              </ul>
+
+              <h2 className="bg-slate-50 p-3 rounded-lg border-l-4 border-brand-500 mt-8 mb-4 font-bold text-xl text-slate-800">2. Els Meus Valors</h2>
+              <div className="space-y-4">
+                {(previewManual.values?.selected?.length ? previewManual.values.selected : []).map((v: string) => {
+                  const details = previewManual.values?.details?.[v] || {};
+                  return (
+                    <div key={v} className="border border-slate-200 p-4 rounded-xl">
+                      <h3 className="font-bold text-lg mb-2 text-indigo-700">{v}</h3>
+                      <p className="italic text-slate-600 mb-2">"{details.definition || 'Sense definició'}"</p>
+                      <p className="text-sm font-medium">Importància: {details.importance || 5}/10 | Alineació: {details.alignment || 5}/10</p>
+                    </div>
+                  );
+                })}
+                {!previewManual.values?.selected?.length && <p>No s'han seleccionat valors.</p>}
+              </div>
+
+              <h2 className="bg-slate-50 p-3 rounded-lg border-l-4 border-brand-500 mt-8 mb-4 font-bold text-xl text-slate-800">3. Patrons i Senyals d'Alerta</h2>
+              <h3 className="font-bold text-lg mt-4 mb-2 text-red-600">Senyals d'Alerta</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                {(previewManual.triggers?.length ? previewManual.triggers : []).map((t: any) => (
+                  <li key={t.id}>
+                    {t.external || t.internal || t.physical} 
+                    <span className="bg-slate-100 px-2 py-0.5 rounded text-xs ml-2 font-bold text-slate-500">
+                      {t.external ? 'EXTERN' : t.internal ? 'INTERN' : 'FÍSIC'}
+                    </span>
+                  </li>
+                ))}
+                {!previewManual.triggers?.length && <li>Cap senyal registrat.</li>}
+              </ul>
+
+              <h3 className="font-bold text-lg mt-6 mb-2 text-amber-600">Pensaments Trampa</h3>
+              <ul className="list-none space-y-4">
+                {(previewManual.trapThoughts?.length ? previewManual.trapThoughts : []).map((t: any) => (
+                  <li key={t.id} className="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                    <strong className="block italic mb-2 text-amber-900">"{t.thought}"</strong>
+                    <span className="text-emerald-700 font-medium">➔ Resposta: {t.reframe || '(Pendent)'}</span>
+                  </li>
+                ))}
+                {!previewManual.trapThoughts?.length && <li>Cap pensament registrat.</li>}
+              </ul>
+
+              <h2 className="bg-slate-50 p-3 rounded-lg border-l-4 border-brand-500 mt-8 mb-4 font-bold text-xl text-slate-800">4. Xarxa de Suport</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                {(previewManual.supportNetwork?.length ? previewManual.supportNetwork : []).map((s: any) => (
+                  <li key={s.id}>
+                    <strong>{s.name}</strong> <span className="bg-slate-100 px-2 py-0.5 rounded text-xs ml-2 text-slate-600">{s.role}</span>
+                    <br/><span className="text-slate-500">Contacte: {s.contact}</span>
+                  </li>
+                ))}
+                {!previewManual.supportNetwork?.length && <li>Sense xarxa definida.</li>}
+              </ul>
+
+              <h2 className="bg-slate-50 p-3 rounded-lg border-l-4 border-brand-500 mt-8 mb-4 font-bold text-xl text-slate-800">5. Pla de Crisi</h2>
+              <div className="bg-red-50 border border-red-200 p-6 rounded-xl space-y-3">
+                <div><span className="font-bold text-red-800 block">SI NOTO (Senyal):</span> {previewManual.crisisPlan?.signal || '-'}</div>
+                <div><span className="font-bold text-red-800 block">FARÉ (Acció):</span> {previewManual.crisisPlan?.action || '-'}</div>
+                <div><span className="font-bold text-red-800 block">TRUCARÉ A (Contacte):</span> {previewManual.crisisPlan?.contact || '-'}</div>
+                <div><span className="font-bold text-red-800 block">RECORDATORI (Valor):</span> {previewManual.crisisPlan?.reminder || '-'}</div>
+              </div>
+
+              <h2 className="bg-slate-50 p-3 rounded-lg border-l-4 border-brand-500 mt-8 mb-4 font-bold text-xl text-slate-800">6. Revisió Setmanal</h2>
+              <div className="border border-slate-200 p-4 rounded-xl whitespace-pre-wrap">
+                {previewManual.weeklyReview || 'Sense revisió registrada.'}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div >
   );
