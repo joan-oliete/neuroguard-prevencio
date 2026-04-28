@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Camera, Sparkles, Image as ImageIcon, Loader2, Save, Trash2, AlertCircle, ArrowLeft, Upload } from 'lucide-react';
+import { Camera as CameraIcon, Sparkles, Image as ImageIcon, Loader2, Save, Trash2, AlertCircle, ArrowLeft, Upload } from 'lucide-react';
 import { AnimatedCard } from '../common/AnimatedCard';
 import { generateMemoryImage } from '../../services/geminiService';
+import { storage, ref, uploadBytes, getDownloadURL, uploadString } from '../../services/firebase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Memory, UserProfile } from '../../types';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 interface TheLootProps {
     user: UserProfile;
@@ -43,23 +45,36 @@ const TheLoot: React.FC<TheLootProps> = ({ user, memories, onAddMemory, onDelete
         }
     };
 
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            // comprovem mida max (p.ex. 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-               setError("La imatge és massa gran (màxim 5MB)");
-               return;
-            }
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result as string;
-                // Add the memory with the base64 URL
-                onAddMemory(inputText.trim() || 'Record personal', base64String);
-                setInputText('');
+    const handleFileUpload = async () => {
+        try {
+            const image = await Camera.getPhoto({
+                quality: 60,
+                allowEditing: false,
+                resultType: CameraResultType.DataUrl,
+                source: CameraSource.Photos // Force gallery
+            });
+
+            if (image.dataUrl) {
+                setGenerating(true);
                 setError(null);
-            };
-            reader.readAsDataURL(file);
+
+                // Upload directly using uploadString for better mobile support
+                const storageRef = ref(storage, `users/${user.id}/memories/${Date.now()}_camera.${image.format || 'jpg'}`);
+                await uploadString(storageRef, image.dataUrl, 'data_url');
+                const downloadUrl = await getDownloadURL(storageRef);
+                
+                onAddMemory(inputText.trim() || 'Record personal', downloadUrl);
+                setInputText('');
+            }
+        } catch (err: any) {
+            console.error("Error with camera/upload:", err);
+            // User cancelled or other error
+            if (err.message && err.message.includes('User cancelled')) {
+                return;
+            }
+            setError(`No s'ha pogut pujar la imatge: ${err?.message || 'Error desconegut'}`);
+        } finally {
+            setGenerating(false);
         }
     };
 
@@ -74,7 +89,7 @@ const TheLoot: React.FC<TheLootProps> = ({ user, memories, onAddMemory, onDelete
                )}
                <div>
                   <h3 className="text-3xl font-bold text-slate-800 flex items-center gap-3">
-                      <span className="p-2 bg-pink-100 rounded-xl text-pink-600"><Camera size={28} /></span> Galeria de Records
+                      <span className="p-2 bg-pink-100 rounded-xl text-pink-600"><CameraIcon size={28} /></span> Galeria de Records
                   </h3>
                   <p className="text-slate-500 mt-2">Afegeix les teves pròpies fotos o crea art amb IA per recordar què és el veritablement important.</p>
                </div>
@@ -95,19 +110,12 @@ const TheLoot: React.FC<TheLootProps> = ({ user, memories, onAddMemory, onDelete
                             />
                             <div className="flex gap-2 shrink-0 flex-wrap">
                                 <button
-                                    onClick={() => fileInputRef.current?.click()}
+                                    onClick={handleFileUpload}
                                     className="px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:shadow-sm"
                                 >
                                     <Upload size={20} className="text-slate-500" />
                                     Pujar Foto
                                 </button>
-                                <input 
-                                    type="file" 
-                                    accept="image/*" 
-                                    ref={fileInputRef}
-                                    style={{display: 'none'}}
-                                    onChange={handleFileUpload}
-                                />
                                 
                                 <button
                                     onClick={handleGenerate}

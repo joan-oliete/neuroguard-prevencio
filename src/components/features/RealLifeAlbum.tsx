@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Memory } from '../../types';
-import { Camera, Image as ImageIcon, Sparkles, Loader, X, Lock } from 'lucide-react';
+import { Camera as CameraIcon, Image as ImageIcon, Sparkles, Loader, X, Lock } from 'lucide-react';
 import { generateMemoryImage } from '../../services/geminiService';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 interface RealLifeAlbumProps {
   memories: Memory[];
@@ -16,14 +17,21 @@ const RealLifeAlbum: React.FC<RealLifeAlbumProps> = ({ memories, onAddMemory, ca
   const [isGenerating, setIsGenerating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const handleImageUpload = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 60,
+        width: 800,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Photos
+      });
+
+      if (image.base64String) {
+        setSelectedImage(`data:image/${image.format || 'jpeg'};base64,${image.base64String}`);
+      }
+    } catch (err: any) {
+      console.error("Error with camera:", err);
     }
   };
 
@@ -60,7 +68,7 @@ const RealLifeAlbum: React.FC<RealLifeAlbumProps> = ({ memories, onAddMemory, ca
       <div className="flex justify-between items-center mb-6">
         <div>
             <h3 className="text-2xl font-bold text-slate-800 font-sans flex items-center gap-2">
-            <Camera className="w-8 h-8 text-indigo-600"/> Àlbum de Vida Real
+            <CameraIcon className="w-8 h-8 text-indigo-600"/> Àlbum de Vida Real
             </h3>
             <p className="text-slate-500 text-sm mt-1">Col·lecciona moments offline. Guanya vitalitat.</p>
         </div>
@@ -104,13 +112,6 @@ const RealLifeAlbum: React.FC<RealLifeAlbumProps> = ({ memories, onAddMemory, ca
           />
           
           <div className="mb-6">
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              className="hidden" 
-              accept="image/*" 
-              onChange={handleImageUpload} 
-            />
             {selectedImage ? (
               <div className="relative inline-block">
                 <img src={selectedImage} alt="Preview" className="w-full h-48 object-cover rounded-xl shadow-sm" />
@@ -125,7 +126,7 @@ const RealLifeAlbum: React.FC<RealLifeAlbumProps> = ({ memories, onAddMemory, ca
             ) : (
               <button 
                 type="button" 
-                onClick={() => fileInputRef.current?.click()}
+                onClick={handleImageUpload}
                 className="w-full py-8 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:border-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 transition-all flex flex-col items-center justify-center gap-2 group"
               >
                 <div className="p-3 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform">
@@ -147,7 +148,7 @@ const RealLifeAlbum: React.FC<RealLifeAlbumProps> = ({ memories, onAddMemory, ca
       <div className="flex-1 overflow-y-auto space-y-6 pr-2 scrollbar-hide">
         {memories.length === 0 ? (
           <div className="h-64 flex flex-col items-center justify-center text-slate-300">
-            <Camera className="w-16 h-16 mb-4 opacity-50"/>
+            <CameraIcon className="w-16 h-16 mb-4 opacity-50"/>
             <p className="text-lg font-medium">L'àlbum està buit.</p>
             <p className="text-sm">Viu moments reals per omplir-lo.</p>
           </div>

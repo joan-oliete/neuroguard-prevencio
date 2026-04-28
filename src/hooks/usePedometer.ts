@@ -16,9 +16,9 @@ export const usePedometer = () => {
 
         const init = async () => {
             try {
-                const permStatus = await CapacitorPedometer.checkPermissions();
+                const permStatus: any = await CapacitorPedometer.checkPermissions();
                 if (permStatus.activity !== 'granted') {
-                    const reqStatus = await CapacitorPedometer.requestPermissions();
+                    const reqStatus: any = await CapacitorPedometer.requestPermissions();
                     if (reqStatus.activity !== 'granted') {
                         console.warn('Pedometer permission denied');
                         setIsActive(false);
@@ -28,10 +28,10 @@ export const usePedometer = () => {
 
                 // Many Capacitor plugins have a permissions request phase.
                 // Depending on the plugin version, `start()` may ask automatically.
-                await CapacitorPedometer.start();
+                await (CapacitorPedometer as any).start();
                 setIsActive(true);
 
-                listener = await CapacitorPedometer.addListener('step', (data: any) => {
+                listener = await CapacitorPedometer.addListener('step' as any, (data: any) => {
                     // Actual pedometer plugins return total steps globally or since start.
                     // We take the safest route by assuming 'numberOfSteps'.
                     if (data && data.numberOfSteps !== undefined) {
@@ -53,7 +53,7 @@ export const usePedometer = () => {
                 listener.remove();
             }
             if (isActive) {
-                CapacitorPedometer.stop().catch(console.error);
+                (CapacitorPedometer as any).stop().catch(console.error);
             }
         };
     }, []);

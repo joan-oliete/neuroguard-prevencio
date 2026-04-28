@@ -6,6 +6,7 @@ import { Calendar, Save, RefreshCw, ChevronLeft, ChevronRight, Layout, Maximize,
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
+import { CapacitorCalendar as CapCalendar } from '@ebarooni/capacitor-calendar';
 
 interface PlannerProps {
   manual: RelapseManual;
@@ -113,7 +114,31 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
   const addToCalendar = async (dateStr: string, area: string, text: string) => {
     if (!text) return;
 
-    // Create ICS content
+    // Try native Calendar prompt first if on Android/iOS
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const requestResult = await CapCalendar.requestWriteOnlyCalendarAccess();
+        if (requestResult.result !== 'granted') {
+          throw new Error('Sense permisos de calendari');
+        }
+
+        const [year, month, day] = dateStr.split('-');
+        const start = new Date(Number(year), Number(month) - 1, Number(day), 9, 0, 0).getTime();
+        const end = new Date(Number(year), Number(month) - 1, Number(day), 10, 0, 0).getTime();
+        
+        await CapCalendar.createEventWithPrompt({
+          title: `NeuroGuard: ${area}`,
+          description: text,
+          startDate: start,
+          endDate: end
+        });
+        return; // Success
+      } catch (e) {
+        console.error('Calendar plugin failed, falling back to ICS share:', e);
+      }
+    }
+
+    // Fallback: Create and share ICS file
     const startDate = dateStr.replace(/-/g, '') + 'T090000';
     const endDate = dateStr.replace(/-/g, '') + 'T100000';
 
@@ -133,21 +158,19 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
 
     if (Capacitor.isNativePlatform()) {
       try {
-        const result = await Filesystem.writeFile({
+        const fileResult = await Filesystem.writeFile({
           path: fileName,
           data: icsContent,
           directory: Directory.Cache,
           encoding: Encoding.UTF8
         });
-
         await Share.share({
           title: `NeuroGuard: ${area}`,
-          text: `Afegeix l'activitat al calendari`,
-          url: result.uri,
-          dialogTitle: 'Compartir Calendari'
+          url: fileResult.uri,
+          dialogTitle: 'Desar al Calendari'
         });
       } catch (e) {
-        console.error('Error sharing calendar native:', e);
+        console.error('Error sharing ICS natively:', e);
       }
     } else {
       const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });

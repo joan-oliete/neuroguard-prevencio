@@ -161,6 +161,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 </div>
                 <div className="flex gap-3">
                     <button
+                        onClick={() => handleNavClick('crisis')}
+                        className="p-2 bg-rose-50 text-rose-700 rounded-full hover:bg-rose-100 transition-colors"
+                    >
+                        <Shield size={20} />
+                    </button>
+                    <button
                         onClick={() => setShowCoolingOff(true)}
                         className="p-2 bg-accent-50 text-accent-700 rounded-full hover:bg-accent-100 transition-colors"
                     >

@@ -5,7 +5,7 @@ import { useAuth } from './context/AuthContext';
 import { VirtualTherapistProvider } from './context/VirtualTherapistContext';
 import { MapProvider } from './context/MapContext';
 import { MainLayout } from './components/layout/MainLayout';
-import { doc, onSnapshot, collection, db, updateDoc, addDoc, serverTimestamp } from './services/firebase';
+import { doc, onSnapshot, collection, db, updateDoc, addDoc, serverTimestamp, storage, ref, uploadString, getDownloadURL } from './services/firebase';
 import { DailyStat, CrisisPlan, Memory, RelapseManual } from './types/index';
 
 // --- COMPONENTS ---
@@ -106,15 +106,31 @@ const AppContent = () => {
     }
   };
 
-  const handleAddMemory = async (text: string, imageUrl: string) => {
+  const handleAddMemory = async (text: string, imageUrl?: string) => {
     if (!user) return;
-    await addDoc(collection(db, `users/${user.uid}/memories`), {
-      note: text,
-      imageUrl,
-      date: new Date().toLocaleDateString(),
-      type: 'generated',
-      createdAt: serverTimestamp()
-    });
+    try {
+      const data: any = {
+        note: text,
+        date: new Date().toLocaleDateString(),
+        type: 'generated',
+        createdAt: serverTimestamp()
+      };
+      
+      if (imageUrl) {
+        if (imageUrl.startsWith('data:image')) {
+          // Upload to storage
+          const storageRef = ref(storage, `users/${user.uid}/memories/${Date.now()}.jpg`);
+          await uploadString(storageRef, imageUrl, 'data_url');
+          data.imageUrl = await getDownloadURL(storageRef);
+        } else {
+          data.imageUrl = imageUrl;
+        }
+      }
+
+      await addDoc(collection(db, `users/${user.uid}/memories`), data);
+    } catch (error) {
+      console.error("Error adding memory: ", error);
+    }
   };
 
   const handleDeleteMemory = async (id: number) => {
@@ -178,12 +194,13 @@ const AppContent = () => {
            onClearLink={() => setActiveDiaryLink(undefined)} 
         />;
 
-      case 'therapy-session':
-        return <TherapistSession onBack={() => setCurrentView('dashboard')} />;
-
       default: return <Dashboard user={userProfile} data={stats} onNavigate={setCurrentView} />;
     }
   };
+
+  if (currentView === 'therapy-session') {
+    return <TherapistSession onBack={() => setCurrentView('dashboard')} />;
+  }
 
   return (
     <MainLayout

@@ -215,7 +215,7 @@ const CrisisComponent: React.FC<CrisisComponentProps> = ({ plan, onUpdate, onAdd
                   <p className="text-xl font-bold text-slate-700">
                     {plan.contact ? (
                       <div className="flex items-center gap-3">
-                        <a href={`tel:${plan.contact}`} className="hover:text-brand-600 underline decoration-dotted underline-offset-4 decoration-brand-300 flex items-center gap-2">
+                        <a href={`tel:${plan.contact}`} className="hover:text-brand-600 underline decoration-dotted underline-offset-4 decoration-brand-300 flex items-center gap-2 text-left bg-transparent border-0 p-0 m-0 cursor-pointer text-xl font-bold text-slate-700">
                           {plan.contact}
                         </a>
                         {/* WhatsApp helper */}
@@ -223,7 +223,7 @@ const CrisisComponent: React.FC<CrisisComponentProps> = ({ plan, onUpdate, onAdd
                           href={`https://wa.me/${plan.contact.replace(/\D/g, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-green-100 text-green-600 p-1.5 rounded-full hover:bg-green-200 transition-colors"
+                          className="bg-green-100 text-green-600 p-1.5 rounded-full hover:bg-green-200 transition-colors flex items-center justify-center shrink-0"
                           title="Obrir WhatsApp"
                         >
                           <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>

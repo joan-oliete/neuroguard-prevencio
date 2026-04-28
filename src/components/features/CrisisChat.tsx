@@ -113,8 +113,8 @@ export const CrisisChat: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
 
                 {/* Emergency Banner */}
                 <div className="bg-rose-50 border-b border-rose-100 p-2 flex justify-center gap-4 text-xs font-bold text-rose-700">
-                    <a href="tel:112" className="flex items-center gap-1 hover:underline"><Phone size={12} /> 112 Emergències</a>
-                    <a href="tel:061" className="flex items-center gap-1 hover:underline"><Phone size={12} /> 061 Salut Respon</a>
+                    <button onClick={() => window.open('tel:112', '_system')} className="flex items-center gap-1 hover:underline"><Phone size={12} /> 112 Emergències</button>
+                    <button onClick={() => window.open('tel:061', '_system')} className="flex items-center gap-1 hover:underline"><Phone size={12} /> 061 Salut Respon</button>
                 </div>
 
                 {/* Messages */}

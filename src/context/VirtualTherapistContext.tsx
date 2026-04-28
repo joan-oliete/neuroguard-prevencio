@@ -16,7 +16,7 @@ interface VirtualTherapistContextType {
     // New features
     endSession: () => Promise<SessionSummary | null>;
     suggestedReplies: string[];
-    saveSummaryToDiary: (summary: SessionSummary) => Promise<void>;
+    saveSummaryToProfile: (summary: SessionSummary) => Promise<void>;
 }
 
 const VirtualTherapistContext = createContext<VirtualTherapistContextType | undefined>(undefined);
@@ -42,35 +42,20 @@ export const VirtualTherapistProvider: React.FC<{ children: ReactNode }> = ({ ch
         }
     }, [currentFeeling]);
 
-    // Load History from Firestore
+    // Load History from Firestore (Disabled to start clean session each time)
     useEffect(() => {
-        if (!user) {
+        if (!user || !userProfile) {
             setChatHistory([]);
             return;
         }
 
-        const q = query(
-            collection(db, `users/${user.uid}/therapist_messages`),
-            orderBy('createdAt', 'asc')
-        );
+        // We no longer load past messages into the UI history to keep sessions clean.
+        // We just set a welcome message.
+        setChatHistory([{
+            role: 'model',
+            text: `Hola ${userProfile.name}, soc el teu assistent personal de NeuroGuard. Com et sents avui?`
+        }]);
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const loadedMessages = snapshot.docs.map(doc => {
-                const data = doc.data();
-                return { role: data.role, text: data.text } as ChatMessage;
-            });
-
-            if (loadedMessages.length === 0 && userProfile) {
-                setChatHistory([{
-                    role: 'model',
-                    text: `Hola ${userProfile.name}, soc el teu assistent personal de NeuroGuard. Com et sents avui?`
-                }]);
-            } else {
-                setChatHistory(loadedMessages);
-            }
-        });
-
-        return () => unsubscribe();
     }, [user, userProfile]);
 
     const sendMessage = async (text: string, pageContext: string = 'dashboard') => {
@@ -122,7 +107,7 @@ export const VirtualTherapistProvider: React.FC<{ children: ReactNode }> = ({ ch
             setChatHistory(updatedHistoryWithPlaceholder);
 
             for await (const chunk of stream) {
-                const chunkText = typeof chunk.text === 'function' ? chunk.text() : (chunk.text as string);
+                const chunkText = typeof (chunk as any).text === 'function' ? (chunk as any).text() : ((chunk as any).text as string);
                 fullResponse += chunkText;
 
                 // Live update of the last message
@@ -156,7 +141,10 @@ export const VirtualTherapistProvider: React.FC<{ children: ReactNode }> = ({ ch
     };
 
     const clearHistory = () => {
-        setChatHistory([]);
+        setChatHistory([{
+            role: 'model',
+            text: `Hola ${userProfile ? userProfile.name : ''}, soc el teu assistent personal de NeuroGuard. Com et sents avui?`
+        }]);
     };
 
     const endSession = async (): Promise<SessionSummary | null> => {
@@ -167,22 +155,27 @@ export const VirtualTherapistProvider: React.FC<{ children: ReactNode }> = ({ ch
         return null;
     }
 
-    const saveSummaryToDiary = async (summary: SessionSummary) => {
+    const saveSummaryToProfile = async (summary: SessionSummary) => {
         if (!user) return;
 
-        const text = `📝 *Resum de Sessió amb NeuroGuard AI*\n\n` +
-            `**Canvi Emocional:** ${summary.moodShift}\n` +
-            `**Insights Clau:**\n${summary.keyInsights.map(i => `- ${i}`).join('\n')}\n\n` +
-            `**Acció Recomanada:** ${summary.actionableStep}`;
-
         try {
-            await addDoc(collection(db, `users/${user.uid}/diaryEntries`), {
-                text: text,
+            await addDoc(collection(db, `users/${user.uid}/therapy_sessions`), {
+                moodShift: summary.moodShift,
+                keyInsights: summary.keyInsights,
+                actionableStep: summary.actionableStep,
                 createdAt: serverTimestamp(),
-                category: 'therapy_session'
             });
+
+            // Add an entry to the diary so it shows up there
+            const diaryText = `[Sessió amb NeuroGuard AI]\n\nCanvi Emocional: ${summary.moodShift}\nInsights: ${summary.keyInsights.join(' | ')}\nAcció Recomanada: ${summary.actionableStep}`;
+            await addDoc(collection(db, `users/${user.uid}/diaryEntries`), {
+                text: diaryText,
+                createdAt: serverTimestamp(),
+                linkedActivity: { area: 'NeuroGuard AI Session', date: new Date().toISOString() }
+            });
+
         } catch (error) {
-            console.error("Error saving summary to diary:", error);
+            console.error("Error saving summary to profile or diary:", error);
         }
     };
 
@@ -198,7 +191,7 @@ export const VirtualTherapistProvider: React.FC<{ children: ReactNode }> = ({ ch
             setCurrentFeeling,
             endSession,
             suggestedReplies,
-            saveSummaryToDiary
+            saveSummaryToProfile
         }}>
             {children}
         </VirtualTherapistContext.Provider>

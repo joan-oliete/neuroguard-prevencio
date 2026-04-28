@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, createInitialUser, auth } from '../../services/firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, createInitialUser, auth, sendPasswordResetEmail } from '../../services/firebase';
 import { ArrowRight, X, Sparkles, Brain, Shield, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import PrivacyPolicy from './legal/PrivacyPolicy';
 import TermsOfService from './legal/TermsOfService';
@@ -303,6 +303,30 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
+  const [resetMessage, setResetMessage] = useState('');
+
+  const handleResetPassword = async () => {
+    let targetEmail = email;
+    if (!targetEmail) {
+      setError("Si us plau, introdueix el teu correu electrònic a dalt abans de sol·licitar la recuperació.");
+      return;
+    }
+    setError('');
+    setResetMessage('');
+    setLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, targetEmail);
+      setResetMessage("S'ha enviat un correu de recuperació a " + targetEmail + ". Revisa la teva safata d'entrada.");
+    } catch (err: any) {
+      console.error(err);
+      let msg = "Error al enviar l'email de recuperació";
+      if (err.code === 'auth/user-not-found') msg = "Usuari no trobat amb aquest correu";
+      if (err.code === 'auth/invalid-email') msg = "Correu invàlid";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -330,6 +354,11 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setError('');
+    setResetMessage('');
+  }, [view]);
 
   return (
     <div className="min-h-screen pt-32 pb-12 px-6 flex flex-col items-center justify-center bg-[#F5F7FA]">
@@ -395,6 +424,28 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
               className="text-white bg-rose-500 p-4 rounded-xl text-xs font-bold shadow-lg shadow-rose-200"
             >
               ⚠️ {error}
+            </motion.div>
+          )}
+
+          {view === 'login' && (
+            <div className="flex justify-end mt-1">
+              <button
+                type="button"
+                onClick={handleResetPassword}
+                className="text-xs text-teal-600 hover:text-teal-800 font-bold underline transition-colors"
+              >
+                Has oblidat la contrasenya?
+              </button>
+            </div>
+          )}
+
+          {resetMessage && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="text-teal-800 bg-teal-100 p-4 rounded-xl text-xs font-bold shadow-lg shadow-teal-50 mt-4"
+            >
+              ✉️ {resetMessage}
             </motion.div>
           )}
 

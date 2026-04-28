@@ -11,7 +11,7 @@ interface rsProps {
 }
 
 export const TherapistSession: React.FC<rsProps> = ({ onBack }) => {
-    const { chatHistory, sendMessage, isTyping, setSessionActive, endSession, suggestedReplies, saveSummaryToDiary } = useVirtualTherapist();
+    const { chatHistory, sendMessage, isTyping, setSessionActive, endSession, suggestedReplies, saveSummaryToProfile, clearHistory } = useVirtualTherapist();
     const [input, setInput] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [summary, setSummary] = useState<SessionSummary | null>(null);
@@ -31,7 +31,7 @@ export const TherapistSession: React.FC<rsProps> = ({ onBack }) => {
 
     const handleSaveAndExit = async () => {
         if (summary) {
-            await saveSummaryToDiary(summary); // Save to diary!
+            await saveSummaryToProfile(summary); // Save to profile!
         }
         stop(); // Stop speaking
         setSummary(null);
@@ -73,9 +73,10 @@ export const TherapistSession: React.FC<rsProps> = ({ onBack }) => {
     }, [isListening, input, stop]);
 
 
-    // Set immersive mode active
+    // Set immersive mode active and start fresh session
     useEffect(() => {
         setSessionActive(true);
+        clearHistory(); // Start fresh context
         return () => {
             setSessionActive(false);
             stop(); // Cleanup voice
@@ -96,7 +97,50 @@ export const TherapistSession: React.FC<rsProps> = ({ onBack }) => {
         await sendMessage(text, "therapy-session");
     };
 
+    if (summary) {
+        return (
+            <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center p-4 overflow-y-auto">
+                <div className="w-full max-w-md space-y-6 animate-fadeIn mt-12 mb-8">
+                    <div className="flex justify-center mb-6">
+                        <div className="w-16 h-16 rounded-full bg-brand-500/20 flex items-center justify-center text-brand-400">
+                            <CheckCircle size={32} />
+                        </div>
+                    </div>
 
+                    <h2 className="text-2xl font-bold text-center mb-2">Resum de la Sessió</h2>
+                    <p className="text-slate-400 text-center text-sm mb-6">Aquí tens els punts clau del teu progrés avui.</p>
+
+                    <div className="space-y-4 mb-8">
+                        <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
+                            <span className="text-xs text-slate-500 uppercase font-bold tracking-wider">Canvi Emocional</span>
+                            <p className="text-white font-medium mt-1">{summary.moodShift}</p>
+                        </div>
+
+                        <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
+                            <span className="text-xs text-slate-500 uppercase font-bold tracking-wider">Insights Clau</span>
+                            <ul className="list-disc list-inside mt-2 text-slate-300 text-sm space-y-1">
+                                {summary.keyInsights.map((insight, i) => (
+                                    <li key={i}>{insight}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
+                            <span className="text-xs text-brand-400 uppercase font-bold tracking-wider">Acció Recomanada</span>
+                            <p className="text-white font-medium mt-1">{summary.actionableStep}</p>
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={handleSaveAndExit}
+                        className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-brand-900/20"
+                    >
+                        Guardar i Sortir
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center relative overflow-hidden">
@@ -243,51 +287,6 @@ export const TherapistSession: React.FC<rsProps> = ({ onBack }) => {
                 </div>
             </div>
 
-            {/* Summary Modal */}
-            {summary && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md animate-fadeIn">
-                    <div className="bg-slate-800 border border-slate-700 rounded-3xl max-w-md w-full p-8 shadow-2xl relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-500 to-teal-400"></div>
-
-                        <div className="flex justify-center mb-6">
-                            <div className="w-16 h-16 rounded-full bg-brand-500/20 flex items-center justify-center text-brand-400">
-                                <CheckCircle size={32} />
-                            </div>
-                        </div>
-
-                        <h2 className="text-2xl font-bold text-center mb-2">Resum de la Sessió</h2>
-                        <p className="text-slate-400 text-center text-sm mb-6">Aquí tens els punts clau del teu progrés avui.</p>
-
-                        <div className="space-y-4 mb-8">
-                            <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
-                                <span className="text-xs text-slate-500 uppercase font-bold tracking-wider">Canvi Emocional</span>
-                                <p className="text-white font-medium mt-1">{summary.moodShift}</p>
-                            </div>
-
-                            <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
-                                <span className="text-xs text-slate-500 uppercase font-bold tracking-wider">Insights Clau</span>
-                                <ul className="list-disc list-inside mt-2 text-slate-300 text-sm space-y-1">
-                                    {summary.keyInsights.map((insight, i) => (
-                                        <li key={i}>{insight}</li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
-                                <span className="text-xs text-brand-400 uppercase font-bold tracking-wider">Acció Recomanada</span>
-                                <p className="text-white font-medium mt-1">{summary.actionableStep}</p>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={handleSaveAndExit}
-                            className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-brand-900/20"
-                        >
-                            Guardar i Sortir
-                        </button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

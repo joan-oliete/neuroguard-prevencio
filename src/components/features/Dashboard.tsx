@@ -63,6 +63,28 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
         </div>
       </div>
 
+      {/* EMERGENCY / SOS SECTION */}
+      <div className="bg-rose-50 border border-rose-200 rounded-3xl p-6 shadow-sm">
+        <h3 className="text-xl font-bold text-rose-800 mb-4 flex items-center gap-2">
+          <span className="text-2xl">🆘</span> Accés Ràpid d'Emergència
+        </h3>
+        <div className="flex flex-col md:flex-row gap-4">
+          <a 
+            href="tel:112"
+            className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black py-4 px-6 rounded-2xl shadow-lg shadow-red-200 flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] active:scale-95 text-lg"
+          >
+            <Shield size={24} /> TRUCA AL 112 (Emergències)
+          </a>
+          
+          <button 
+            onClick={() => onNavigate('crisis')}
+            className="flex-1 bg-white hover:bg-rose-50 border-2 border-rose-200 text-rose-700 font-bold py-4 px-6 rounded-2xl shadow-sm flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] active:scale-95 text-lg"
+          >
+            <HeartPulse size={24} /> Obre el Pla de Crisis
+          </button>
+        </div>
+      </div>
+
       {/* 2. THERAPEUTIC TOOLS GRID */}
       <div>
          <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">

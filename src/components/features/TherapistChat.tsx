@@ -7,20 +7,25 @@ import { updateDoc, doc, db } from '../../services/firebase';
 
 export const TherapistChat: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
     const { user, userProfile } = useAuth();
-    const { chatHistory, isTyping, sendMessage } = useVirtualTherapist();
+    const { chatHistory, isTyping, sendMessage, clearHistory } = useVirtualTherapist();
     const { addLocation } = useMapData();
     const [input, setInput] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [lastProcessedLength, setLastProcessedLength] = useState(0);
 
-    // Auto-scroll
+    // Auto-scroll & Reset
     useEffect(() => {
         if (isOpen) {
             messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
         }
     }, [chatHistory, isOpen]);
 
-    // Action Parser Effect
+    // Clear history on open if it has more than just the welcome message
+    useEffect(() => {
+        if (isOpen && chatHistory.length > 1) {
+            clearHistory();
+        }
+    }, [isOpen]);
     useEffect(() => {
         if (chatHistory.length === 0) return;
 

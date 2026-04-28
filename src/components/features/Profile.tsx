@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserProfile, RelapseManual } from '../../types';
 import { updateDoc, doc, db, archiveManual, collection, query, orderBy, getDocs, deleteDoc, messaging, getToken } from '../../services/firebase';
-import { User, Download, Archive, Trash2, Calendar, Bell, Eye, Printer, Languages } from 'lucide-react';
+import { User, Download, Archive, Trash2, Calendar, Bell, Eye, Printer, Languages, Sparkles } from 'lucide-react';
 import { useTranslationAI } from '../../hooks/useTranslationAI';
-import { AssetManager } from '../admin/AssetManager';
 import { NotificationService } from '../../services/notificationService';
 
 interface ProfileProps {
@@ -13,7 +12,6 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ user }) => {
   const { t, i18n } = useTranslation();
-  const [showAssetManager, setShowAssetManager] = useState(false);
   const [formData, setFormData] = useState({
     name: user.name || '',
     surname: user.surname || '',
@@ -22,6 +20,7 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
     photoUrl: user.photoUrl || ''
   });
   const [manualHistory, setManualHistory] = useState<any[]>([]);
+  const [therapySessions, setTherapySessions] = useState<any[]>([]);
   const [daysSober, setDaysSober] = useState(0);
 
   useEffect(() => {
@@ -34,6 +33,10 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
     const snapshot = await getDocs(q);
     const manuals = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
     setManualHistory(manuals);
+
+    const q2 = query(collection(db, `users/${user.id}/therapy_sessions`), orderBy("createdAt", "desc"));
+    const snap2 = await getDocs(q2);
+    setTherapySessions(snap2.docs.map(d => ({ id: d.id, ...d.data() })));
   };
 
   const calculateDays = () => {
@@ -276,22 +279,6 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <h3 className="font-bold text-lg mb-4 flex items-center gap-3 text-slate-800">
-              <span className="p-2 bg-slate-100 rounded-lg text-slate-500"><User className="w-5 h-5" /></span> Opcions de Desenvolupador
-            </h3>
-            <div>
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 block">Clau API d'Intel·ligència Artificial (Opcional)</label>
-              <input 
-                 type="password" 
-                 placeholder="Enganxa la teva API Key de Gemini aquí" 
-                 defaultValue={localStorage.getItem('neuro_ai_key') || ''} 
-                 onChange={e => localStorage.setItem('neuro_ai_key', e.target.value)} 
-                 className="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-slate-500 outline-none transition-all font-medium text-slate-700 text-sm" 
-              />
-              <p className="text-xs text-slate-400 mt-2">Només necessari si la compilació automàtica falla.</p>
-            </div>
-          </div>
         </div>
 
         {/* Manual Actions & History */}
@@ -342,49 +329,39 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
               ))}
             </div>
           </div>
-          <TranslationDemo />
+
+          {/* Therapy Sessions History */}
+          <div className="card">
+            <h3 className="font-bold text-xl mb-6 flex items-center gap-3 text-slate-800 border-b border-slate-100 pb-4">
+              <span className="p-2 bg-brand-50 rounded-lg text-brand-600"><Sparkles className="w-5 h-5" /></span> Sessions de Teràpia AI
+            </h3>
+            <div className="space-y-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+              {therapySessions.length === 0 && <div className="text-center py-8 text-slate-400 italic bg-slate-50 rounded-xl border border-dashed border-slate-200">No hi ha sessions enregistrades.</div>}
+              {therapySessions.map((session) => (
+                <div key={session.id} className="p-4 rounded-xl border border-slate-200 bg-white">
+                  <div className="flex justify-between items-center mb-3">
+                    <p className="font-bold text-sm text-slate-700">
+                      {session.createdAt?.toDate ? session.createdAt.toDate().toLocaleDateString() : 'Data desconeguda'}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    {session.moodShift && (
+                      <p className="text-sm"><strong className="text-slate-600">Canvi Emocional:</strong> {session.moodShift}</p>
+                    )}
+                    {session.actionableStep && (
+                      <p className="text-sm"><strong className="text-brand-600">Acció:</strong> {session.actionableStep}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {showAssetManager && <AssetManager onClose={() => setShowAssetManager(false)} />}
     </div >
   );
 };
 
-const TranslationDemo = () => {
-  const { translate, translatedText, loading } = useTranslationAI();
-  const [text, setText] = useState("Hola, com estàs? Això és una prova de traducció.");
-
-  return (
-    <div className="mt-8 pt-6 border-t border-slate-100">
-      <h3 className="font-bold text-lg mb-4 flex items-center gap-3 text-slate-800">
-        <span className="p-2 bg-indigo-50 rounded-lg text-indigo-500"><Languages className="w-5 h-5" /></span> Traductor IA
-      </h3>
-      <div className="space-y-3">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          className="w-full p-3 border border-slate-200 rounded-xl text-sm"
-          rows={2}
-        />
-        <button
-          onClick={() => translate(text, 'en')}
-          disabled={loading}
-          className="w-full bg-indigo-600 text-white py-2 rounded-xl font-bold text-sm hover:bg-indigo-700 disabled:opacity-50"
-        >
-          {loading ? 'Traduint...' : 'Traduir a Anglès (Demo)'}
-        </button>
-        {translatedText && (
-          <div className="p-3 bg-indigo-50 text-indigo-800 rounded-xl text-sm font-medium animate-fadeIn">
-            {translatedText}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
 export default Profile;
-
-{/* @ts-ignore */ }
-const AdminModal = ({ show, onClose }) => show ? <div className="fixed inset-0 z-[100]"><AssetManager onClose={onClose} /></div> : null;

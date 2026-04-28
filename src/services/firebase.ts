@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   User as FirebaseUser
 } from "firebase/auth";
 import {
@@ -36,7 +37,7 @@ import {
   onMessage,
   Messaging
 } from "firebase/messaging";
-import { getStorage } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, uploadString } from "firebase/storage";
 import { getVertexAI } from "firebase/vertexai";
 import { RelapseManual, UserProfile } from "../types";
 
@@ -144,6 +145,7 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
 export {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
   doc,
@@ -164,5 +166,9 @@ export {
   onMessage,
   increment,
   limit,
-  where
+  where,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  uploadString
 };
