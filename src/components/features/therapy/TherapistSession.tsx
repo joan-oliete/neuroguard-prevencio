@@ -158,7 +158,7 @@ export const TherapistSession: React.FC<rsProps> = ({ onBack }) => {
                         disabled={isEnding}
                         className="p-3 bg-white/10 hover:bg-slate-500/20 hover:text-slate-200 rounded-full transition-all flex items-center gap-2 text-sm font-medium backdrop-blur-md border border-white/10 shadow-lg"
                     >
-                        <ArrowLeft size={18} /> Sortir
+                        <X size={18} /> Tancar
                     </button>
                     <button
                         onClick={handleEndSession}

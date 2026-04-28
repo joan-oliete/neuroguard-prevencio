@@ -482,11 +482,9 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 animate-fadeIn">
-      <div className="bg-white w-full max-w-5xl h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden">
-        
-        {/* Header */}
-        <div className="bg-slate-50 border-b p-4 flex justify-between items-center shrink-0">
+    <div className="fixed inset-0 z-50 flex flex-col bg-slate-50 overflow-hidden animate-fadeIn">
+      {/* Header */}
+      <div className="bg-white border-b border-slate-200 p-4 flex justify-between items-center shrink-0 shadow-sm">
           <div className="flex items-center gap-4">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl bg-gradient-to-br ${course.imageColor} text-white`}>
                 {course.icon}
@@ -711,7 +709,6 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
                 </div>
             </div>
         </div>
-      </div>
     </div>
   );
 };
@@ -771,6 +768,18 @@ const CorporateLearningHub: React.FC<CorporateLearningHubProps> = ({ user }) => 
       if (filter === 'completed') return c.completed;
       return true;
   });
+
+  if (activeCourse) {
+      return (
+          <CoursePlayer 
+              course={activeCourse} 
+              onClose={() => setActiveCourse(null)} 
+              onComplete={handleCompleteCourse}
+              userName={user.name}
+              onUpdateVideo={handleUpdateVideo}
+          />
+      );
+  }
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 animate-fadeIn max-w-7xl mx-auto">
@@ -944,17 +953,6 @@ const CorporateLearningHub: React.FC<CorporateLearningHubProps> = ({ user }) => 
         </div>
 
       </div>
-
-      {/* MODAL PLAYER */}
-      {activeCourse && (
-        <CoursePlayer 
-            course={activeCourse} 
-            onClose={() => setActiveCourse(null)} 
-            onComplete={handleCompleteCourse} 
-            onUpdateVideo={handleUpdateVideo}
-            userName={user.name || "Usuari"}
-        />
-      )}
 
       {/* CONFETTI OVERLAY */}
       {showConfetti && (

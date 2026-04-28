@@ -73,12 +73,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 }) => {
     const { logout } = useAuth();
     const { t } = useTranslation();
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isChatOpen, setIsChatOpen] = useState(false);
 
     const handleNavClick = (id: string) => {
         onViewChange(id);
-        setMobileMenuOpen(false);
     };
 
     // Navigation Groups
@@ -95,6 +93,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         { id: 'dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
         { id: 'clinic', label: 'Clínica', icon: Shield },
         { id: 'library', label: 'Biblio', icon: BookOpen },
+        { id: 'profile', label: 'Perfil', icon: User },
     ];
 
     return (
@@ -172,10 +171,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     >
                         <Clock size={20} />
                     </button>
-                    {/* More Menu (Only for unlisted items if needed, for now hidden as main nav is bottom) */}
-                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-text-secondary hover:bg-surface-muted rounded-full transition-colors">
-                        {mobileMenuOpen ? <X /> : <Menu />}
-                    </button>
                 </div>
             </div>
 
@@ -201,45 +196,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     )
                 })}
             </div>
-
-            {/* Mobile Menu Overlay (Secondary Items) */}
-            <AnimatePresence>
-                {mobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, x: '100%' }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: '100%' }}
-                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="md:hidden fixed inset-0 bg-surface-main z-40 pt-20 px-4 pb-24 overflow-y-auto"
-                    >
-                        <nav className="space-y-4">
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-2">Accés Directe</p>
-                            <div className="grid grid-cols-2 gap-3">
-                                <button onClick={() => handleNavClick('therapy-session')} className="p-4 bg-brand-50 border border-brand-100 rounded-2xl flex flex-col items-center gap-2 shadow-sm">
-                                    <Sparkles className="text-brand-600" />
-                                    <span className="font-bold text-brand-700">Terapeuta</span>
-                                </button>
-                                <button onClick={() => handleNavClick('crisis')} className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex flex-col items-center gap-2 shadow-sm">
-                                    <Shield className="text-rose-600" />
-                                    <span className="font-bold text-rose-700">Emergència</span>
-                                </button>
-                            </div>
-
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-2 mt-6">Compte</p>
-                            <button onClick={() => handleNavClick('profile')} className="w-full flex items-center justify-start gap-3 p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
-                                <UserIcon className="text-slate-600" />
-                                <span className="font-bold text-slate-700">El Meu Perfil</span>
-                            </button>
-
-                            <div className="pt-6">
-                                <button onClick={() => logout()} className="w-full flex items-center justify-center gap-3 px-4 py-4 rounded-xl text-red-600 bg-red-50 font-bold shadow-sm">
-                                    <LogOut size={20} /> Tancar Sessió
-                                </button>
-                            </div>
-                        </nav>
-                    </motion.div>
-                )}
-            </AnimatePresence>
 
             {/* Main Content Wrapper */}
             <main className={`flex-1 min-h-screen transition-all duration-300 md:ml-72 pt-20 md:pt-8 px-4 md:px-8 pb-32 md:pb-24 max-w-[1600px] mx-auto`}>

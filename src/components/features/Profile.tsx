@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserProfile, RelapseManual } from '../../types';
-import { updateDoc, doc, db, archiveManual, collection, query, orderBy, getDocs, deleteDoc, messaging, getToken } from '../../services/firebase';
-import { User, Download, Archive, Trash2, Calendar, Bell, Eye, Printer, Languages, Sparkles } from 'lucide-react';
+import { updateDoc, doc, db, archiveManual, collection, query, orderBy, getDocs, deleteDoc, getDoc } from '../../services/firebase';
+import { User, Download, Archive, Trash2, Calendar, Bell, Eye, Printer, Languages, Sparkles, Shield, Clock, LogOut, PauseCircle } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import { useTranslationAI } from '../../hooks/useTranslationAI';
 import { NotificationService } from '../../services/notificationService';
-
+import html2pdf from 'html2pdf.js';
+import { Share } from '@capacitor/share';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Capacitor } from '@capacitor/core';
 interface ProfileProps {
   user: UserProfile;
+  onNavigate?: (view: string) => void;
+  onShowCoolingOff?: () => void;
 }
 
-const Profile: React.FC<ProfileProps> = ({ user }) => {
+const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff }) => {
   const { t, i18n } = useTranslation();
+  const { logout } = useAuth();
   const [formData, setFormData] = useState({
     name: user.name || '',
     surname: user.surname || '',
@@ -103,8 +110,62 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
     }
   };
 
-  const handlePreviewManual = (manual: any) => {
-    setPreviewManual(manual);
+  const handlePreviewManual = async (manual: any) => {
+    let finalManual = { ...manual };
+    if (!finalManual.crisisPlan) {
+      try {
+        const snap = await getDoc(doc(db, `users/${user.id}/crisisPlan/current`));
+        if (snap.exists()) {
+          finalManual.crisisPlan = snap.data();
+        }
+      } catch (e) {
+        console.error("Error loading crisis plan", e);
+      }
+    }
+    setPreviewManual(finalManual);
+  };
+
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
+  const handleExportPDF = async () => {
+    setIsGeneratingPdf(true);
+    try {
+      const element = document.getElementById('manual-preview-content');
+      if (!element) return;
+      
+      const opt = {
+        margin:       10,
+        filename:     `manual_prevencio_${formData.name}_${new Date().toISOString().split('T')[0]}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      if (Capacitor.isNativePlatform()) {
+        const pdfBase64 = await html2pdf().set(opt).from(element).outputPdf('datauristring');
+        const base64Data = pdfBase64.split(',')[1];
+        
+        const savedFile = await Filesystem.writeFile({
+          path: opt.filename,
+          data: base64Data,
+          directory: Directory.Cache
+        });
+        
+        await Share.share({
+          title: 'Manual de Prevenció',
+          text: 'Aquí tens el meu manual de prevenció.',
+          url: savedFile.uri,
+          dialogTitle: 'Compartir o Guardar PDF'
+        });
+      } else {
+        html2pdf().set(opt).from(element).save();
+      }
+    } catch (e) {
+      console.error("Error generating PDF", e);
+      alert("Error generant el PDF");
+    } finally {
+      setIsGeneratingPdf(false);
+    }
   };
 
   return (
@@ -178,6 +239,33 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
             <button onClick={requestNotificationPermission} className="w-full border-2 border-slate-100 text-slate-600 py-3 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-200 transition-all flex items-center justify-center gap-2">
               {t('profile.allow_push')}
             </button>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-slate-100">
+            <h3 className="font-bold text-lg mb-4 flex items-center gap-3 text-slate-800">
+              <span className="p-2 bg-indigo-50 rounded-lg text-indigo-500"><Sparkles className="w-5 h-5" /></span> Accions Ràpides
+            </h3>
+            <div className="space-y-3">
+              {onNavigate && (
+                <button onClick={() => onNavigate('crisis')} className="w-full flex items-center justify-between p-4 bg-rose-50 border border-rose-100 rounded-xl hover:bg-rose-100 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <Shield className="text-rose-600 w-5 h-5" />
+                    <span className="font-bold text-rose-700">SOS Urge Surfing</span>
+                  </div>
+                </button>
+              )}
+              {onShowCoolingOff && (
+                <button onClick={() => onShowCoolingOff()} className="w-full flex items-center justify-between p-4 bg-emerald-50 border border-emerald-100 rounded-xl hover:bg-emerald-100 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <PauseCircle className="text-emerald-600 w-5 h-5" />
+                    <span className="font-bold text-emerald-700">Temps de refredament</span>
+                  </div>
+                </button>
+              )}
+              <button onClick={() => logout()} className="w-full flex items-center justify-center gap-2 p-4 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors mt-2">
+                <LogOut className="w-5 h-5" /> Tancar Sessió
+              </button>
+            </div>
           </div>
 
           <div className="mt-8 pt-6 border-t border-slate-100">
@@ -284,14 +372,15 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
             <div className="print:hidden text-center mb-8 pb-6 border-b">
               <h2 className="text-2xl font-bold mb-2 text-slate-800">Visualització del Manual</h2>
               <button 
-                onClick={() => window.print()} 
-                className="bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-6 rounded-xl inline-flex items-center gap-2 transition-colors"
+                onClick={handleExportPDF} 
+                disabled={isGeneratingPdf}
+                className="bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-6 rounded-xl inline-flex items-center gap-2 transition-colors disabled:opacity-50"
               >
-                <Printer size={18} /> Imprimir / Guardar PDF
+                <Printer size={18} /> {isGeneratingPdf ? 'Generant PDF...' : 'Imprimir / Guardar PDF'}
               </button>
             </div>
             
-            <div className="prose prose-slate max-w-none">
+            <div id="manual-preview-content" className="prose prose-slate max-w-none p-6 bg-white">
               <h1 className="text-3xl text-brand-600 border-b-2 border-brand-500 pb-2 mb-6">Manual de Prevenció NeuroGuard</h1>
               
               <div className="text-slate-500 mb-8 pb-4 border-b">

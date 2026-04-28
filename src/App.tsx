@@ -162,7 +162,11 @@ const AppContent = () => {
         />;
 
       case 'profile':
-        return <Profile user={userProfile} />;
+        return <Profile 
+           user={userProfile} 
+           onNavigate={setCurrentView}
+           onShowCoolingOff={() => setShowCoolingOff(true)}
+        />;
 
       case 'crisis':
         return <CrisisComponent
