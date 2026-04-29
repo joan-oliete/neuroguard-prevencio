@@ -32,7 +32,9 @@ jobs:
           java-version: "21"
 
       - name: Sync Capacitor
-        run: npx cap sync android
+        run: |
+          rm -rf dist/videos
+          npx cap sync android
 
       - name: Ensure Executable Permission for Gradlew
         run: chmod +x android/gradlew

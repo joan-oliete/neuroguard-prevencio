@@ -496,7 +496,7 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
                         {/* Video Player */}
                         <div className="aspect-video bg-black rounded-2xl mb-8 relative group overflow-hidden shadow-lg border border-slate-200">
                             <video 
-                                src={`/videos/${course.id}_m${currentModule.id}.mp4`} 
+                                src={`https://neuroguard-6fff8.web.app/videos/${course.id}_m${currentModule.id}.mp4`}
                                 controls 
                                 className="w-full h-full object-cover bg-slate-900" 
                                 poster={currentModule.thumbnail}
