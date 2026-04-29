@@ -5,7 +5,6 @@ import {
 } from 'recharts';
 import { UserProfile, DailyStat } from '../../types';
 import { Map, Shield, Calendar, Image as ImageIcon, Sparkles, HeartPulse, Brain, Sunrise, Footprints, BookOpen } from 'lucide-react';
-import { usePedometer } from '../../hooks/usePedometer';
 
 interface DashboardProps {
   user: UserProfile;
@@ -16,7 +15,6 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
   const { t } = useTranslation();
   const [greeting, setGreeting] = useState('');
-  const { steps, isActive } = usePedometer();
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -49,15 +47,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
               <p className="text-brand-100 text-sm md:text-base max-w-md">
                 Aquest és el teu espai segur. Tria una eina per continuar cuidant el teu benestar avui.
               </p>
-            </div>
-          </div>
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex items-center gap-4 border border-white/20 self-start md:self-center">
-            <div className="bg-gradient-to-br from-emerald-400 to-teal-500 w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
-                <Footprints className="text-white" size={24} />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-slate-300 uppercase tracking-wide">Passos d'avui</p>
-              <p className="text-3xl font-black">{steps}</p>
             </div>
           </div>
         </div>

@@ -133,7 +133,7 @@ const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff })
       const element = document.getElementById('manual-preview-content');
       if (!element) return;
       
-      const opt = {
+      const opt: any = {
         margin:       10,
         filename:     `manual_prevencio_${formData.name}_${new Date().toISOString().split('T')[0]}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },

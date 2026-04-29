@@ -5,7 +5,7 @@ import { useAuth } from './context/AuthContext';
 import { VirtualTherapistProvider } from './context/VirtualTherapistContext';
 import { MapProvider } from './context/MapContext';
 import { MainLayout } from './components/layout/MainLayout';
-import { doc, onSnapshot, collection, db, updateDoc, addDoc, serverTimestamp, storage, ref, uploadString, getDownloadURL } from './services/firebase';
+import { doc, onSnapshot, collection, db, updateDoc, addDoc, deleteDoc, serverTimestamp, storage, ref, uploadString, getDownloadURL } from './services/firebase';
 import { DailyStat, CrisisPlan, Memory, RelapseManual } from './types/index';
 
 // --- COMPONENTS ---
@@ -22,6 +22,8 @@ import SafetyMap from './components/features/map/SafetyMap';
 import Planner from './components/features/Planner';
 import { TherapistSession } from './components/features/therapy/TherapistSession';
 import Diary from './components/features/Diary';
+import PreventionSection from './components/features/PreventionSection';
+import SetupWizard from './components/features/SetupWizard';
 
 // --- LOADING SPINNER ---
 const LoadingSpinner = ({ fullScreen = false, text }: { fullScreen?: boolean; text?: string }) => (
@@ -133,12 +135,21 @@ const AppContent = () => {
     }
   };
 
-  const handleDeleteMemory = async (id: number) => {
-    console.log("Delete memory logic todo for ID:", id);
+  const handleDeleteMemory = async (id: number | string) => {
+    if (!user) return;
+    try {
+      await deleteDoc(doc(db, `users/${user.uid}/memories`, id.toString()));
+    } catch (error) {
+      console.error("Error deleting memory: ", error);
+    }
   };
 
   const renderContent = () => {
     if (!userProfile || !user) return <LoadingSpinner text="Carregant perfil..." />;
+
+    if (!userProfile.hasCompletedTutorial) {
+      return <SetupWizard userProfile={userProfile} onComplete={() => setCurrentView('dashboard')} />;
+    }
 
     switch (currentView) {
       case 'dashboard':
@@ -174,6 +185,19 @@ const AppContent = () => {
           onUpdate={handleUpdatePlan}
           onNavigate={setCurrentView}
         />;
+
+      case 'prevention':
+        return (
+            <div className="max-w-4xl mx-auto p-4 md:p-8">
+               <div className="flex items-center gap-4 mb-6">
+                  <button onClick={() => setCurrentView('dashboard')} className="p-2 bg-white rounded-full shadow-sm hover:bg-slate-50 transition-colors">
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                  </button>
+                  <h2 className="text-2xl font-bold text-slate-800">Kit d'Emergència</h2>
+               </div>
+               <PreventionSection onNavigate={setCurrentView} />
+            </div>
+        );
 
       case 'theory': return <Theory />;
       case 'safety-map': return <SafetyMap onBack={() => setCurrentView('dashboard')} />;

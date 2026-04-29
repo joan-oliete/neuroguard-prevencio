@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, BrainCircuit, Heart, CloudLightning, PhoneCall, CheckCircle, Wind, Zap, Smile } from 'lucide-react';
 
-const PreventionSection: React.FC = () => {
+interface PreventionProps {
+  onNavigate?: (view: string) => void;
+}
+
+const PreventionSection: React.FC<PreventionProps> = ({ onNavigate }) => {
   const [haltCheck, setHaltCheck] = useState<string[]>([]);
   const [dailyChecks, setDailyChecks] = useState<number[]>([]);
   const [breathingActive, setBreathingActive] = useState(false);
@@ -152,7 +156,7 @@ const PreventionSection: React.FC = () => {
             <button className="flex-1 bg-white border border-rose-200 text-rose-600 py-2 rounded-xl text-sm font-bold hover:bg-rose-100 transition-colors flex items-center justify-center gap-2">
               <PhoneCall className="w-4 h-4"/> Trucar Suport
             </button>
-            <button className="flex-1 bg-white border border-rose-200 text-rose-600 py-2 rounded-xl text-sm font-bold hover:bg-rose-100 transition-colors flex items-center justify-center gap-2">
+            <button onClick={() => onNavigate && onNavigate('crisis')} className="flex-1 bg-white border border-rose-200 text-rose-600 py-2 rounded-xl text-sm font-bold hover:bg-rose-100 transition-colors flex items-center justify-center gap-2">
               <CloudLightning className="w-4 h-4"/> Pla de Crisi
             </button>
           </div>

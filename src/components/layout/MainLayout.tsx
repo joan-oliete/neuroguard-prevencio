@@ -15,7 +15,8 @@ import {
     X,
     Sparkles,
     MessageCircle,
-    User as UserIcon
+    User as UserIcon,
+    LifeBuoy
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import CoolingOffTimer from '../features/CoolingOffTimer';
@@ -142,6 +143,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     >
                         <PauseCircle size={20} /> <span className='tracking-tight'>{t('nav.cooling_off')}</span>
                     </button>
+                    <button
+                        onClick={() => handleNavClick('prevention')}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-bold shadow-md shadow-indigo-200 hover:shadow-lg hover:scale-[1.02] transition-all duration-200 active:scale-95"
+                    >
+                        <LifeBuoy size={20} /> <span className='tracking-tight'>Kit d'Emergència</span>
+                    </button>
                     <button onClick={() => logout()} className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-text-muted hover:bg-white hover:text-red-500 hover:shadow-sm transition-all text-sm font-medium">
                         <LogOut size={16} /> {t('nav.logout')}
                     </button>
@@ -164,6 +171,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                         className="p-2 bg-rose-50 text-rose-700 rounded-full hover:bg-rose-100 transition-colors"
                     >
                         <Shield size={20} />
+                    </button>
+                    <button
+                        onClick={() => handleNavClick('prevention')}
+                        className="p-2 bg-indigo-50 text-indigo-700 rounded-full hover:bg-indigo-100 transition-colors"
+                    >
+                        <LifeBuoy size={20} />
                     </button>
                     <button
                         onClick={() => setShowCoolingOff(true)}
