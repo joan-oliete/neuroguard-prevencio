@@ -48,11 +48,17 @@ jobs:
           echo "keyAlias=release" >> keystore.properties
           echo "keyPassword=neuroguard2026" >> keystore.properties
 
-      - name: Build Android App Bundle (Release)
-        run: cd android && ./gradlew bundleRelease
+      - name: Build Android App Bundle and APK (Release)
+        run: cd android && ./gradlew bundleRelease assembleRelease
 
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
           name: NeuroGuard-App-Release-AAB
           path: android/app/build/outputs/bundle/release/app-release.aab
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeuroGuard-App-Release-APK
+          path: android/app/build/outputs/apk/release/app-release.apk

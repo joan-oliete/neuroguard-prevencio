@@ -428,9 +428,6 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
   const [showCert, setShowCert] = useState(false);
-  
-  // Video Generation State
-  const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
 
   const currentModule = course.modules[currentModuleIdx];
   const isLastModule = currentModuleIdx === course.modules.length - 1;
@@ -459,22 +456,6 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
   const handleFinishQuiz = () => {
     onComplete();
     setShowCert(true);
-  };
-
-  const handleGenerateVideo = async () => {
-      setIsGeneratingVideo(true);
-      try {
-          const videoUrl = await generateEducationalVideo(currentModule.title, currentModule.content);
-          if (videoUrl) {
-              onUpdateVideo(course.id, currentModule.id, videoUrl);
-          } else {
-              alert("No s'ha pogut generar el vídeo. Assegura't de tenir una clau API vàlida seleccionada.");
-          }
-      } catch (error) {
-          console.error("Video gen error", error);
-      } finally {
-          setIsGeneratingVideo(false);
-      }
   };
 
   if (showCert) {
@@ -514,39 +495,12 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
                     <div className="max-w-3xl mx-auto animate-fadeIn">
                         {/* Video Player */}
                         <div className="aspect-video bg-black rounded-2xl mb-8 relative group overflow-hidden shadow-lg border border-slate-200">
-                            {currentModule.videoUrl ? (
-                                <video 
-                                    src={currentModule.videoUrl} 
-                                    controls 
-                                    className="w-full h-full object-cover" 
-                                    autoPlay 
-                                    loop 
-                                />
-                            ) : (
-                                <>
-                                    <img src={currentModule.thumbnail} alt={currentModule.title} className="w-full h-full object-cover opacity-60" />
-                                    
-                                    {isGeneratingVideo ? (
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm text-white">
-                                            <Loader className="w-10 h-10 animate-spin mb-3 text-teal-400" />
-                                            <p className="font-bold animate-pulse">Generant vídeo amb Veo AI...</p>
-                                            <p className="text-xs opacity-70 mt-1">Això pot trigar uns minuts</p>
-                                        </div>
-                                    ) : (
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-                                            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/50 shadow-xl">
-                                                <Play className="w-6 h-6 text-white ml-1 fill-white" />
-                                            </div>
-                                            <button 
-                                                onClick={handleGenerateVideo}
-                                                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2 transition-all transform hover:scale-105"
-                                            >
-                                                <Video size={16} /> Generar Vídeo amb IA
-                                            </button>
-                                        </div>
-                                    )}
-                                </>
-                            )}
+                            <video 
+                                src={`/videos/${course.id}_m${currentModule.id}.mp4`} 
+                                controls 
+                                className="w-full h-full object-cover bg-slate-900" 
+                                poster={currentModule.thumbnail}
+                            />
                         </div>
 
                         <div className="flex justify-between items-start mb-6">
