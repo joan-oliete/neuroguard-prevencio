@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RelapseManual, Trigger, TrapThought, SupportPerson, MotivationItem, CrisisPlan } from '../../types';
-import { updateDoc, doc, db, arrayUnion, arrayRemove, onSnapshot } from '../../services/firebase';
+import { updateDoc, setDoc, doc, db, arrayUnion, arrayRemove, onSnapshot } from '../../services/firebase';
 import { Compass, AlertTriangle, Shield, TrendingUp, Book, Trash2, Plus, LifeBuoy, ChevronDown, ChevronUp, CloudLightning } from 'lucide-react';
 import PreventionSection from './PreventionSection';
 import CrisisComponent from './CrisisComponent';
@@ -364,7 +364,7 @@ const CrisisSection = ({ userId }: { userId: string }) => {
 
   const handleUpdatePlan = async (newPlan: CrisisPlan) => {
     try {
-      await updateDoc(doc(db, `users/${userId}/crisisPlan/current`), newPlan as any);
+      await setDoc(doc(db, `users/${userId}/crisisPlan/current`), newPlan as any, { merge: true });
     } catch (e) {
       console.error("Error updating plan", e);
     }

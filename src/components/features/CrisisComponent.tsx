@@ -82,8 +82,8 @@ const CrisisComponent: React.FC<CrisisComponentProps> = ({ plan, onUpdate, onAdd
 
   return (
     <div className="w-full">
-      <div className="bg-rose-600 text-white p-4 rounded-2xl mb-6 text-center font-bold shadow-lg shadow-rose-200 flex items-center justify-center gap-3 animate-pulse">
-        <span className="text-2xl">🆘</span> <span>{t('crisis.emergency_banner')}</span>
+      <div className="bg-rose-600 text-white p-4 rounded-2xl mb-6 text-center font-bold shadow-lg shadow-rose-200 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3 animate-pulse">
+        <span className="text-2xl md:text-3xl">🆘</span> <span className="text-sm md:text-base leading-tight">{t('crisis.emergency_banner', 'EMERGÈNCIA IMMEDIATA: TRUCA AL 112')}</span>
       </div>
 
       <div className="card border-l-8 border-brand-500 relative overflow-hidden">

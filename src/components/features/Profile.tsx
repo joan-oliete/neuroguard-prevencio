@@ -10,6 +10,7 @@ import html2pdf from 'html2pdf.js';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
+import LegalTermsModal from './LegalTermsModal';
 interface ProfileProps {
   user: UserProfile;
   onNavigate?: (view: string) => void;
@@ -30,6 +31,7 @@ const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff })
   const [therapySessions, setTherapySessions] = useState<any[]>([]);
   const [daysSober, setDaysSober] = useState(0);
   const [previewManual, setPreviewManual] = useState<any | null>(null);
+  const [showLegalModal, setShowLegalModal] = useState(false);
 
   useEffect(() => {
     loadHistory();
@@ -270,6 +272,20 @@ const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff })
 
           <div className="mt-8 pt-6 border-t border-slate-100">
             <h3 className="font-bold text-lg mb-4 flex items-center gap-3 text-slate-800">
+              <span className="p-2 bg-slate-100 rounded-lg text-slate-600"><Shield className="w-5 h-5" /></span> Legal
+            </h3>
+            <div className="space-y-3">
+              <button onClick={() => setShowLegalModal(true)} className="w-full flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors">
+                <div className="flex items-center gap-3">
+                  <Shield className="text-slate-600 w-5 h-5" />
+                  <span className="font-bold text-slate-700">Termes d'Ús i Política de Privacitat</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-slate-100">
+            <h3 className="font-bold text-lg mb-4 flex items-center gap-3 text-slate-800">
               <span className="p-2 bg-blue-50 rounded-lg text-blue-500"><Languages className="w-5 h-5" /></span> Idioma / Language
             </h3>
             <div className="grid grid-cols-3 gap-2">
@@ -362,6 +378,7 @@ const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff })
 
       {previewManual && (
         <div className="fixed inset-0 bg-slate-900/95 z-[100] overflow-y-auto flex justify-center p-4">
+          {/* Preview Modal content is kept identically from before */}
           <div className="bg-white max-w-3xl w-full my-8 p-8 rounded-2xl shadow-2xl relative print:m-0 print:p-0 print:shadow-none print:w-full">
             <button 
               onClick={() => setPreviewManual(null)} 
@@ -462,6 +479,10 @@ const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff })
             </div>
           </div>
         </div>
+      )}
+
+      {showLegalModal && (
+        <LegalTermsModal onClose={() => setShowLegalModal(false)} />
       )}
 
     </div >
