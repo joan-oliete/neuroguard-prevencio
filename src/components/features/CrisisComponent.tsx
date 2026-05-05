@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { CrisisPlan } from '../../types';
 import { Bell, HeartHandshake } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BreathingExercise } from './crisis/BreathingExercise';
+import GroundingExercise from './crisis/GroundingExercise';
 import { NotificationService } from '../../services/notificationService';
 
 interface CrisisComponentProps {
@@ -19,6 +19,7 @@ const CrisisComponent: React.FC<CrisisComponentProps> = ({ plan, onUpdate, onAdd
   const [tempPlan, setTempPlan] = useState(plan);
   const [isSaving, setIsSaving] = useState(false);
   const [showBreathing, setShowBreathing] = useState(false);
+  const [showGrounding, setShowGrounding] = useState(false);
 
   // Local state for notification toggles
   const [notifications, setNotifications] = useState({
@@ -246,7 +247,7 @@ const CrisisComponent: React.FC<CrisisComponentProps> = ({ plan, onUpdate, onAdd
         )}
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4 mt-6">
+      <div className="grid md:grid-cols-3 gap-4 mt-6">
         {/* Crisis Chat Card - Redirects to Therapist */}
         <div
           onClick={() => onNavigate('therapy')}
@@ -274,9 +275,33 @@ const CrisisComponent: React.FC<CrisisComponentProps> = ({ plan, onUpdate, onAdd
             <p className="text-sky-100 text-sm">{t('crisis.subtitle')}</p>
           </div>
         </div>
+
+        {/* Grounding Exercise Card */}
+        <div
+          className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 text-white shadow-xl cursor-pointer hover:scale-[1.02] transition-transform relative overflow-hidden group flex items-center justify-center"
+          onClick={() => setShowGrounding(true)}
+        >
+          <div className="text-center">
+            <h3 className="font-bold text-xl">🍃 Arrelament (5-4-3-2-1)</h3>
+            <p className="text-orange-50 text-sm">Tècnica de Grounding</p>
+          </div>
+        </div>
       </div>
 
       {showBreathing && <BreathingExercise onClose={() => setShowBreathing(false)} onAddXp={onAddXp} />}
+      {showGrounding && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="relative w-full max-w-lg">
+            <button 
+              onClick={() => setShowGrounding(false)}
+              className="absolute -top-12 right-0 text-white hover:text-slate-200 p-2"
+            >
+              Tancar ✕
+            </button>
+            <GroundingExercise />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

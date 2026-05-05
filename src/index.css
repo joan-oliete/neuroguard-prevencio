@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  html, body, #root {
+    @apply overflow-x-hidden;
+    max-width: 100vw;
+  }
+  
   body {
     @apply bg-surface-main text-text-primary antialiased font-sans;
   }

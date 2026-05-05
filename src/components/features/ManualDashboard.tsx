@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RelapseManual, Trigger, TrapThought, SupportPerson, MotivationItem, CrisisPlan } from '../../types';
+import { RelapseManual, Trigger, TrapThought, SupportPerson, MotivationItem, CrisisPlan, Anchor, InternalPart } from '../../types';
 import { updateDoc, setDoc, doc, db, arrayUnion, arrayRemove, onSnapshot } from '../../services/firebase';
 import { Compass, AlertTriangle, Shield, TrendingUp, Book, Trash2, Plus, LifeBuoy, ChevronDown, ChevronUp, CloudLightning, Info, X } from 'lucide-react';
 import { InfoModal } from '../common/InfoModal';
@@ -171,7 +171,7 @@ const ValuesSection = ({ manual, manualRef }: { manual: RelapseManual, manualRef
                     value={detail.definition}
                     onChange={(e) => updateValueDetail(v, 'definition', e.target.value)}
                   />
-                  <div className="grid grid-cols-2 gap-6 bg-white p-4 rounded-lg border border-slate-200 shadow-inner">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-white p-4 rounded-lg border border-slate-200 shadow-inner">
                     <div>
                       <div className="flex justify-between mb-1">
                         <label className="text-xs font-bold text-slate-500">Importància</label>
@@ -232,14 +232,14 @@ const PatternsSection = ({ manual, manualRef }: { manual: RelapseManual, manualR
       {/* Triggers */}
       <div>
         <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"><AlertTriangle className="text-red-500" /> Senyals d'Alerta</h3>
-        <div className="flex gap-2 mb-4">
-          <select value={triggerType} onChange={e => setTriggerType(e.target.value)} className="border p-3 rounded-xl bg-white text-sm">
+        <div className="flex flex-col sm:flex-row gap-2 mb-4">
+          <select value={triggerType} onChange={e => setTriggerType(e.target.value)} className="border p-3 rounded-xl bg-white text-sm w-full sm:w-auto">
             <option value="external">Extern</option>
             <option value="internal">Intern</option>
             <option value="physical">Físic</option>
           </select>
-          <input value={triggerInput} onChange={e => setTriggerInput(e.target.value)} className="flex-1 border p-3 rounded-xl" placeholder="Descripció..." />
-          <button onClick={() => { addTrigger(triggerInput, triggerType); setTriggerInput(''); }} className="bg-red-500 text-white px-4 rounded-xl font-bold">+</button>
+          <input value={triggerInput} onChange={e => setTriggerInput(e.target.value)} className="flex-1 border p-3 rounded-xl w-full" placeholder="Descripció..." />
+          <button onClick={() => { addTrigger(triggerInput, triggerType); setTriggerInput(''); }} className="bg-red-500 text-white px-4 py-3 sm:py-0 rounded-xl font-bold w-full sm:w-auto">+</button>
         </div>
         <div className="grid gap-2">
           {manual.triggers?.map(t => (
@@ -259,9 +259,9 @@ const PatternsSection = ({ manual, manualRef }: { manual: RelapseManual, manualR
       {/* Trap Thoughts */}
       <div>
         <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"><TrendingUp className="text-amber-500" /> Pensaments Trampa</h3>
-        <div className="flex gap-2 mb-4">
-          <input value={trapInput} onChange={e => setTrapInput(e.target.value)} className="flex-1 border p-3 rounded-xl" placeholder="Pensament: 'Per un no passa res...'" />
-          <button onClick={() => { addTrap(trapInput); setTrapInput(''); }} className="bg-amber-500 text-white px-4 rounded-xl font-bold">+</button>
+        <div className="flex flex-col sm:flex-row gap-2 mb-4">
+          <input value={trapInput} onChange={e => setTrapInput(e.target.value)} className="flex-1 border p-3 rounded-xl w-full" placeholder="Pensament: 'Per un no passa res...'" />
+          <button onClick={() => { addTrap(trapInput); setTrapInput(''); }} className="bg-amber-500 text-white px-4 py-3 sm:py-0 rounded-xl font-bold w-full sm:w-auto">+</button>
         </div>
         <div className="space-y-4">
           {manual.trapThoughts?.map(t => (
@@ -390,7 +390,7 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
   const manualRef = doc(db, `users/${userId}/manuals`, manualId);
 
   return (
-    <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden md:min-h-[700px] flex flex-col md:flex-row">
+    <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden min-h-[75vh] md:min-h-[700px] flex flex-col md:flex-row">
       {/* Sidebar Navigation */}
       <div className="md:w-72 bg-slate-50/50 border-r border-slate-100 flex flex-col flex-shrink-0 p-4 gap-2 relative">
 
@@ -433,8 +433,18 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
           Pla de Crisi
         </button>
 
+        <button onClick={() => setActiveSection('anchors')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'anchors' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'anchors' ? 'bg-white/20' : 'bg-slate-200'}`}>6</span>
+          Punts d'Ancoratge
+        </button>
+
+        <button onClick={() => setActiveSection('parts')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'parts' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'parts' ? 'bg-white/20' : 'bg-slate-200'}`}>7</span>
+          Parts Internes
+        </button>
+
         <button onClick={() => setActiveSection('review')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'review' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
-          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'review' ? 'bg-white/20' : 'bg-slate-200'}`}>6</span>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'review' ? 'bg-white/20' : 'bg-slate-200'}`}>8</span>
           Revisió Setmanal
         </button>
 
@@ -445,12 +455,14 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 p-6 md:p-10 overflow-y-auto bg-white/50">
+      <div className="flex-1 p-4 md:p-10 overflow-y-auto overflow-x-hidden bg-white/50 w-full min-w-0">
         {activeSection === 'motivations' && <MotivationsSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'values' && <ValuesSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'patterns' && <PatternsSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'support' && <SupportSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'crisis' && <CrisisSection userId={userId} />}
+        {activeSection === 'anchors' && <AnchorsSection manual={manual} manualRef={manualRef} />}
+        {activeSection === 'parts' && <InternalPartsSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'review' && <ReviewSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'prevention' && <PreventionSection />}
       </div>
@@ -477,8 +489,9 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
             </h4>
             <p className="text-sm text-green-800">És recomanable revisar aquest manual i tenir clar quin és el teu pla d'acció en cas de crisi d'ansietat o temptació.</p>
           </div>
-          <div className="mt-4">
-            <img src="/assets/captura-marc-teoric.png" alt="Ajuda Manual" className="w-full rounded-xl shadow-sm border border-slate-200" />
+          <div className="mt-4 space-y-3">
+            <img src="/assets/captura_manual_1.jpg" alt="Ajuda Manual 1" className="w-full rounded-xl shadow-sm border border-slate-200" />
+            <img src="/assets/captura_manual_2.jpg" alt="Ajuda Manual 2" className="w-full rounded-xl shadow-sm border border-slate-200" />
           </div>
         </div>
 

@@ -7,9 +7,10 @@ import { RelapseManual } from '../../types';
 interface ManualLoaderProps {
     manualId: string;
     userId: string;
+    onNavigate?: (view: string) => void;
 }
 
-const ManualLoader: React.FC<ManualLoaderProps> = ({ manualId, userId }) => {
+const ManualLoader: React.FC<ManualLoaderProps> = ({ manualId, userId, onNavigate }) => {
     const [manual, setManual] = useState<RelapseManual | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -42,7 +43,7 @@ const ManualLoader: React.FC<ManualLoaderProps> = ({ manualId, userId }) => {
     if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
     if (!manual) return null;
 
-    return <ManualDashboard manual={manual} manualId={manualId} userId={userId} />;
+    return <ManualDashboard manual={manual} manualId={manualId} userId={userId} onNavigate={onNavigate} />;
 };
 
 export default ManualLoader;

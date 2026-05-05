@@ -85,6 +85,15 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
              <HeartPulse className="text-rose-500" /> Les meves Eines
          </h3>
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Marc Teòric */}
+            <button onClick={() => onNavigate('theory')} className="group flex flex-col text-left bg-gradient-to-br from-amber-50 to-white rounded-3xl p-6 border border-amber-100 shadow-sm hover:shadow-xl hover:border-amber-300 hover:-translate-y-1 transition-all duration-300">
+               <div className="bg-amber-100 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Brain className="text-amber-600" size={28} />
+               </div>
+               <h4 className="text-lg font-bold text-amber-900 mb-2">Marc Teòric</h4>
+               <p className="text-slate-600 text-sm leading-relaxed">Conceptes essencials i aprenentatge previ que et prepararan abans d'omplir el teu Manual de Prevenció.</p>
+            </button>
+
             {/* Clinical Manual */}
             <button onClick={() => onNavigate('clinic')} className="group flex flex-col text-left bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-brand-200 hover:-translate-y-1 transition-all duration-300">
                <div className="bg-brand-50 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">

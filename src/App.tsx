@@ -157,7 +157,7 @@ const AppContent = () => {
 
       case 'clinic':
         return userProfile.activeManualId ? (
-          <ManualLoader manualId={userProfile.activeManualId} userId={user.uid} />
+          <ManualLoader manualId={userProfile.activeManualId} userId={user.uid} onNavigate={setCurrentView} />
         ) : <div className="p-8 text-center">No active manual</div>;
 
       case 'library':
@@ -199,7 +199,7 @@ const AppContent = () => {
             </div>
         );
 
-      case 'theory': return <Theory />;
+      case 'theory': return <Theory onBack={() => setCurrentView('dashboard')} />;
       case 'safety-map': return <SafetyMap onBack={() => setCurrentView('dashboard')} />;
 
       // --- LIBRARY & TOOLS ---
@@ -250,7 +250,7 @@ const App = () => {
   return (
     <Router>
       <NotificationManager />
-      <div className="bg-gray-100 min-h-screen text-slate-800 font-sans">
+      <div className="bg-gray-100 min-h-screen text-slate-800 font-sans overflow-x-hidden">
         <Routes>
           <Route path="/login" element={!user ? <Auth /> : <Navigate to="/" replace />} />
           <Route path="/*" element={

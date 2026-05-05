@@ -45,6 +45,23 @@ export interface RelapseManual {
   crisisPlan: CrisisPlan;
   weeklyReview: string;
   gratitudeJournal: GratitudeItem[];
+  anchors?: Anchor[];
+  internalParts?: InternalPart[];
+}
+
+export interface Anchor {
+  id: number;
+  type: 'phrase' | 'letter' | 'flashcard';
+  content: string;
+  author?: string; // Optional author for letters/quotes
+}
+
+export interface InternalPart {
+  id: number;
+  name: string;
+  description: string;
+  triggers: string;
+  needs: string;
 }
 
 export interface MotivationItem {
