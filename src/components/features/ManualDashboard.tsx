@@ -384,6 +384,99 @@ const CrisisSection = ({ userId }: { userId: string }) => {
   );
 };
 
+const AnchorsSection = ({ manual, manualRef }: { manual: RelapseManual, manualRef: any }) => {
+  const [content, setContent] = useState('');
+  const [type, setType] = useState<'phrase' | 'letter' | 'flashcard'>('phrase');
+
+  const addAnchor = async () => {
+    if (!content.trim()) return;
+    const newItem: Anchor = { id: Date.now(), type, content };
+    await updateDoc(manualRef, { anchors: arrayUnion(newItem) });
+    setContent('');
+  };
+
+  const removeAnchor = async (item: Anchor) => {
+    await updateDoc(manualRef, { anchors: arrayRemove(item) });
+  };
+
+  const validAnchors = Array.isArray(manual?.anchors) ? manual.anchors.filter(Boolean) : [];
+
+  return (
+    <div className="space-y-4 animate-fadeIn">
+      <h3 className="text-xl font-bold text-slate-800">Punts d'Ancoratge</h3>
+      <p className="text-slate-500">Frases, cartes o imatges que et connecten amb la realitat i et frenen en moments de desig impulsador.</p>
+      <div className="flex flex-col sm:flex-row gap-2">
+        <select value={type} onChange={e => setType(e.target.value as any)} className="border p-3 rounded-xl bg-white">
+          <option value="phrase">Frase</option>
+          <option value="letter">Carta</option>
+          <option value="flashcard">Targeta</option>
+        </select>
+        <input value={content} onChange={e => setContent(e.target.value)} className="flex-1 border p-3 rounded-xl" placeholder="Afegeix el contingut..." />
+        <button onClick={addAnchor} className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold sm:w-auto w-full">Afegir</button>
+      </div>
+      <div className="space-y-2 mt-4">
+        {validAnchors.map(m => (
+          <div key={m?.id || Math.random()} className="bg-white p-3 border rounded-xl flex justify-between items-center shadow-sm">
+            <div>
+               <span className="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded mr-2 uppercase">{m?.type === 'phrase' ? 'Frase' : m?.type === 'letter' ? 'Carta' : 'Targeta'}</span>
+               <span className="text-sm font-medium">{m?.content}</span>
+            </div>
+            <button onClick={() => removeAnchor(m)} className="text-red-400 hover:text-red-600 p-1"><Trash2 size={16} /></button>
+          </div>
+        ))}
+        {validAnchors.length === 0 && (
+           <p className="text-slate-400 text-sm italic py-4">Cap ancoratge afegit encara.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const InternalPartsSection = ({ manual, manualRef }: { manual: RelapseManual, manualRef: any }) => {
+  const [name, setName] = useState('');
+  const [desc, setDesc] = useState('');
+
+  const addPart = async () => {
+    if (!name.trim()) return;
+    const newItem: InternalPart = { id: Date.now(), name, description: desc, triggers: '', needs: '' };
+    await updateDoc(manualRef, { internalParts: arrayUnion(newItem) });
+    setName('');
+    setDesc('');
+  };
+
+  const removePart = async (item: InternalPart) => {
+    await updateDoc(manualRef, { internalParts: arrayRemove(item) });
+  };
+
+  const validParts = Array.isArray(manual?.internalParts) ? manual.internalParts.filter(Boolean) : [];
+
+  return (
+    <div className="space-y-4 animate-fadeIn">
+      <h3 className="text-xl font-bold text-slate-800">Parts Internes</h3>
+      <p className="text-slate-500">Identifica les teves subpersonalitats (ex: El Crític, L'Impulsiu, L'Adult Savi).</p>
+      <div className="grid md:grid-cols-2 gap-2">
+        <input value={name} onChange={e => setName(e.target.value)} className="border p-3 rounded-xl" placeholder="Nom de la part (ex: El jutge)..." />
+        <input value={desc} onChange={e => setDesc(e.target.value)} className="border p-3 rounded-xl" placeholder="Funció o què sol dir..." />
+      </div>
+      <button onClick={addPart} className="w-full bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold">Afegir Part</button>
+      <div className="space-y-2 mt-4">
+        {validParts.map(m => (
+          <div key={m?.id || Math.random()} className="bg-white p-4 border rounded-xl flex justify-between items-start shadow-sm">
+            <div>
+               <h4 className="font-bold text-indigo-700">{m?.name}</h4>
+               <p className="text-sm text-slate-600 mt-1">{m?.description}</p>
+            </div>
+            <button onClick={() => removePart(m)} className="text-red-400 hover:text-red-600 p-1"><Trash2 size={16} /></button>
+          </div>
+        ))}
+        {validParts.length === 0 && (
+           <p className="text-slate-400 text-sm italic py-4">Cap part interna definida.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, userId }) => {
   const [activeSection, setActiveSection] = useState('motivations');
   const [showHelpModal, setShowHelpModal] = useState(false);

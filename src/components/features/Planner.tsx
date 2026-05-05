@@ -338,8 +338,8 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
 
       {/* VIEW: WEEK MODE (MODERN GRID) */}
       {viewMode === 'week' && (
-        <div className="overflow-x-auto pb-4 custom-scrollbar">
-          <div className="min-w-[1000px] grid grid-cols-[150px_repeat(7,1fr)] gap-4">
+        <div className="w-full max-w-[100vw] overflow-x-auto pb-4 custom-scrollbar relative" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="min-w-[900px] grid grid-cols-[100px_repeat(7,minmax(100px,1fr))] gap-2 sm:gap-4 pr-4">
             {/* Header Row */}
             <div className="sticky left-0 z-10 pt-14">
               <div className="text-xs font-bold text-slate-400 uppercase tracking-wider text-right pr-4">Àrees</div>

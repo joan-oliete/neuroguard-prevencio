@@ -34,14 +34,19 @@ const FlashcardGame: React.FC = () => {
       </div>
 
       {/* Card Container */}
-      <div 
-        className="relative w-full h-64 sm:h-80 perspective-1000 cursor-pointer group"
-        onClick={() => setIsFlipped(!isFlipped)}
-      >
-        <div className={`w-full h-full transition-transform duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
+      <div className="perspective-1000 w-full max-w-sm mx-auto h-64 sm:h-80 cursor-pointer" onClick={() => setIsFlipped(!isFlipped)}>
+        <div className="relative w-full h-full">
           
           {/* Front (Question) */}
-          <div className="absolute w-full h-full backface-hidden bg-white border-2 border-indigo-100 rounded-2xl shadow-md p-6 sm:p-10 flex flex-col items-center justify-center text-center hover:border-indigo-300 hover:shadow-lg transition-all">
+          <div 
+            className="absolute inset-0 w-full h-full bg-white border-2 border-indigo-100 rounded-2xl shadow-md p-6 sm:p-10 flex flex-col items-center justify-center text-center transition-all duration-500 ease-in-out"
+            style={{ 
+              transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+              opacity: isFlipped ? 0 : 1,
+              zIndex: isFlipped ? 0 : 10,
+              pointerEvents: isFlipped ? 'none' : 'auto'
+            }}
+          >
             <span className="text-xs uppercase tracking-widest text-indigo-400 font-bold mb-4 block">Pregunta</span>
             <p className="text-lg sm:text-2xl font-bold text-slate-800 leading-tight">
               {currentCard.q}
@@ -52,7 +57,15 @@ const FlashcardGame: React.FC = () => {
           </div>
 
           {/* Back (Answer) */}
-          <div className="absolute w-full h-full backface-hidden bg-indigo-600 border-2 border-indigo-600 rounded-2xl shadow-md p-6 sm:p-10 flex flex-col items-center justify-center text-center rotate-y-180 text-white">
+          <div 
+            className="absolute inset-0 w-full h-full bg-indigo-600 border-2 border-indigo-600 rounded-2xl shadow-md p-6 sm:p-10 flex flex-col items-center justify-center text-center text-white transition-all duration-500 ease-in-out"
+            style={{ 
+              transform: isFlipped ? 'rotateY(0deg)' : 'rotateY(-180deg)',
+              opacity: isFlipped ? 1 : 0,
+              zIndex: isFlipped ? 10 : 0,
+              pointerEvents: isFlipped ? 'auto' : 'none'
+            }}
+          >
             <span className="text-xs uppercase tracking-widest text-indigo-200 font-bold mb-4 block">Resposta</span>
             <p className="text-lg sm:text-2xl font-bold leading-tight drop-shadow-sm">
               {currentCard.a}

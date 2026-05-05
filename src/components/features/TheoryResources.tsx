@@ -21,7 +21,9 @@ const TheoryResources: React.FC = () => {
           <div className="flex flex-wrap gap-4">
             <a 
               href="/assets/presentacio_nazaret.pdf" 
-              download
+              download="presentacio_nazaret.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 bg-white text-indigo-900 px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-indigo-50 hover:scale-105 transition-all"
             >
               <Download size={20} />
@@ -70,13 +72,15 @@ const TheoryResources: React.FC = () => {
             <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
               <BookOpen className="text-indigo-600" /> Idees Clau
             </h3>
-            <img 
-              src="/assets/infografia_nazaret.jpg" 
-              alt="Infografia Nazareth Castellanos" 
-              className="w-full h-auto rounded-2xl shadow-md border border-slate-200"
-            />
+            <div className="w-full overflow-x-auto custom-scrollbar rounded-2xl shadow-md border border-slate-200">
+              <img 
+                src="/assets/infografia_nazaret.jpg" 
+                alt="Infografia Nazareth Castellanos" 
+                className="min-w-[1200px] w-full max-w-none h-auto block"
+              />
+            </div>
             <p className="text-sm text-slate-500 mt-4 text-center">
-              Aquesta infografia resumeix els punts clau de la neurociència integral del cos.
+              Aquesta infografia resumeix els punts clau de la neurociència integral del cos. Pots moure la imatge d'esquerra a dreta.
             </p>
           </div>
         ) : activeTab === 'flashcards' ? (
