@@ -69,18 +69,32 @@ export const nightlySummary = onSchedule({
 
         const messages: admin.messaging.Message[] = [];
 
-        usersSnapshot.docs.forEach((doc) => {
+        const promises = usersSnapshot.docs.map(async (doc) => {
             const data = doc.data();
             if (data.fcmToken) {
                 const name = data.name || 'Company/a';
-                const lastSeenStr = data.lastSeen;
                 let activeToday = false;
 
-                if (lastSeenStr) {
-                    const lastSeenDate = new Date(lastSeenStr);
-                    if (lastSeenDate >= startOfToday) {
+                try {
+                    const diarySnap = await db.collection(`users/${doc.id}/diaryEntries`)
+                        .where('createdAt', '>=', startOfToday)
+                        .limit(1)
+                        .get();
+                    
+                    if (!diarySnap.empty) {
                         activeToday = true;
+                    } else {
+                        const messagesSnap = await db.collection(`users/${doc.id}/therapist_messages`)
+                            .where('createdAt', '>=', startOfToday)
+                            .limit(1)
+                            .get();
+                        
+                        if (!messagesSnap.empty) {
+                            activeToday = true;
+                        }
                     }
+                } catch (err) {
+                    logger.error(`Error checking activity for user ${doc.id}:`, err);
                 }
 
                 let title = 'Bona nit! 🌙';
@@ -98,6 +112,8 @@ export const nightlySummary = onSchedule({
                 });
             }
         });
+
+        await Promise.all(promises);
 
         if (messages.length > 0) {
             const response = await admin.messaging().sendEach(messages);

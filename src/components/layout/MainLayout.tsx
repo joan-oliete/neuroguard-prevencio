@@ -1,7 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { db, doc, updateDoc, serverTimestamp } from '../../services/firebase';
 import {
     LayoutDashboard,
     Shield,
@@ -72,9 +73,17 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     showCoolingOff,
     setShowCoolingOff
 }) => {
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
     const { t } = useTranslation();
     const [isChatOpen, setIsChatOpen] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            updateDoc(doc(db, 'users', user.uid), {
+                lastSeen: serverTimestamp()
+            }).catch(e => console.error("Error updating lastSeen:", e));
+        }
+    }, [user]);
 
     const handleNavClick = (id: string) => {
         onViewChange(id);

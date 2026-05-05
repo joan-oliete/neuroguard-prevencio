@@ -4,7 +4,8 @@ import {
   AreaChart, Area, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { UserProfile, DailyStat } from '../../types';
-import { Map, Shield, Calendar, Image as ImageIcon, Sparkles, HeartPulse, Brain, Sunrise, Footprints, BookOpen } from 'lucide-react';
+import { Map, Shield, Calendar, Image as ImageIcon, Sparkles, HeartPulse, Brain, Sunrise, Footprints, BookOpen, Info } from 'lucide-react';
+import { InfoModal } from '../common/InfoModal';
 
 interface DashboardProps {
   user: UserProfile;
@@ -15,6 +16,7 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
   const { t } = useTranslation();
   const [greeting, setGreeting] = useState('');
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -41,8 +43,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
             </div>
             <div>
               <p className="text-brand-200 text-sm font-medium tracking-wider uppercase mb-1">{greeting}</p>
-              <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-2 text-white drop-shadow-md">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-2 text-white drop-shadow-md flex items-center gap-3">
                 {user.name || 'Benvingut/da'}
+                <button onClick={() => setShowHelpModal(true)} className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm" title="Informació">
+                  <Info size={24} className="text-white" />
+                </button>
               </h2>
               <p className="text-brand-100 text-sm md:text-base max-w-md">
                 Aquest és el teu espai segur. Tria una eina per continuar cuidant el teu benestar avui.
@@ -136,6 +141,30 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
             </button>
          </div>
       </div>
+
+      <InfoModal
+        isOpen={showHelpModal}
+        onClose={() => setShowHelpModal(false)}
+        title="Benvingut/da a NeuroGuard"
+      >
+        <div className="space-y-4 text-slate-600">
+          <p>
+            Aquesta és la teva pantalla d'inici, dissenyada per proporcionar-te un accés ràpid a totes les eines de la plataforma.
+          </p>
+          <div className="bg-indigo-50 rounded-xl p-4">
+            <h4 className="font-bold text-indigo-900 mb-2">Començar</h4>
+            <p className="text-sm text-indigo-800">
+              Pots començar revisant el teu <strong>Manual de Prevenció</strong> o parlant amb el <strong>Terapeuta d'IA</strong> per posar en ordre els teus pensaments.
+            </p>
+          </div>
+          <div className="bg-rose-50 rounded-xl p-4">
+            <h4 className="font-bold text-rose-900 mb-2">Emergències</h4>
+            <p className="text-sm text-rose-800">
+              En cas de necessitat, tens el botó d'<strong>Accés Ràpid d'Emergència</strong> sempre visible a la part superior.
+            </p>
+          </div>
+        </div>
+      </InfoModal>
 
     </div >
   );

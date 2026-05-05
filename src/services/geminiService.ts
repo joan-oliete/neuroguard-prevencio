@@ -308,19 +308,6 @@ export const streamTherapistChat = async (messages: ChatMessage[], context: Ther
 
   // --- NEW AGGREGATED DATA ---
   if (context.stats) {
-    if (context.stats.recentActivity.highScores) {
-      const scores = Object.entries(context.stats.recentActivity.highScores)
-        .map(([game, score]) => `- ${game}: ${score} pts`).join('\n');
-      if (scores) {
-        dynamicPrompt += `
-             \n--- ASSOLIMENTS RECENTS (GAMIFICATION) ---
-             L'usuari ha jugat recentment:
-             ${scores}
-             SI és una puntuació alta, FELICITA'L.
-             `;
-      }
-    }
-
     if (context.stats.inferredState.anxietyLevel !== 'unknown') {
       dynamicPrompt += `
            \n--- ESTAT INFERIT ---
@@ -359,7 +346,7 @@ export const streamTherapistChat = async (messages: ChatMessage[], context: Ther
     1. VALIDACIÓ: Sempre valida primer l'emoció de l'usuari.
     2. BREVETAT: No facis paràgrafs gegants. Sigues conversacional.
     3. LINKING: Si l'usuari està a la pàgina "${context.pageContext}", ofereix consells específics per aquesta eina.
-    4. PERSONALITAT: Ets càlid, pacient i optimista. Utilitza metàfores visuals calmants. Ets conscient del progrés de l'usuari en els jocs.
+    4. PERSONALITAT: Ets càlid, pacient i optimista. Utilitza metàfores visuals calmants.
     
     --- EINES DISPONIBLES (TOOLS) ---
     SI l'usuari et demana afegir un nou lloc al mapa o trobes un lloc rellevant a la conversa que l'usuari hauria de guardar, genera:

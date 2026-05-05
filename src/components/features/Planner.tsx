@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { RelapseManual, DiaryEntry } from '../../types';
 import { updateDoc, doc, db, collection, query, orderBy, onSnapshot } from '../../services/firebase';
-import { Calendar, Save, RefreshCw, ChevronLeft, ChevronRight, Layout, Maximize, BookOpen, PenTool, ArrowLeft } from 'lucide-react';
+import { Calendar, Save, RefreshCw, ChevronLeft, ChevronRight, Layout, Maximize, BookOpen, PenTool, ArrowLeft, Info, X } from 'lucide-react';
+import { InfoModal } from '../common/InfoModal';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
@@ -31,7 +32,8 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
 
   // Date & View State
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [viewMode, setViewMode] = useState<'week' | 'day'>('day');
+  const [viewMode, setViewMode] = useState<'week' | 'day'>('week');
+  const [showHelp, setShowHelp] = useState(false);
 
   // Sync local state with manual prop when it changes (e.g. background updates)
   useEffect(() => {
@@ -202,6 +204,9 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
               </div>
               Planificador
             </h2>
+            <button onClick={() => setShowHelp(true)} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-brand-600" title="Ajuda">
+              <Info size={24} />
+            </button>
           </div>
           <p className="text-slate-500 mt-2 text-base font-medium">
             Estructura el teu temps. El buit és l'enemic de la recuperació.
@@ -219,7 +224,7 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
             </button>
             <button
               onClick={() => setViewMode('week')}
-              className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'week' ? 'bg-white text-brand-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'week' ? 'bg-white text-brand-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
             >
               <Layout className="w-4 h-4" /> Setmana
             </button>
@@ -374,6 +379,20 @@ const Planner: React.FC<PlannerProps> = ({ manual, manualId, userId, onNavigateT
           </div>
         </div>
       )}
+
+      {/* Help Modal */}
+      <InfoModal
+        isOpen={showHelp}
+        onClose={() => setShowHelp(false)}
+        title="Com funciona el Planificador"
+      >
+        <div className="max-h-[70vh] overflow-y-auto">
+          <img src="/assets/captura_planificador_1.jpg" alt="Ajuda Planificador" className="w-full rounded-xl shadow-sm border border-slate-200" />
+        </div>
+        <button onClick={() => setShowHelp(false)} className="w-full mt-6 bg-slate-900 text-white py-3 rounded-xl font-bold shadow-md hover:bg-slate-800 transition-colors">
+          Entès!
+        </button>
+      </InfoModal>
     </div>
   );
 };

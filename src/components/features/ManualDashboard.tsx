@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { RelapseManual, Trigger, TrapThought, SupportPerson, MotivationItem, CrisisPlan } from '../../types';
 import { updateDoc, setDoc, doc, db, arrayUnion, arrayRemove, onSnapshot } from '../../services/firebase';
-import { Compass, AlertTriangle, Shield, TrendingUp, Book, Trash2, Plus, LifeBuoy, ChevronDown, ChevronUp, CloudLightning } from 'lucide-react';
+import { Compass, AlertTriangle, Shield, TrendingUp, Book, Trash2, Plus, LifeBuoy, ChevronDown, ChevronUp, CloudLightning, Info, X } from 'lucide-react';
+import { InfoModal } from '../common/InfoModal';
 import PreventionSection from './PreventionSection';
 import CrisisComponent from './CrisisComponent';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
@@ -385,15 +386,26 @@ const CrisisSection = ({ userId }: { userId: string }) => {
 
 const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, userId }) => {
   const [activeSection, setActiveSection] = useState('motivations');
+  const [showHelpModal, setShowHelpModal] = useState(false);
   const manualRef = doc(db, `users/${userId}/manuals`, manualId);
 
   return (
     <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden md:min-h-[700px] flex flex-col md:flex-row">
       {/* Sidebar Navigation */}
-      <div className="md:w-72 bg-slate-50/50 border-r border-slate-100 flex flex-col flex-shrink-0 p-4 gap-2">
+      <div className="md:w-72 bg-slate-50/50 border-r border-slate-100 flex flex-col flex-shrink-0 p-4 gap-2 relative">
 
-        <div className="hidden md:block px-4 py-4 mb-2">
+        <div className="hidden md:flex px-4 py-4 mb-2 justify-between items-center">
           <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Manual de Recuperació</h3>
+          <button onClick={() => setShowHelpModal(true)} className="p-2 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-100 transition-colors" title="Informació">
+            <Info size={18} />
+          </button>
+        </div>
+        
+        {/* Mobile Info Button */}
+        <div className="md:hidden absolute top-4 right-4 z-10">
+          <button onClick={() => setShowHelpModal(true)} className="p-2 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-100 transition-colors shadow-sm">
+            <Info size={16} />
+          </button>
         </div>
 
         <button onClick={() => setActiveSection('motivations')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'motivations' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
@@ -442,6 +454,38 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
         {activeSection === 'review' && <ReviewSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'prevention' && <PreventionSection />}
       </div>
+
+      {/* Modal Ajuda */}
+      <InfoModal
+        isOpen={showHelpModal}
+        onClose={() => setShowHelpModal(false)}
+        title="Com utilitzar el Manual"
+      >
+        <p className="text-slate-500 mb-6 text-center -mt-2">Guia ràpida per entendre l'ús del manual de recuperació.</p>
+        <div className="space-y-4">
+          <div className="bg-indigo-50 rounded-xl p-4">
+            <h4 className="font-bold text-indigo-900 flex items-center gap-2 mb-2">
+              <span className="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+              Seccions de treball
+            </h4>
+            <p className="text-sm text-indigo-800">El teu manual està dividit en diferents àrees clau. Obre cada secció per registrar el teu punt de partida, valors, i patrons de risc.</p>
+          </div>
+          <div className="bg-green-50 rounded-xl p-4">
+            <h4 className="font-bold text-green-900 flex items-center gap-2 mb-2">
+              <span className="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+              Revisió i Pla de Crisi
+            </h4>
+            <p className="text-sm text-green-800">És recomanable revisar aquest manual i tenir clar quin és el teu pla d'acció en cas de crisi d'ansietat o temptació.</p>
+          </div>
+          <div className="mt-4">
+            <img src="/assets/captura-marc-teoric.png" alt="Ajuda Manual" className="w-full rounded-xl shadow-sm border border-slate-200" />
+          </div>
+        </div>
+
+        <button onClick={() => setShowHelpModal(false)} className="w-full mt-6 bg-slate-900 text-white py-3 rounded-xl font-bold shadow-md hover:bg-slate-800 transition-colors">
+          Entès!
+        </button>
+      </InfoModal>
     </div>
   );
 };

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Shield, AlertTriangle, MapPin, Navigation, Plus, X, Save } from 'lucide-react';
+import { Shield, AlertTriangle, MapPin, Navigation, Plus, X, Save, Info } from 'lucide-react';
+import { InfoModal } from '../../common/InfoModal';
 import { useMapData } from '../../../context/MapContext';
 import { Geolocation } from '@capacitor/geolocation';
 import { Capacitor } from '@capacitor/core';
@@ -112,6 +113,7 @@ export default function SafetyMap({ onBack }: { onBack: () => void }) {
     const [isAddMode, setIsAddMode] = useState(false);
     const [newLocationCoords, setNewLocationCoords] = useState<{ lat: number, lng: number } | null>(null);
     const [newLocationForm, setNewLocationForm] = useState({ name: '', type: 'safe', category: '', description: '' });
+    const [showHelpModal, setShowHelpModal] = useState(false);
 
     const filteredLocations = locations.filter(loc => {
         if (loc.type === 'risk' && !showRisks) return false;
@@ -156,6 +158,9 @@ export default function SafetyMap({ onBack }: { onBack: () => void }) {
                     <div>
                         <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
                             <MapPin className="text-brand-500" /> Mapa de Seguretat
+                            <button onClick={() => setShowHelpModal(true)} className="p-1 ml-1 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-100 transition-colors" title="Informació">
+                                <Info size={18} />
+                            </button>
                         </h1>
                         <p className="text-xs text-slate-500">Planifica la teva ruta segura</p>
                     </div>
@@ -328,6 +333,45 @@ export default function SafetyMap({ onBack }: { onBack: () => void }) {
                     </div>
                 </div>
             </div>
+
+            {/* Modal Ajuda */}
+            <InfoModal
+                isOpen={showHelpModal}
+                onClose={() => setShowHelpModal(false)}
+                title="Com utilitzar el Mapa"
+            >
+                <p className="text-slate-500 mb-6 text-center -mt-2">Personalitza el teu entorn segur.</p>
+                <div className="space-y-4">
+                    <div className="bg-emerald-50 rounded-xl p-4">
+                        <h4 className="font-bold text-emerald-900 flex items-center gap-2 mb-2">
+                            <span className="bg-emerald-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+                            Llocs Segurs
+                        </h4>
+                        <p className="text-sm text-emerald-800">Afegeix llocs que et transmetin pau (parcs, biblioteques, casa d'amics) per tenir rutes segures sempre a mà.</p>
+                    </div>
+                    <div className="bg-rose-50 rounded-xl p-4">
+                        <h4 className="font-bold text-rose-900 flex items-center gap-2 mb-2">
+                            <span className="bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+                            Zones de Risc
+                        </h4>
+                        <p className="text-sm text-rose-800">Marca llocs que vulguis evitar (bars, sales de joc). Així podràs ser més conscient del teu entorn.</p>
+                    </div>
+                    <div className="bg-blue-50 rounded-xl p-4">
+                        <h4 className="font-bold text-blue-900 flex items-center gap-2 mb-2">
+                            <span className="bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+                            Assistent Virtual
+                        </h4>
+                        <p className="text-sm text-blue-800">També pots demanar al núvol blau (xat) que t'afegeixi un lloc segur o de risc automàticament.</p>
+                    </div>
+                    <div className="mt-4">
+                        <img src="/assets/captura_mapa_1.jpg" alt="Ajuda Mapa" className="w-full rounded-xl shadow-sm border border-slate-200" />
+                    </div>
+                </div>
+
+                <button onClick={() => setShowHelpModal(false)} className="w-full mt-6 bg-slate-900 text-white py-3 rounded-xl font-bold shadow-md hover:bg-slate-800 transition-colors">
+                    Entès!
+                </button>
+            </InfoModal>
         </div>
     );
 }

@@ -551,7 +551,7 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
                 ) : (
                     <div className="max-w-2xl mx-auto animate-fadeIn py-8">
                         <h2 className="text-3xl font-bold text-slate-800 mb-2 text-center">Test de Coneixements</h2>
-                        <p className="text-center text-slate-500 mb-10">Demostra el que has après per guanyar els punts.</p>
+                        <p className="text-center text-slate-500 mb-10">Demostra el que has après sobre aquest tema.</p>
 
                         <div className="space-y-12">
                             {course.quiz.map((q, qIdx) => {
@@ -746,7 +746,6 @@ const CorporateLearningHub: React.FC<CorporateLearningHubProps> = ({ user }) => 
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-2">
                 <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Hub de Formació</span>
-                <span className="flex items-center gap-1 text-xs font-medium text-yellow-300"><Award size={14} /> Nivell {user.level}</span>
             </div>
             <h2 className="text-4xl font-bold mb-4">Hola, {user.name}</h2>
             <p className="opacity-90 mb-8 max-w-lg text-lg leading-relaxed">
@@ -754,11 +753,6 @@ const CorporateLearningHub: React.FC<CorporateLearningHubProps> = ({ user }) => 
             </p>
             
             <div className="flex gap-6">
-                <div className="flex flex-col">
-                    <span className="text-3xl font-bold">{user.currency}</span>
-                    <span className="text-xs opacity-60 uppercase font-bold">Punts XP</span>
-                </div>
-                <div className="w-px bg-white/20"></div>
                 <div className="flex flex-col">
                     <span className="text-3xl font-bold">3</span>
                     <span className="text-xs opacity-60 uppercase font-bold">Cursos Pendents</span>
