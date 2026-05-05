@@ -143,10 +143,10 @@ const ImageCarousel = ({ items, section }: { items: { src: string, key: string }
         </div>
       </div>
 
-      <button onClick={prev} className="absolute top-1/2 -left-4 md:-left-12 -translate-y-1/2 p-3 bg-white text-teal-900 rounded-full shadow-lg hover:scale-110 transition-transform z-10 opacity-0 group-hover:opacity-100 duration-300">
+      <button onClick={prev} className="absolute top-1/2 left-2 md:-left-12 -translate-y-1/2 p-3 bg-white text-teal-900 rounded-full shadow-lg hover:scale-110 transition-transform z-10 opacity-0 group-hover:opacity-100 duration-300">
         <ChevronLeft size={24} />
       </button>
-      <button onClick={next} className="absolute top-1/2 -right-4 md:-right-12 -translate-y-1/2 p-3 bg-white text-teal-900 rounded-full shadow-lg hover:scale-110 transition-transform z-10 opacity-0 group-hover:opacity-100 duration-300">
+      <button onClick={next} className="absolute top-1/2 right-2 md:-right-12 -translate-y-1/2 p-3 bg-white text-teal-900 rounded-full shadow-lg hover:scale-110 transition-transform z-10 opacity-0 group-hover:opacity-100 duration-300">
         <ChevronRight size={24} />
       </button>
 
@@ -188,7 +188,7 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
               </span>
             </div>
 
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif text-white tracking-tight mb-6 leading-none drop-shadow-2xl">
+            <h1 className="text-5xl md:text-8xl lg:text-9xl font-serif text-white tracking-tight mb-6 leading-none drop-shadow-2xl">
               {t('landing.hero.title_1')} <span className="text-teal-400 italic font-light">{t('landing.hero.title_2')}</span>
             </h1>
 
@@ -252,7 +252,7 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
       </section>
 
       {/* THERAPEUTIC TOOLS CAROUSEL */}
-      <section className="py-24 bg-white relative">
+      <section className="py-24 bg-white relative overflow-hidden">
         <div className="text-center mb-16 px-6">
           <span className="text-teal-600 font-bold tracking-widest uppercase text-xs">Professional Tools</span>
           <h2 className="text-4xl md:text-5xl font-serif text-slate-800 mt-2 mb-6">{t('landing.tools.title')}</h2>

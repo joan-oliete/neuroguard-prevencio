@@ -145,7 +145,7 @@ export default function SafetyMap({ onBack }: { onBack: () => void }) {
     return (
         <div className="h-screen w-full flex flex-col bg-slate-50 relative" style={{ minHeight: '100vh' }}>
             {/* Header */}
-            <div className="bg-white p-4 shadow-sm z-10 flex items-center justify-between px-6">
+            <div className="bg-white p-4 shadow-sm z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-6 gap-4 sm:gap-0">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={onBack}
@@ -161,7 +161,7 @@ export default function SafetyMap({ onBack }: { onBack: () => void }) {
                     </div>
                 </div>
 
-                <div className="flex gap-3 items-center">
+                <div className="flex flex-wrap gap-2 sm:gap-3 items-center w-full sm:w-auto">
                     <button
                         onClick={() => setIsAddMode(!isAddMode)}
                         className={`px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 transition-all ${isAddMode

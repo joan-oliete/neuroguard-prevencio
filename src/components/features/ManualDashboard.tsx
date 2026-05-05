@@ -388,46 +388,46 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
   const manualRef = doc(db, `users/${userId}/manuals`, manualId);
 
   return (
-    <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden min-h-[700px] flex flex-col md:flex-row">
+    <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden md:min-h-[700px] flex flex-col md:flex-row">
       {/* Sidebar Navigation */}
-      <div className="md:w-72 bg-slate-50/50 border-r border-slate-100 flex flex-row md:flex-col overflow-x-auto md:overflow-visible flex-shrink-0 p-4 gap-2">
+      <div className="md:w-72 bg-slate-50/50 border-r border-slate-100 flex flex-col flex-shrink-0 p-4 gap-2">
 
         <div className="hidden md:block px-4 py-4 mb-2">
           <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Manual de Recuperació</h3>
         </div>
 
-        <button onClick={() => setActiveSection('motivations')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 ${activeSection === 'motivations' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
-          <span className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs ${activeSection === 'motivations' ? 'bg-white/20' : 'bg-slate-200'}`}>1</span>
+        <button onClick={() => setActiveSection('motivations')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'motivations' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'motivations' ? 'bg-white/20' : 'bg-slate-200'}`}>1</span>
           Punt de Partida
         </button>
 
-        <button onClick={() => setActiveSection('values')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 ${activeSection === 'values' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
-          <span className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs ${activeSection === 'values' ? 'bg-white/20' : 'bg-slate-200'}`}>2</span>
+        <button onClick={() => setActiveSection('values')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'values' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'values' ? 'bg-white/20' : 'bg-slate-200'}`}>2</span>
           Brúixola de Valors
         </button>
 
-        <button onClick={() => setActiveSection('patterns')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 ${activeSection === 'patterns' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
-          <span className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs ${activeSection === 'patterns' ? 'bg-white/20' : 'bg-slate-200'}`}>3</span>
+        <button onClick={() => setActiveSection('patterns')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'patterns' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'patterns' ? 'bg-white/20' : 'bg-slate-200'}`}>3</span>
           Patrons & Trampes
         </button>
 
-        <button onClick={() => setActiveSection('support')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 ${activeSection === 'support' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
-          <span className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs ${activeSection === 'support' ? 'bg-white/20' : 'bg-slate-200'}`}>4</span>
+        <button onClick={() => setActiveSection('support')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'support' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'support' ? 'bg-white/20' : 'bg-slate-200'}`}>4</span>
           Xarxa de Suport
         </button>
 
-        <button onClick={() => setActiveSection('crisis')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 ${activeSection === 'crisis' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
-          <span className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs ${activeSection === 'crisis' ? 'bg-white/20' : 'bg-slate-200'}`}>5</span>
+        <button onClick={() => setActiveSection('crisis')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'crisis' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'crisis' ? 'bg-white/20' : 'bg-slate-200'}`}>5</span>
           Pla de Crisi
         </button>
 
-        <button onClick={() => setActiveSection('review')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 ${activeSection === 'review' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
-          <span className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs ${activeSection === 'review' ? 'bg-white/20' : 'bg-slate-200'}`}>6</span>
+        <button onClick={() => setActiveSection('review')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 ${activeSection === 'review' ? 'bg-brand-600 text-white shadow-lg shadow-brand-200' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <span className={`flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-lg text-[10px] md:text-xs ${activeSection === 'review' ? 'bg-white/20' : 'bg-slate-200'}`}>6</span>
           Revisió Setmanal
         </button>
 
-        <button onClick={() => setActiveSection('prevention')} className={`p-4 rounded-xl text-left font-bold text-sm transition-all flex items-center gap-3 mt-4 ${activeSection === 'prevention' ? 'bg-indigo-900 text-white shadow-lg' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
-          <LifeBuoy size={18} className={activeSection === 'prevention' ? 'animate-pulse' : ''} />
+        <button onClick={() => setActiveSection('prevention')} className={`p-3 md:p-4 rounded-xl text-left font-bold text-xs md:text-sm transition-all flex items-center gap-3 mt-2 md:mt-4 ${activeSection === 'prevention' ? 'bg-indigo-900 text-white shadow-lg' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}>
+          <LifeBuoy size={16} className={`md:w-[18px] md:h-[18px] ${activeSection === 'prevention' ? 'animate-pulse' : ''}`} />
           Kit d'Emergència
         </button>
       </div>

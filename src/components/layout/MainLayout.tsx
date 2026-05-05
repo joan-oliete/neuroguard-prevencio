@@ -211,7 +211,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
             </div>
 
             {/* Main Content Wrapper */}
-            <main className={`flex-1 min-h-screen transition-all duration-300 md:ml-72 pt-20 md:pt-8 px-4 md:px-8 pb-32 md:pb-24 max-w-[1600px] mx-auto`}>
+            <main className={`flex-1 min-h-screen transition-all duration-300 md:ml-72 pt-20 md:pt-8 px-4 md:px-8 pb-28 md:pb-24 max-w-[1600px] mx-auto`}>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentView}
@@ -224,7 +224,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     </motion.div>
                 </AnimatePresence>
 
-                <div className="mt-12 pt-6 border-t border-slate-200 text-center space-y-2 opacity-60 hover:opacity-100 transition-opacity pb-8">
+                <div className="mt-8 md:mt-12 pt-4 md:pt-6 border-t border-slate-200 text-center space-y-2 opacity-60 hover:opacity-100 transition-opacity pb-4 md:pb-8">
                     <p className="text-xs text-text-muted font-bold flex items-center justify-center gap-2">
                         <Shield size={12} /> Avís de Seguretat
                     </p>
