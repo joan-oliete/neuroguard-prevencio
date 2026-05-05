@@ -7,37 +7,11 @@ interface TheoryDetailModalProps {
     onClose: () => void;
 }
 
-import { generateEducationalVideo } from '../../../services/geminiService';
-
 const TheoryDetailModal: React.FC<TheoryDetailModalProps> = ({ selectedDetail, onClose }) => {
-    const [generating, setGenerating] = React.useState(false);
-    const [videoUrl, setVideoUrl] = React.useState<string | null>(null);
 
     if (!selectedDetail || !ADDICTION_DETAILS[selectedDetail]) return null;
 
     const detail = ADDICTION_DETAILS[selectedDetail];
-
-    const handleGenerateVideo = async () => {
-        setGenerating(true);
-        try {
-            // Attempt to generate real video
-            const url = await generateEducationalVideo(detail.title, detail.description);
-            if (url) {
-                setVideoUrl(url);
-            } else {
-                // Determine mock behavior - simulation
-                // In a real app we might show an error, but for this demo request we show a placeholder success
-                setTimeout(() => {
-                    alert("Simulació: Vídeo generat correctament amb Veo (Model Mock).");
-                    setVideoUrl("https://www.w3schools.com/html/mov_bbb.mp4"); // Placeholder
-                }, 2000);
-            }
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setGenerating(false);
-        }
-    };
 
     return (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md p-4 md:p-8 overflow-y-auto flex items-center justify-center animate-fadeIn">
@@ -54,24 +28,7 @@ const TheoryDetailModal: React.FC<TheoryDetailModalProps> = ({ selectedDetail, o
                     <h2 className="text-4xl font-bold mb-4">{detail.title}</h2>
                     <p className="text-lg opacity-90 leading-relaxed max-w-2xl">{detail.description}</p>
 
-                    {/* Video Generation Button */}
-                    <div className="mt-6 flex flex-col gap-3">
-                        {!videoUrl ? (
-                            <button
-                                onClick={handleGenerateVideo}
-                                disabled={generating}
-                                className="w-fit bg-white/20 hover:bg-white/30 backdrop-blur-md text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 transition-all border border-white/40 shadow-lg disabled:opacity-50 disabled:cursor-wait"
-                            >
-                                <Brain size={18} className={generating ? "animate-pulse" : ""} />
-                                {generating ? "Generant amb Veo..." : "Generar Video-Resum (Veo)"}
-                            </button>
-                        ) : (
-                            <div className="bg-black/20 p-4 rounded-xl backdrop-blur-sm border border-white/10 animate-scaleIn">
-                                <p className="text-sm font-bold mb-2 flex items-center gap-2"><Brain size={14} /> Resultat Veo (Simulat)</p>
-                                <video controls src={videoUrl} className="w-full rounded-lg shadow-lg max-h-64"></video>
-                            </div>
-                        )}
-                    </div>
+
                 </div>
 
                 <div className="p-8 space-y-10">

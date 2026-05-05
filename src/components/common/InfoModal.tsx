@@ -18,7 +18,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center px-4 pt-4 pb-20 sm:p-0">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -42,7 +42,7 @@ export const InfoModal: React.FC<InfoModalProps> = ({
                                 <X size={20} />
                             </button>
                         </div>
-                        <div className="p-6 text-slate-600 max-h-[70vh] overflow-y-auto">
+                        <div className="p-6 text-slate-600 max-h-[85vh] overflow-y-auto">
                             {children}
                         </div>
                     </motion.div>

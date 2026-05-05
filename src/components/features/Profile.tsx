@@ -476,6 +476,29 @@ const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff })
               <div className="border border-slate-200 p-4 rounded-xl whitespace-pre-wrap">
                 {previewManual.weeklyReview || 'Sense revisió registrada.'}
               </div>
+
+              <h2 className="bg-slate-50 p-3 rounded-lg border-l-4 border-brand-500 mt-8 mb-4 font-bold text-xl text-slate-800">7. Punts d'Ancoratge</h2>
+              <ul className="list-disc pl-6 space-y-4">
+                {(previewManual.anchors?.length ? previewManual.anchors : []).map((a: any) => (
+                  <li key={a.id}>
+                    <strong className="text-indigo-900">{a.title}</strong>
+                    <br/><span className="text-slate-600 block mt-1">{a.description}</span>
+                  </li>
+                ))}
+                {!previewManual.anchors?.length && <li>Sense ancoratges registrats.</li>}
+              </ul>
+
+              <h2 className="bg-slate-50 p-3 rounded-lg border-l-4 border-brand-500 mt-8 mb-4 font-bold text-xl text-slate-800">8. Parts Internes</h2>
+              <div className="space-y-4">
+                {(previewManual.internalParts?.length ? previewManual.internalParts : []).map((p: any) => (
+                  <div key={p.id} className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <strong className="block mb-2 text-indigo-900">{p.name} ({p.role})</strong>
+                    <span className="text-slate-600 block mb-1">Necessitat: {p.need}</span>
+                    <span className="text-emerald-700 font-medium">➔ Diàleg: {p.dialogue}</span>
+                  </div>
+                ))}
+                {!previewManual.internalParts?.length && <p>Sense parts internes registrades.</p>}
+              </div>
             </div>
           </div>
         </div>

@@ -19,16 +19,6 @@ const TheoryResources: React.FC = () => {
             Comprèn com el teu cervell i el teu cos interactuen. Basat en els estudis de Nazareth Castellanos, descobreix com l'organisme sencer participa en la teva salut mental.
           </p>
           <div className="flex flex-wrap gap-4">
-            <a 
-              href="/assets/presentacio_nazaret.pdf" 
-              download="presentacio_nazaret.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-white text-indigo-900 px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-indigo-50 hover:scale-105 transition-all"
-            >
-              <Download size={20} />
-              Descarregar Presentació (PDF)
-            </a>
           </div>
         </div>
       </div>
@@ -72,15 +62,15 @@ const TheoryResources: React.FC = () => {
             <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
               <BookOpen className="text-indigo-600" /> Idees Clau
             </h3>
-            <div className="w-full overflow-x-auto custom-scrollbar rounded-2xl shadow-md border border-slate-200">
+            <div className="w-full rounded-2xl shadow-md border border-slate-200 overflow-hidden bg-white">
               <img 
                 src="/assets/infografia_nazaret.jpg" 
                 alt="Infografia Nazareth Castellanos" 
-                className="min-w-[1200px] w-full max-w-none h-auto block"
+                className="w-full h-auto object-contain block"
               />
             </div>
             <p className="text-sm text-slate-500 mt-4 text-center">
-              Aquesta infografia resumeix els punts clau de la neurociència integral del cos. Pots moure la imatge d'esquerra a dreta.
+              Aquesta infografia resumeix els punts clau de la neurociència integral del cos. Fes zoom per veure els detalls.
             </p>
           </div>
         ) : activeTab === 'flashcards' ? (
