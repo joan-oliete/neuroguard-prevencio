@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, createInitialUser, auth, sendPasswordResetEmail, googleProvider } from '../../services/firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, createInitialUser, auth, sendPasswordResetEmail, googleProvider, onAuthStateChanged } from '../../services/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { Capacitor } from '@capacitor/core';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
@@ -285,9 +285,9 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
       <footer className="bg-slate-900 text-slate-400 py-12 text-center text-xs uppercase tracking-widest border-t border-slate-800">
         <p>{t('landing.features.footer')}</p>
         <div className="flex justify-center gap-6 mt-6">
-          <a href="#" className="hover:text-white transition-colors">Privacy</a>
-          <a href="#" className="hover:text-white transition-colors">Terms</a>
-          <a href="#" className="hover:text-white transition-colors">Contact</a>
+          <a href="https://neuroguard-6fff8.firebaseapp.com/privacy_policy.html" className="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="https://neuroguard-6fff8.firebaseapp.com/privacy_policy.html" className="hover:text-white transition-colors">Terms of Service</a>
+          <a href="mailto:joanolietegu7@gmail.com" className="hover:text-white transition-colors">Contact</a>
         </div>
       </footer>
     </>
@@ -372,12 +372,25 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
       if (Capacitor.isNativePlatform()) {
         await FirebaseAuthentication.signInWithGoogle();
         // Native auth syncs with JS SDK automatically
-        // We will call createInitialUser in App.tsx or use a timeout here to ensure it's created
-        setTimeout(async () => {
-          if (auth.currentUser) {
-            await createInitialUser(auth.currentUser);
-          }
-        }, 2000);
+        // Use onAuthStateChanged to reliably wait until auth.currentUser is populated
+        await new Promise<void>((resolve) => {
+          const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+              unsubscribe();
+              try {
+                await createInitialUser(user);
+              } catch (e) {
+                console.error("Error creating initial user:", e);
+              }
+              resolve();
+            }
+          });
+          // Fallback timeout in case the listener doesn't fire
+          setTimeout(() => {
+            unsubscribe();
+            resolve();
+          }, 5000);
+        });
       } else {
         const credential = await signInWithPopup(auth, googleProvider);
         await createInitialUser(credential.user);
