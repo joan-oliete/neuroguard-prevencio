@@ -6,6 +6,8 @@ import {
 import { UserProfile, DailyStat } from '../../types';
 import { Map, Shield, Calendar, Image as ImageIcon, Sparkles, HeartPulse, Brain, Sunrise, Footprints, BookOpen, Info } from 'lucide-react';
 import { InfoModal } from '../common/InfoModal';
+import { remoteConfig } from '../../services/firebase';
+import { getString, fetchAndActivate } from 'firebase/remote-config';
 
 interface DashboardProps {
   user: UserProfile;
@@ -17,12 +19,29 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
   const { t } = useTranslation();
   const [greeting, setGreeting] = useState('');
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [welcomeMessage, setWelcomeMessage] = useState('Benvingut/da a NeuroGuard');
 
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour < 12) setGreeting('Bon dia');
     else if (hour < 20) setGreeting('Bona tarda');
     else setGreeting('Bona nit');
+
+    // Test funcional de Remote Config
+    const loadRemoteConfig = async () => {
+      try {
+        // Redueix l'interval per al desenvolupament
+        remoteConfig.settings.minimumFetchIntervalMillis = 0; 
+        await fetchAndActivate(remoteConfig);
+        const msg = getString(remoteConfig, 'welcome_message');
+        if (msg) {
+          setWelcomeMessage(msg);
+        }
+      } catch (e) {
+        console.warn("Error loading remote config:", e);
+      }
+    };
+    loadRemoteConfig();
   }, []);
 
   return (
@@ -44,11 +63,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user, data, onNavigate }) => {
             <div>
               <p className="text-brand-200 text-sm font-medium tracking-wider uppercase mb-1">{greeting}</p>
               <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-2 text-white drop-shadow-md flex items-center gap-3">
-                {user.name || 'Benvingut/da'}
+                {user.name ? `${user.name}` : welcomeMessage}
                 <button onClick={() => setShowHelpModal(true)} className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm" title="Informació">
                   <Info size={24} className="text-white" />
                 </button>
               </h2>
+              <p className="text-brand-100 text-sm md:text-base max-w-md font-medium mb-1">
+                {welcomeMessage}
+              </p>
               <p className="text-brand-100 text-sm md:text-base max-w-md">
                 Aquest és el teu espai segur. Tria una eina per continuar cuidant el teu benestar avui.
               </p>

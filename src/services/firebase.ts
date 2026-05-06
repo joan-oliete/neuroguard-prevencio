@@ -63,6 +63,56 @@ export const db = initializeFirestore(app, {
   })
 });
 
+// Inicialització de nous serveis (Analytics, AppCheck, RemoteConfig)
+import { getAnalytics, isSupported } from "firebase/analytics";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { getRemoteConfig, fetchAndActivate } from "firebase/remote-config";
+import { GoogleAuthProvider } from "firebase/auth";
+
+// Google Auth Provider
+export const googleProvider = new GoogleAuthProvider();
+// The Web client ID from Google Cloud Console
+const WEB_CLIENT_ID = "951816159080-g29ta0o5g33qhcp8boiih31p5gmitod7.apps.googleusercontent.com";
+
+googleProvider.setCustomParameters({
+  prompt: 'select_account',
+  client_id: WEB_CLIENT_ID
+});
+
+export let analytics: any = null;
+isSupported().then((supported) => {
+  if (supported) {
+    analytics = getAnalytics(app);
+  }
+}).catch(console.warn);
+
+// App Check (Només per web. A Capacitor utilitzarem el plugin natiu més endavant)
+// S'utilitzarà un token de debug en localhost
+if (typeof window !== 'undefined') {
+  // Configura RECAPTCHA_V3_SITE_KEY (Fictici per ara fins que l'usuari el crei a la consola)
+  // Per local test pots activar el debug token a la consola de navegador
+  // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  try {
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider('6Lc_YOUR_RECAPTCHA_KEY_HERE'), // Caldrà canviar-ho
+      isTokenAutoRefreshEnabled: true
+    });
+  } catch(e) {
+    console.warn("App Check failed to initialize", e);
+  }
+}
+
+export const remoteConfig = getRemoteConfig(app);
+// Configuració per defecte de Remote Config
+remoteConfig.settings.minimumFetchIntervalMillis = 3600000; // 1 hora
+remoteConfig.defaultConfig = {
+  "welcome_message": "Benvingut/da a NeuroGuard",
+  "show_new_feature": false
+};
+
+// Intenta baixar els paràmetres de Remote Config i activar-los
+fetchAndActivate(remoteConfig).catch(console.warn);
+
 let messaging: Messaging | undefined;
 try {
   messaging = getMessaging(app);
@@ -97,13 +147,12 @@ export const createInitialUser = async (user: FirebaseUser) => {
     // Create user profile
     await setDoc(userDocRef, {
       email: user.email,
-      name: '',
-      surname: '',
+      name: user.displayName?.split(' ')[0] || '',
+      surname: user.displayName?.split(' ').slice(1).join(' ') || '',
       phone: '',
       activeManualId: newManualRef.id,
       lastConsumptionDate: null,
       createdAt: serverTimestamp(),
-      // Initialize new fields
       type: 'adult',
       streak: 0,
       currency: 0,
