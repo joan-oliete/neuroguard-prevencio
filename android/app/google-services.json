@@ -12,7 +12,28 @@
           "package_name": "com.neuroguard.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "951816159080-5itmb38vgtpovqj1ov3gblrqkiugaua7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neuroguard.app",
+            "certificate_hash": "b395cb96b4bc1b9c4ecfdd0671f41312f41dfced"
+          }
+        },
+        {
+          "client_id": "951816159080-sb70jjn3l9a4egd08t393hn2hisml6k5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neuroguard.app",
+            "certificate_hash": "9edc86060917ccf07ba90937b1655952321b52fb"
+          }
+        },
+        {
+          "client_id": "951816159080-g29ta0o5g33qhcp8boiih31p5gmitod7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBiGJPddWtHCqYBkjkcZeyLt6SmnAfnT3c"
@@ -20,7 +41,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951816159080-g29ta0o5g33qhcp8boiih31p5gmitod7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
