@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { UserProfile, Course } from '../../types';
-import { Play, CheckCircle, HelpCircle, Trophy, ArrowRight, X, Clock, Award, BookOpen, AlertCircle, Lock, Download, FileText, Share2, Star, Video, Loader } from 'lucide-react';
+import { Play, CheckCircle, HelpCircle, Trophy, ArrowRight, X, Clock, Award, BookOpen, AlertCircle, Download, FileText, Share2, Star, Video, Loader } from 'lucide-react';
 import { generateEducationalVideo } from '../../services/geminiService';
 
 // --- TYPES EXTENDED FOR THIS COMPONENT ---
@@ -35,8 +35,7 @@ interface ExtendedCourse extends Course {
   modules: CourseModule[];
   quiz: QuizQuestion[];
   resources: CourseResource[];
-  minLevelReq?: number; // Level required to unlock
-}
+  resources: CourseResource[];
 
 // --- DATA ---
 
@@ -49,7 +48,6 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
     imageColor: 'from-purple-600 to-indigo-800',
     icon: '🧠',
     completed: false,
-    points: 500,
     difficulty: 'Intermedi',
     description: "Entén com la dopamina i el circuit de recompensa del cervell es veuen alterats per les pantalles i el joc, i com la neuroplasticitat et permet recuperar-te.",
     modules: [
@@ -97,7 +95,6 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
     imageColor: 'from-blue-500 to-cyan-600',
     icon: '⚡',
     completed: true,
-    points: 300,
     difficulty: 'Principiant',
     description: "Aprèn a recuperar la teva capacitat de concentració en un món ple de distraccions digitals. Tècniques pràctiques per a l'estudi i la feina.",
     modules: [
@@ -130,7 +127,6 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
     imageColor: 'from-indigo-900 to-slate-800',
     icon: '🌙',
     completed: false,
-    points: 450,
     difficulty: 'Principiant',
     description: "Descobreix com la llum blava de les pantalles afecta els teus cicles circadians i aprèn rutines per descansar millor.",
     modules: [
@@ -161,9 +157,7 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
     imageColor: 'from-emerald-600 to-green-800',
     icon: '🛡️',
     completed: false,
-    points: 800,
     difficulty: 'Avançat',
-    minLevelReq: 5,
     description: "Eines per protegir els teus diners. Com funcionen les probabilitats reals del joc i com establir barreres d'accés als fons.",
     modules: [
         {
@@ -195,7 +189,6 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
     imageColor: 'from-teal-500 to-emerald-600',
     icon: '🍃',
     completed: false,
-    points: 600,
     difficulty: 'Intermedi',
     description: "Tècniques pràctiques per reduir l'ansietat sense recórrer a comportaments addictius. Respiració, grounding i gestió emocional.",
     modules: [
@@ -235,7 +228,6 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
     imageColor: 'from-amber-500 to-orange-600',
     icon: '🧘',
     completed: false,
-    points: 700,
     difficulty: 'Intermedi',
     description: "Aprèn a observar els teus impulsos sense actuar. Tècniques de consciència plena basades en l'evidència per prevenir recaigudes i enfortir la resistència mental.",
     modules: [
@@ -276,7 +268,6 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
     imageColor: 'from-pink-500 to-rose-600',
     icon: '📵',
     completed: false,
-    points: 500,
     difficulty: 'Principiant',
     description: "Aprèn a gestionar la por a perdre't coses (FOMO), la necessitat de connexió constant i el Phubbing, per establir límits digitals saludables en el teu dia a dia.",
     modules: [
@@ -323,7 +314,6 @@ const INITIAL_COURSES_DATA: ExtendedCourse[] = [
     imageColor: 'from-blue-600 to-indigo-500',
     icon: '🗣️',
     completed: false,
-    points: 600,
     difficulty: 'Intermedi',
     description: "Comunica't millor per millorar les teves relacions. Tècniques pràctiques per dir 'no', escolta activa (OARS) i reduir la impulsivitat.",
     modules: [
@@ -646,15 +636,10 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
                         >
                             {isLastModule ? 'Fer el Test' : 'Següent Lliçó'} <ArrowRight className="w-5 h-5" />
                         </button>
-                    ) : (
                         <div className="space-y-4 text-center">
-                            <div className="text-sm text-slate-500">
-                                Puntuació: <span className="font-bold text-slate-800">{score}/{course.quiz.length}</span>
-                            </div>
                             <button 
                                 onClick={handleFinishQuiz}
-                                disabled={quizAnswers.includes(-1)}
-                                className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-green-200 transition-all flex items-center justify-center gap-2"
+                                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-green-200 transition-all flex items-center justify-center gap-2"
                             >
                                 <Trophy className="w-5 h-5" /> Finalitzar Curs
                             </button>
@@ -680,10 +665,6 @@ const CorporateLearningHub: React.FC<CorporateLearningHubProps> = ({ user }) => 
   const [filter, setFilter] = useState<'all' | 'progress' | 'completed'>('all');
 
   const handleStartCourse = (course: ExtendedCourse) => {
-    if (course.minLevelReq && user.level < course.minLevelReq) {
-        alert(`Necessites ser nivell ${course.minLevelReq} per accedir a aquest contingut.`);
-        return;
-    }
     setActiveCourse(course);
   };
 
@@ -785,24 +766,12 @@ const CorporateLearningHub: React.FC<CorporateLearningHubProps> = ({ user }) => 
         {/* Course Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredCourses.map((course) => {
-              const isLocked = course.minLevelReq && user.level < course.minLevelReq;
-              
               return (
               <div 
                 key={course.id}
                 onClick={() => handleStartCourse(course)}
-                className={`bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col h-full relative ${isLocked ? 'grayscale opacity-80' : ''}`}
+                className={`bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col h-full relative`}
               >
-                {/* Locked Overlay */}
-                {isLocked && (
-                    <div className="absolute inset-0 bg-slate-900/50 z-20 flex items-center justify-center backdrop-blur-[1px]">
-                        <div className="bg-white p-4 rounded-xl shadow-lg flex flex-col items-center">
-                            <Lock className="w-8 h-8 text-slate-800 mb-2" />
-                            <span className="font-bold text-slate-800 text-sm">Bloquejat</span>
-                            <span className="text-xs text-slate-500">Nivell {course.minLevelReq} requerit</span>
-                        </div>
-                    </div>
-                )}
 
                 {/* Visual Header */}
                 <div className={`h-36 bg-gradient-to-br ${course.imageColor} relative p-6 flex flex-col justify-between overflow-hidden`}>
@@ -832,7 +801,6 @@ const CorporateLearningHub: React.FC<CorporateLearningHubProps> = ({ user }) => 
                   
                   <div className="flex items-center gap-4 text-xs font-medium text-slate-400 border-t border-slate-100 pt-4 mt-auto">
                     <span className="flex items-center gap-1"><Clock size={14}/> {course.duration}</span>
-                    <span className="flex items-center gap-1"><Trophy size={14} className="text-yellow-500"/> {course.points} XP</span>
                     <span className={`px-2 py-0.5 rounded text-[10px] uppercase ${course.difficulty === 'Principiant' ? 'bg-green-100 text-green-700' : course.difficulty === 'Intermedi' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
                         {course.difficulty}
                     </span>
@@ -870,24 +838,6 @@ const CorporateLearningHub: React.FC<CorporateLearningHubProps> = ({ user }) => 
             <p className="text-xs text-slate-500 text-center">Continua així! Estàs a la meitat.</p>
         </div>
 
-        {/* Badges */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-          <h3 className="font-bold text-slate-800 mb-4">Les teves Insígnies</h3>
-          <div className="grid grid-cols-4 gap-2">
-            {[
-                { i: '🚀', t: 'Inici', c: 'bg-blue-50 border-blue-200' },
-                { i: '🧠', t: 'Savi', c: 'bg-purple-50 border-purple-200' },
-                { i: '🔥', t: 'Ratxa', c: 'bg-orange-50 border-orange-200' },
-                { i: '🔒', t: '?', c: 'bg-slate-50 border-slate-200 opacity-50 grayscale' },
-                { i: '🔒', t: '?', c: 'bg-slate-50 border-slate-200 opacity-50 grayscale' },
-                { i: '🔒', t: '?', c: 'bg-slate-50 border-slate-200 opacity-50 grayscale' },
-            ].map((badge, idx) => (
-                <div key={idx} className={`aspect-square rounded-xl border flex flex-col items-center justify-center ${badge.c} cursor-help`} title={badge.t}>
-                    <span className="text-xl">{badge.i}</span>
-                </div>
-            ))}
-          </div>
-        </div>
 
         {/* Did you know card */}
         <div className="bg-indigo-50 rounded-2xl p-6 border border-indigo-100">

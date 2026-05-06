@@ -8,9 +8,10 @@ interface ManualLoaderProps {
     manualId: string;
     userId: string;
     onNavigate?: (view: string) => void;
+    initialSection?: string;
 }
 
-const ManualLoader: React.FC<ManualLoaderProps> = ({ manualId, userId, onNavigate }) => {
+const ManualLoader: React.FC<ManualLoaderProps> = ({ manualId, userId, onNavigate, initialSection }) => {
     const [manual, setManual] = useState<RelapseManual | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -43,7 +44,7 @@ const ManualLoader: React.FC<ManualLoaderProps> = ({ manualId, userId, onNavigat
     if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
     if (!manual) return null;
 
-    return <ManualDashboard manual={manual} manualId={manualId} userId={userId} onNavigate={onNavigate} />;
+    return <ManualDashboard manual={manual} manualId={manualId} userId={userId} onNavigate={onNavigate} initialSection={initialSection} />;
 };
 
 export default ManualLoader;

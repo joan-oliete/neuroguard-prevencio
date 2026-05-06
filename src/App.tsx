@@ -179,6 +179,11 @@ const AppContent = () => {
            onShowCoolingOff={() => setShowCoolingOff(true)}
         />;
 
+      case 'support':
+        return userProfile.activeManualId ? (
+          <ManualLoader manualId={userProfile.activeManualId} userId={user.uid} onNavigate={setCurrentView} initialSection="support" />
+        ) : <div className="p-8 text-center">No active manual</div>;
+
       case 'crisis':
         return <CrisisComponent
           plan={crisisPlan}

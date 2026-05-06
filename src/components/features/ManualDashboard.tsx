@@ -13,6 +13,8 @@ interface ManualDashboardProps {
   userId: string;
   isReadOnly?: boolean;
   onBack?: () => void;
+  onNavigate?: (view: string) => void;
+  initialSection?: string;
 }
 
 const ALL_VALUES = ['Honestedat', 'Connexió', 'Respecte', 'Creativitat', 'Aprenentatge', 'Salut', 'Seguretat', 'Aventura', 'Compassió', 'Llibertat', 'Família', 'Amistat', 'Creixement', 'Pau interior', 'Diversió'];
@@ -301,9 +303,12 @@ const SupportSection = ({ manual, manualRef }: { manual: RelapseManual, manualRe
       {/* Support Network */}
       <div>
         <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"><Shield className="text-green-600" /> Xarxa de Suport</h3>
+        <p className="text-sm text-slate-500 mb-4">
+          Si afegeixes el número de telèfon a "Contacte", després quan editis el Pla d'Acció Urgent (Pla de Crisi) i posis aquest mateix número, apareixerà automàticament la icona verda de WhatsApp per obrir el xat directament.
+        </p>
         <div className="grid md:grid-cols-3 gap-2 mb-4">
           <input value={name} onChange={e => setName(e.target.value)} placeholder="Nom" className="border p-2 rounded-lg" />
-          <input value={contact} onChange={e => setContact(e.target.value)} placeholder="Contacte" className="border p-2 rounded-lg" />
+          <input value={contact} onChange={e => setContact(e.target.value)} placeholder="Contacte (Telèfon)" className="border p-2 rounded-lg" />
           <input value={role} onChange={e => setRole(e.target.value)} placeholder="Rol (ex: escolta)" className="border p-2 rounded-lg" />
         </div>
         <button onClick={addSupport} className="w-full bg-green-600 text-white py-2 rounded-lg font-bold mb-4 shadow-md hover:bg-green-700 transition-colors">Afegir Persona</button>
@@ -477,10 +482,14 @@ const InternalPartsSection = ({ manual, manualRef }: { manual: RelapseManual, ma
   );
 };
 
-const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, userId }) => {
-  const [activeSection, setActiveSection] = useState('motivations');
+const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, userId, initialSection }) => {
+  const [activeSection, setActiveSection] = useState(initialSection || 'motivations');
   const [showHelpModal, setShowHelpModal] = useState(false);
   const manualRef = doc(db, `users/${userId}/manuals`, manualId);
+
+  React.useEffect(() => {
+    if (initialSection) setActiveSection(initialSection);
+  }, [initialSection]);
 
   return (
     <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden min-h-[75vh] md:min-h-[700px] flex flex-col md:flex-row">
@@ -557,7 +566,7 @@ const ManualDashboard: React.FC<ManualDashboardProps> = ({ manual, manualId, use
         {activeSection === 'anchors' && <AnchorsSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'parts' && <InternalPartsSection manual={manual} manualRef={manualRef} />}
         {activeSection === 'review' && <ReviewSection manual={manual} manualRef={manualRef} />}
-        {activeSection === 'prevention' && <PreventionSection />}
+        {activeSection === 'prevention' && <PreventionSection onNavigate={(view) => setActiveSection(view)} />}
       </div>
 
       {/* Modal Ajuda */}

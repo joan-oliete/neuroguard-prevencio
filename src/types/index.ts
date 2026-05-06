@@ -151,7 +151,6 @@ export interface Course {
   imageColor: string;
   icon: string;
   completed: boolean;
-  points: number;
 }
 
 export interface LeaderboardEntry {
