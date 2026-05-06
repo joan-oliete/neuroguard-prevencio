@@ -66,6 +66,8 @@ export const db = initializeFirestore(app, {
 // Inicialització de nous serveis (Analytics, AppCheck, RemoteConfig)
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { Capacitor } from '@capacitor/core';
+import { FirebaseAppCheck } from '@capacitor-firebase/app-check';
 import { getRemoteConfig, fetchAndActivate } from "firebase/remote-config";
 import { GoogleAuthProvider } from "firebase/auth";
 
@@ -86,19 +88,25 @@ isSupported().then((supported) => {
   }
 }).catch(console.warn);
 
-// App Check (Només per web. A Capacitor utilitzarem el plugin natiu més endavant)
-// S'utilitzarà un token de debug en localhost
-if (typeof window !== 'undefined') {
+// App Check
+if (Capacitor.isNativePlatform()) {
+  // Nadiu (Android/iOS): Utilitza Play Integrity o DeviceCheck
+  FirebaseAppCheck.initialize({
+    provider: 'playIntegrity', // A iOS usarà DeviceCheck/AppAttest automàticament segons config
+    isTokenAutoRefreshEnabled: true,
+  }).catch(e => console.warn("Native App Check failed to initialize", e));
+} else if (typeof window !== 'undefined') {
+  // Web: Utilitza reCAPTCHA v3
   // Configura RECAPTCHA_V3_SITE_KEY (Fictici per ara fins que l'usuari el crei a la consola)
   // Per local test pots activar el debug token a la consola de navegador
   // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
   try {
     initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider('6Lc_YOUR_RECAPTCHA_KEY_HERE'), // Caldrà canviar-ho
+      provider: new ReCaptchaV3Provider('6Lc_YOUR_RECAPTCHA_KEY_HERE'), // Caldrà canviar-ho per la teva clau real Web
       isTokenAutoRefreshEnabled: true
     });
   } catch(e) {
-    console.warn("App Check failed to initialize", e);
+    console.warn("Web App Check failed to initialize", e);
   }
 }
 
