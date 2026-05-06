@@ -33,13 +33,7 @@ const LoadingSpinner = ({ fullScreen = false, text }: { fullScreen?: boolean; te
   </div>
 );
 
-// --- PROTECTED ROUTE ---
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
-  if (loading) return <LoadingSpinner fullScreen />;
-  if (!user) return <Navigate to="/login" replace />;
-  return <>{children}</>;
-};
+// --- PROTECTED ROUTE REMOVED ---
 
 // --- APP CONTENT ---
 const AppContent = () => {
@@ -257,15 +251,15 @@ const App = () => {
       <NotificationManager />
       <div className="bg-gray-100 min-h-screen text-slate-800 font-sans overflow-x-hidden">
         <Routes>
-          <Route path="/login" element={!user ? <Auth /> : <Navigate to="/" replace />} />
+          <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/*" element={
-            <ProtectedRoute>
+            !user ? <Auth /> : (
               <VirtualTherapistProvider>
                 <MapProvider>
                   <AppContent />
                 </MapProvider>
               </VirtualTherapistProvider>
-            </ProtectedRoute>
+            )
           } />
         </Routes>
       </div>
