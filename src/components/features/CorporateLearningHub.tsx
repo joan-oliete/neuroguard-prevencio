@@ -35,7 +35,7 @@ interface ExtendedCourse extends Course {
   modules: CourseModule[];
   quiz: QuizQuestion[];
   resources: CourseResource[];
-  resources: CourseResource[];
+}
 
 // --- DATA ---
 
@@ -636,6 +636,7 @@ const CoursePlayer = ({ course, onClose, onComplete, onUpdateVideo, userName }: 
                         >
                             {isLastModule ? 'Fer el Test' : 'Següent Lliçó'} <ArrowRight className="w-5 h-5" />
                         </button>
+                    ) : (
                         <div className="space-y-4 text-center">
                             <button 
                                 onClick={handleFinishQuiz}
