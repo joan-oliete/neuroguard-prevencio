@@ -344,11 +344,14 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
       }
     } catch (err: any) {
       console.error(err);
-      let msg = "Error";
-      if (err.code === 'auth/wrong-password') msg = "Contrasenya incorrecta / Incorrect password";
-      if (err.code === 'auth/user-not-found') msg = "Usuari no trobat / User not found";
-      if (err.code === 'auth/email-already-in-use') msg = "Email en ús / Email already in use";
-      if (err.message === 'privacy-rejected') msg = t('profile.alerts.privacy_required', 'Please accept Privacy Policy');
+      let msg = `Error: ${err.message || err.code || "Desconegut"}`;
+      if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+        msg = "Credencials incorrectes / Invalid credentials";
+      } else if (err.code === 'auth/email-already-in-use') {
+        msg = "Email en ús / Email already in use";
+      } else if (err.message === 'privacy-rejected') {
+        msg = t('profile.alerts.privacy_required', 'Please accept Privacy Policy');
+      }
       setError(msg);
     } finally {
       setLoading(false);
@@ -385,8 +388,8 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
         setError(t('profile.alerts.privacy_required', 'Please accept Privacy Policy'));
       } else {
         // Ignorem errors d'usuari tancant el popup (Canceled)
-        if (err.code !== 'auth/popup-closed-by-user' && !err.message?.includes('canceled')) {
-           setError("Error d'autenticació amb Google.");
+        if (err.code !== 'auth/popup-closed-by-user' && !err.message?.includes('canceled') && !err.message?.includes('12501')) {
+           setError(`Error de Google: ${err.message || err.code || "Desconegut"}`);
         }
       }
     } finally {

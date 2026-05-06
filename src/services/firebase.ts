@@ -102,7 +102,7 @@ if (Capacitor.isNativePlatform()) {
   // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
   try {
     initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider('6Lc_YOUR_RECAPTCHA_KEY_HERE'), // Caldrà canviar-ho per la teva clau real Web
+      provider: new ReCaptchaV3Provider('6LeWQNwsAAAAABUZtJRuRnxm43ElfQ9kxUQVngXQ'), // Clau reCAPTCHA Enterprise de l'usuari
       isTokenAutoRefreshEnabled: true
     });
   } catch(e) {
