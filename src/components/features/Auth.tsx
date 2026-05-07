@@ -57,34 +57,35 @@ const VideoModal = ({ isOpen, src, type = 'image', onClose }: VideoProps) => {
 
 const Navbar = ({ view, setView, scrolled }: { view: string, setView: (v: 'landing' | 'login' | 'register') => void, scrolled: boolean }) => {
   const { t, i18n } = useTranslation();
+  const isNative = Capacitor.isNativePlatform();
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${scrolled || view !== 'landing' ? 'bg-white/90 backdrop-blur-md py-4 shadow-sm border-b border-slate-100' : 'bg-transparent py-6'
-      }`}>
-      <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${scrolled || view !== 'landing' ? 'bg-white/90 backdrop-blur-md pb-4 shadow-sm border-b border-slate-100' : 'bg-transparent pb-6'
+      } ${isNative ? 'pt-14' : (scrolled || view !== 'landing' ? 'pt-4' : 'pt-6')}`}>
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <img
             src="/assets/NeuroGuard_Icona_Final.png"
             alt="NeuroGuard Logo"
-            className="w-10 h-10 rounded-xl object-cover shadow-md"
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl object-cover shadow-md"
           />
-          <span className={`text-xl font-serif font-bold tracking-tight transition-colors duration-500 ${(scrolled || view !== 'landing') ? 'text-slate-800' : 'text-white'
+          <span className={`text-lg sm:text-xl font-serif font-bold tracking-tight transition-colors duration-500 hidden lg:block ${(scrolled || view !== 'landing') ? 'text-slate-800' : 'text-white'
             }`}>
             NeuroGuard
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider ${scrolled || view !== 'landing' ? 'text-slate-600' : 'text-white/80'}`}>
-            <button onClick={() => i18n.changeLanguage('ca')} className={`hover:opacity-100 transition-opacity ${i18n.language === 'ca' ? 'opacity-100 underline' : 'opacity-60'}`}>CA</button>
-            <button onClick={() => i18n.changeLanguage('es')} className={`hover:opacity-100 transition-opacity ${i18n.language === 'es' ? 'opacity-100 underline' : 'opacity-60'}`}>ES</button>
-            <button onClick={() => i18n.changeLanguage('en')} className={`hover:opacity-100 transition-opacity ${i18n.language === 'en' ? 'opacity-100 underline' : 'opacity-60'}`}>EN</button>
+        <div className="flex items-center gap-2 sm:gap-4 ml-auto">
+          <div className={`flex items-center gap-1 sm:gap-2 bg-white/10 backdrop-blur-sm rounded-full p-1 sm:p-1.5 border ${scrolled || view !== 'landing' ? 'border-slate-200 bg-slate-100/50' : 'border-white/20'}`}>
+            <button onClick={() => i18n.changeLanguage('ca')} className={`px-2 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all ${i18n.language?.startsWith('ca') || i18n.language === 'ca-ES' ? (scrolled || view !== 'landing' ? 'bg-white text-teal-600 shadow-sm' : 'bg-white/20 text-white') : (scrolled || view !== 'landing' ? 'text-slate-500 hover:text-slate-700' : 'text-white/60 hover:text-white/90')}`}>CA</button>
+            <button onClick={() => i18n.changeLanguage('es')} className={`px-2 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all ${i18n.language?.startsWith('es') ? (scrolled || view !== 'landing' ? 'bg-white text-teal-600 shadow-sm' : 'bg-white/20 text-white') : (scrolled || view !== 'landing' ? 'text-slate-500 hover:text-slate-700' : 'text-white/60 hover:text-white/90')}`}>ES</button>
+            <button onClick={() => i18n.changeLanguage('en')} className={`px-2 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all ${i18n.language?.startsWith('en') ? (scrolled || view !== 'landing' ? 'bg-white text-teal-600 shadow-sm' : 'bg-white/20 text-white') : (scrolled || view !== 'landing' ? 'text-slate-500 hover:text-slate-700' : 'text-white/60 hover:text-white/90')}`}>EN</button>
           </div>
 
           {view === 'landing' ? (
             <button
               onClick={() => setView('login')}
-              className={`text-xs md:text-sm font-bold uppercase tracking-widest hover:scale-105 transition-transform px-6 py-2.5 rounded-full border shadow-sm ${scrolled ? 'bg-teal-600 border-teal-600 text-white' : 'bg-white/10 border-white/40 text-white hover:bg-white hover:text-teal-900'
+              className={`text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-widest hover:scale-105 transition-transform px-3 sm:px-6 py-1.5 sm:py-2.5 rounded-full border shadow-sm ${scrolled ? 'bg-teal-600 border-teal-600 text-white' : 'bg-white/10 border-white/40 text-white hover:bg-white hover:text-teal-900'
                 }`}
             >
               {t('landing.nav.login')}
@@ -238,7 +239,7 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
               {t('landing.dashboard_preview.desc')}
             </p>
             <ul className="space-y-4 pt-4">
-              {[t('landing.dashboard_preview.list.check_ins'), 'Diari Clínic i Reflexions', t('landing.dashboard_preview.list.crisis')].map((feat, i) => (
+              {[t('landing.dashboard_preview.list.check_ins'), t('landing.dashboard_preview.list.diary', 'Diari Clínic i Reflexions'), t('landing.dashboard_preview.list.crisis')].map((feat, i) => (
                 <li key={i} className="flex items-center gap-3 text-slate-700 font-medium">
                   <div className="w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-xs">✓</div>
                   {feat}
@@ -252,7 +253,7 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
       {/* THERAPEUTIC TOOLS CAROUSEL */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="text-center mb-16 px-6">
-          <span className="text-teal-600 font-bold tracking-widest uppercase text-xs">Professional Tools</span>
+          <span className="text-teal-600 font-bold tracking-widest uppercase text-xs">{t('landing.tools.badge', 'Eines Professionals')}</span>
           <h2 className="text-4xl md:text-5xl font-serif text-slate-800 mt-2 mb-6">{t('landing.tools.title')}</h2>
           <p className="text-xl text-slate-500 font-light max-w-2xl mx-auto">{t('landing.tools.subtitle')}</p>
         </div>
@@ -269,23 +270,23 @@ const LandingPage = ({ setView, onOpenMedia }: { setView: (v: 'landing' | 'login
       <section className="py-32 bg-teal-600 relative overflow-hidden text-center">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="max-w-3xl mx-auto px-6 relative z-10">
-          <h2 className="text-4xl md:text-6xl font-serif text-white mb-8">Ready to reclaim your life?</h2>
-          <p className="text-white/80 text-xl font-light mb-12">Join the community that understands your journey.</p>
+          <h2 className="text-4xl md:text-6xl font-serif text-white mb-8">{t('landing.cta_section.title')}</h2>
+          <p className="text-white/80 text-xl font-light mb-12">{t('landing.cta_section.subtitle')}</p>
           <button
             onClick={() => setView('register')}
             className="px-12 py-5 bg-white text-teal-900 rounded-full font-bold text-lg uppercase tracking-widest hover:bg-teal-50 shadow-2xl transform hover:-translate-y-1 transition-all"
           >
-            Create Free Account
+            {t('landing.cta_section.button')}
           </button>
         </div>
       </section>
 
       <footer className="bg-slate-900 text-slate-400 py-12 text-center text-xs uppercase tracking-widest border-t border-slate-800">
-        <p>{t('landing.features.footer')}</p>
+        <p className="text-white">{t('landing.footer')}</p>
         <div className="flex justify-center gap-6 mt-6">
-          <a href="https://neuroguard-6fff8.firebaseapp.com/privacy_policy.html" className="hover:text-white transition-colors">Privacy Policy</a>
-          <a href="https://neuroguard-6fff8.firebaseapp.com/privacy_policy.html" className="hover:text-white transition-colors">Terms of Service</a>
-          <a href="mailto:joanolietegu7@gmail.com" className="hover:text-white transition-colors">Contact</a>
+          <a href="https://neuroguard-6fff8.firebaseapp.com/privacy_policy.html" className="text-slate-400 hover:text-white transition-colors">{t('landing.footer_links.privacy')}</a>
+          <a href="https://neuroguard-6fff8.firebaseapp.com/privacy_policy.html" className="text-slate-400 hover:text-white transition-colors">{t('landing.footer_links.terms')}</a>
+          <a href="mailto:joanolietegu7@gmail.com" className="text-slate-400 hover:text-white transition-colors">{t('landing.footer_links.contact')}</a>
         </div>
       </footer>
     </>
@@ -314,12 +315,12 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
     setLoading(true);
     try {
       await sendPasswordResetEmail(auth, targetEmail);
-      setResetMessage("S'ha enviat un correu de recuperació a " + targetEmail + ". Revisa la teva safata d'entrada.");
+      setResetMessage(t('landing.form.reset_sent', "S'ha enviat un correu de recuperació a {{email}}. Revisa la teva safata d'entrada.", { email: targetEmail }));
     } catch (err: any) {
       console.error(err);
-      let msg = "Error al enviar l'email de recuperació";
-      if (err.code === 'auth/user-not-found') msg = "Usuari no trobat amb aquest correu";
-      if (err.code === 'auth/invalid-email') msg = "Correu invàlid";
+      let msg = t('landing.form.reset_error', "Error al enviar l'email de recuperació");
+      if (err.code === 'auth/user-not-found') msg = t('landing.form.reset_not_found', "Usuari no trobat amb aquest correu");
+      if (err.code === 'auth/invalid-email') msg = t('landing.form.reset_invalid', "Correu invàlid");
       setError(msg);
     } finally {
       setLoading(false);
@@ -344,11 +345,11 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
       console.error(err);
       let msg = `Error: ${err.message || err.code || "Desconegut"}`;
       if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
-        msg = "Credencials incorrectes / Invalid credentials";
+        msg = t('landing.form.error_credentials', "Credencials incorrectes");
       } else if (err.code === 'auth/email-already-in-use') {
-        msg = "Email en ús / Email already in use";
+        msg = t('landing.form.error_in_use', "Aquest email ja està en ús");
       } else if (err.message === 'privacy-rejected') {
-        msg = t('profile.alerts.privacy_required', 'Please accept Privacy Policy');
+        msg = t('profile.alerts.privacy_required', "Si us plau, accepta la Política de Privacitat");
       }
       setError(msg);
     } finally {
@@ -373,16 +374,16 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
       >
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-serif text-slate-800 mb-2">
-            {view === 'login' ? t('landing.nav.login') : 'Benvingut/da'}
+            {view === 'login' ? t('landing.nav.login') : t('landing.form.welcome', 'Benvingut/da')}
           </h2>
           <p className="text-slate-500 font-sans text-sm">
-            {view === 'login' ? 'Entra a la teva zona segura.' : 'Crea el teu santuari personal.'}
+            {view === 'login' ? t('landing.form.login_subtitle', 'Entra a la teva zona segura.') : t('landing.form.register_subtitle', 'Crea el teu santuari personal.')}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-widest text-slate-500 font-bold ml-1">Email</label>
+            <label className="text-xs uppercase tracking-widest text-slate-500 font-bold ml-1">{t('landing.form.email', 'Email')}</label>
             <input
               type="email"
               required
@@ -394,7 +395,7 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-widest text-slate-500 font-bold ml-1">Password</label>
+            <label className="text-xs uppercase tracking-widest text-slate-500 font-bold ml-1">{t('landing.form.password', 'Contrasenya')}</label>
             <input
               type="password"
               required
@@ -415,7 +416,7 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
                 className="mt-1 w-4 h-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
               />
               <label htmlFor="privacy_check" className="text-xs text-slate-500 leading-relaxed cursor-pointer">
-                Accepto la <button type="button" onClick={() => setShowPrivacy(true)} className="underline font-bold text-teal-700 hover:text-teal-800">Política de Privacitat</button> i els <button type="button" onClick={() => setShowTerms(true)} className="underline font-bold text-teal-700 hover:text-teal-800">Termes de Servei</button>.
+                {t('landing.form.accept', 'Accepto la')} <button type="button" onClick={() => setShowPrivacy(true)} className="underline font-bold text-teal-700 hover:text-teal-800">{t('landing.form.privacy', 'Política de Privacitat')}</button> {t('landing.form.and', 'i els')} <button type="button" onClick={() => setShowTerms(true)} className="underline font-bold text-teal-700 hover:text-teal-800">{t('landing.form.terms', 'Termes de Servei')}</button>.
               </label>
             </div>
           )}
@@ -437,7 +438,7 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
                 onClick={handleResetPassword}
                 className="text-xs text-teal-600 hover:text-teal-800 font-bold underline transition-colors"
               >
-                Has oblidat la contrasenya?
+                {t('landing.form.forgot_password', 'Has oblidat la contrasenya?')}
               </button>
             </div>
           )}
@@ -457,7 +458,7 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
             disabled={loading}
             className="w-full bg-teal-600 hover:bg-teal-700 text-white font-sans font-bold uppercase tracking-widest py-4 rounded-xl mt-6 transition-all transform active:scale-[0.98] disabled:opacity-70 shadow-lg shadow-teal-200"
           >
-            {loading ? '...' : (view === 'login' ? 'Entrar' : 'Continuar')}
+            {loading ? '...' : (view === 'login' ? t('landing.form.login_btn', 'Entrar') : t('landing.form.continue_btn', 'Continuar'))}
           </button>
           
 
@@ -468,7 +469,7 @@ const AuthForm = ({ view, setView }: { view: 'login' | 'register', setView: (v: 
             onClick={() => setView(view === 'login' ? 'register' : 'login')}
             className="text-teal-600 hover:text-teal-800 text-sm font-bold transition-colors"
           >
-            {view === 'login' ? "No tens compte? Registra't" : "Ja tens compte? Inicia sessió"}
+            {view === 'login' ? t('landing.form.no_account', "No tens compte? Registra't") : t('landing.form.have_account', "Ja tens compte? Inicia sessió")}
           </button>
         </div>
 
