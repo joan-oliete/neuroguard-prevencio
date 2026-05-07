@@ -72,7 +72,39 @@
             "game_title": "NeuroStrike",
             "game_desc": "Teràpia gamificada. Talla els disparadors de l'addicció en un entorn basat en el ritme."
         },
-        "footer": "© 2024 NeuroGuard Prevenció. Tecnologia Tranquil·la."
+        "cta_section": {
+            "title": "A punt per recuperar la teva vida?",
+            "subtitle": "Uneix-te a la comunitat que entén el teu viatge.",
+            "button": "Crear Compte Gratuït"
+        },
+        "footer_links": {
+            "privacy": "Política de Privacitat",
+            "terms": "Termes de Servei",
+            "contact": "Contacte"
+        },
+        "footer": "© 2024 NeuroGuard Prevenció. Tecnologia Tranquil·la.",
+        "form": {
+            "welcome": "Benvingut/da",
+            "login_subtitle": "Entra a la teva zona segura.",
+            "register_subtitle": "Crea el teu santuari personal.",
+            "email": "Email",
+            "password": "Contrasenya",
+            "accept": "Accepto la",
+            "privacy": "Política de Privacitat",
+            "and": "i els",
+            "terms": "Termes de Servei",
+            "forgot_password": "Has oblidat la contrasenya?",
+            "login_btn": "Entrar",
+            "continue_btn": "Continuar",
+            "no_account": "No tens compte? Registra't",
+            "have_account": "Ja tens compte? Inicia sessió",
+            "reset_sent": "S'ha enviat un correu de recuperació a {{email}}. Revisa la teva safata d'entrada.",
+            "reset_error": "Error al enviar l'email de recuperació",
+            "reset_not_found": "Usuari no trobat amb aquest correu",
+            "reset_invalid": "Correu invàlid",
+            "error_credentials": "Credencials incorrectes",
+            "error_in_use": "Email en ús"
+        }
     },
     "hubs": {
         "clinic": {

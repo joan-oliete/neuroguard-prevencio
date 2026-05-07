@@ -72,7 +72,39 @@
             "game_title": "NeuroStrike",
             "game_desc": "Gamified therapy. Slash through addiction triggers in a rhythm-based environment."
         },
-        "footer": "© 2024 NeuroGuard Prevention. Quiet Technology."
+        "cta_section": {
+            "title": "Ready to reclaim your life?",
+            "subtitle": "Join the community that understands your journey.",
+            "button": "Create Free Account"
+        },
+        "footer_links": {
+            "privacy": "Privacy Policy",
+            "terms": "Terms of Service",
+            "contact": "Contact"
+        },
+        "footer": "© 2024 NeuroGuard Prevention. Quiet Technology.",
+        "form": {
+            "welcome": "Welcome",
+            "login_subtitle": "Enter your safe zone.",
+            "register_subtitle": "Create your personal sanctuary.",
+            "email": "Email",
+            "password": "Password",
+            "accept": "I accept the",
+            "privacy": "Privacy Policy",
+            "and": "and the",
+            "terms": "Terms of Service",
+            "forgot_password": "Forgot password?",
+            "login_btn": "Log In",
+            "continue_btn": "Continue",
+            "no_account": "Don't have an account? Sign up",
+            "have_account": "Already have an account? Log in",
+            "reset_sent": "A recovery email has been sent to {{email}}. Check your inbox.",
+            "reset_error": "Error sending recovery email",
+            "reset_not_found": "User not found with this email",
+            "reset_invalid": "Invalid email",
+            "error_credentials": "Invalid credentials",
+            "error_in_use": "Email already in use"
+        }
     },
     "hubs": {
         "clinic": {

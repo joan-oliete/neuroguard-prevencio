@@ -72,7 +72,39 @@
             "game_title": "NeuroStrike",
             "game_desc": "Terapia gamificada. Corta los disparadores de la adicción en un entorno basado en el ritmo."
         },
-        "footer": "© 2024 NeuroGuard Prevenció. Tecnología Tranquila."
+        "cta_section": {
+            "title": "¿Listo para recuperar tu vida?",
+            "subtitle": "Únete a la comunidad que entiende tu viaje.",
+            "button": "Crear Cuenta Gratis"
+        },
+        "footer_links": {
+            "privacy": "Política de Privacidad",
+            "terms": "Términos de Servicio",
+            "contact": "Contacto"
+        },
+        "footer": "© 2024 NeuroGuard Prevenció. Tecnología Tranquila.",
+        "form": {
+            "welcome": "Bienvenido/a",
+            "login_subtitle": "Entra a tu zona segura.",
+            "register_subtitle": "Crea tu santuario personal.",
+            "email": "Email",
+            "password": "Contraseña",
+            "accept": "Acepto la",
+            "privacy": "Política de Privacidad",
+            "and": "y los",
+            "terms": "Términos de Servicio",
+            "forgot_password": "¿Has olvidado la contraseña?",
+            "login_btn": "Entrar",
+            "continue_btn": "Continuar",
+            "no_account": "¿No tienes cuenta? Regístrate",
+            "have_account": "¿Ya tienes cuenta? Inicia sesión",
+            "reset_sent": "Se ha enviado un correo de recuperación a {{email}}. Revisa tu bandeja de entrada.",
+            "reset_error": "Error al enviar el email de recuperación",
+            "reset_not_found": "Usuario no encontrado con este correo",
+            "reset_invalid": "Correo inválido",
+            "error_credentials": "Credenciales incorrectas",
+            "error_in_use": "Email en uso"
+        }
     },
     "hubs": {
         "clinic": {
