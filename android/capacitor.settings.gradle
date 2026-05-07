@@ -20,6 +20,9 @@ project(':capacitor-firebase-performance').projectDir = new File('../node_module
 include ':capacitor-firebase-remote-config'
 project(':capacitor-firebase-remote-config').projectDir = new File('../node_modules/@capacitor-firebase/remote-config/android')
 
+include ':capacitor-app'
+project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
+
 include ':capacitor-camera'
 project(':capacitor-camera').projectDir = new File('../node_modules/@capacitor/camera/android')
 

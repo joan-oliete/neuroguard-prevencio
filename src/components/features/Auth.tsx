@@ -75,7 +75,7 @@ const Navbar = ({ view, setView, scrolled }: { view: string, setView: (v: 'landi
         </div>
 
         <div className="flex items-center gap-4">
-          <div className={`hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-wider ${scrolled || view !== 'landing' ? 'text-slate-600' : 'text-white/80'}`}>
+          <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider ${scrolled || view !== 'landing' ? 'text-slate-600' : 'text-white/80'}`}>
             <button onClick={() => i18n.changeLanguage('ca')} className={`hover:opacity-100 transition-opacity ${i18n.language === 'ca' ? 'opacity-100 underline' : 'opacity-60'}`}>CA</button>
             <button onClick={() => i18n.changeLanguage('es')} className={`hover:opacity-100 transition-opacity ${i18n.language === 'es' ? 'opacity-100 underline' : 'opacity-60'}`}>ES</button>
             <button onClick={() => i18n.changeLanguage('en')} className={`hover:opacity-100 transition-opacity ${i18n.language === 'en' ? 'opacity-100 underline' : 'opacity-60'}`}>EN</button>

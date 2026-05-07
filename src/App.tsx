@@ -7,6 +7,8 @@ import { MapProvider } from './context/MapContext';
 import { MainLayout } from './components/layout/MainLayout';
 import { doc, onSnapshot, collection, db, updateDoc, addDoc, deleteDoc, serverTimestamp, storage, ref, uploadString, getDownloadURL } from './services/firebase';
 import { DailyStat, CrisisPlan, Memory, RelapseManual } from './types/index';
+import { App as CapacitorApp } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
 
 // --- COMPONENTS ---
 import Auth from './components/features/Auth';
@@ -43,6 +45,25 @@ const AppContent = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, [currentView]);
+
+  // Hardware Back Button Handling
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    const handleBackButton = () => {
+      if (currentView === 'dashboard') {
+        CapacitorApp.exitApp();
+      } else {
+        setCurrentView('dashboard');
+      }
+    };
+
+    const backButtonListener = CapacitorApp.addListener('backButton', handleBackButton);
+
+    return () => {
+      backButtonListener.then(listener => listener.remove());
+    };
   }, [currentView]);
 
   // Data State
