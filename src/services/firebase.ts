@@ -6,7 +6,8 @@ import {
   signOut,
   onAuthStateChanged,
   sendPasswordResetEmail,
-  User as FirebaseUser
+  User as FirebaseUser,
+  deleteUser
 } from "firebase/auth";
 import {
   getFirestore,
@@ -205,6 +206,7 @@ export {
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
+  deleteUser,
   doc,
   getDoc,
   setDoc,

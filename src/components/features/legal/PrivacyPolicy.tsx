@@ -87,7 +87,7 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onBack }) => {
                     <section>
                         <h2 className="text-xl font-bold text-slate-800 mb-4">5. Els teus Drets</h2>
                         <p className="text-slate-600">
-                            Pots exercir els teus drets d'accés, rectificació, supressió, limitació i portabilitat. Per eliminar el teu compte i totes les teves dades de forma permanent, pots fer-ho des de la secció "Perfil" de l'aplicació o contactant amb el suport tècnic.
+                            Pots exercir els teus drets d'accés, rectificació, supressió, limitació i portabilitat. Per eliminar el teu compte i totes les teves dades de forma permanent, pots fer-ho des de la secció "Perfil" de l'aplicació o contactant amb el suport tècnic enviant un correu a <strong>joanolietegu7@gmail.com</strong>.
                         </p>
                     </section>
 

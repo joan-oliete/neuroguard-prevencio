@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserProfile, RelapseManual } from '../../types';
-import { updateDoc, doc, db, archiveManual, collection, query, orderBy, getDocs, deleteDoc, getDoc } from '../../services/firebase';
+import { updateDoc, doc, db, archiveManual, collection, query, orderBy, getDocs, deleteDoc, getDoc, auth, deleteUser } from '../../services/firebase';
 import { User, Download, Archive, Trash2, Calendar, Bell, Eye, Printer, Languages, Sparkles, Shield, Clock, LogOut, PauseCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslationAI } from '../../hooks/useTranslationAI';
@@ -170,6 +170,29 @@ const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff })
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (confirm("⚠️ ATENCIÓ: Estàs a punt d'eliminar permanentment el teu compte i totes les teves dades. Aquesta acció és irreversible. Estàs segur/a de voler continuar?")) {
+      try {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          // Esborrem el document d'usuari a Firestore
+          await deleteDoc(doc(db, "users", currentUser.uid));
+          // Esborrem l'usuari d'Authentication
+          await deleteUser(currentUser);
+          alert("El teu compte s'ha eliminat correctament.");
+          logout();
+        }
+      } catch (error: any) {
+        console.error("Error deleting account:", error);
+        if (error.code === 'auth/requires-recent-login') {
+          alert("Per seguretat, necessitem que tornis a iniciar sessió abans d'eliminar el teu compte. Si us plau, tanca la sessió, torna a entrar i prova-ho de nou.");
+        } else {
+          alert("S'ha produït un error en eliminar el compte. Si us plau, contacta amb suport.");
+        }
+      }
+    }
+  };
+
   return (
     <div className="space-y-8 animate-fadeIn max-w-5xl mx-auto">
       {/* Header */}
@@ -293,6 +316,15 @@ const Profile: React.FC<ProfileProps> = ({ user, onNavigate, onShowCoolingOff })
               <button onClick={() => i18n.changeLanguage('es')} className={`py-2 rounded-lg font-bold text-sm transition-all ${i18n.language === 'es' ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-50 text-slate-600 hover:bg-white border border-slate-200'}`}>Español</button>
               <button onClick={() => i18n.changeLanguage('en')} className={`py-2 rounded-lg font-bold text-sm transition-all ${i18n.language === 'en' ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-50 text-slate-600 hover:bg-white border border-slate-200'}`}>English</button>
             </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-slate-100">
+            <h3 className="font-bold text-lg mb-4 flex items-center gap-3 text-red-600">
+              <span className="p-2 bg-red-50 rounded-lg text-red-600"><Trash2 className="w-5 h-5" /></span> Zona de Perill
+            </h3>
+            <button onClick={handleDeleteAccount} className="w-full flex items-center justify-center gap-2 p-4 border border-red-200 text-red-600 rounded-xl font-bold hover:bg-red-50 hover:border-red-300 transition-colors">
+              <Trash2 className="w-5 h-5" /> Eliminar el meu compte
+            </button>
           </div>
 
         </div>

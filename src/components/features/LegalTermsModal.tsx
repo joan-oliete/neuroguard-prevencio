@@ -53,7 +53,7 @@ const LegalTermsModal: React.FC<LegalTermsModalProps> = ({ onClose }) => {
             <li><strong>Finalitat de les Dades:</strong> Utilitzem la vostra informació per: a) Proporcionar i personalitzar les funcionalitats de NeuroGuard (per exemple, la teràpia d'IA o les alertes); b) Oferir suport tècnic; c) Millorar l'aplicació.</li>
             <li><strong>Compartició de Dades:</strong> No venem, lloguem ni compartim les seves dades personals identificables amb tercers per a fins comercials. Només compartirem dades en cas d'obligació legal.</li>
             <li><strong>Seguretat:</strong> Emprem mesures tècniques i organitzatives raonables (xifratge i serveis de Google Firebase/Google Cloud) per protegir les dades contra accessos no autoritzats.</li>
-            <li><strong>Els vostres Drets:</strong> Teniu dret a accedir, rectificar o eliminar la vostra informació en qualsevol moment, tal com permet l'aplicació desitjant eliminar el compte des de l'opció de suprimir l'usuari o contactant amb el suport de l'aplicació.</li>
+            <li><strong>Els vostres Drets:</strong> Teniu dret a accedir, rectificar o eliminar la vostra informació en qualsevol moment, tal com permet l'aplicació desitjant eliminar el compte des de l'opció de suprimir l'usuari o contactant amb el suport de l'aplicació al correu <strong>joanolietegu7@gmail.com</strong>.</li>
           </ul>
 
           <h3>3. Acceptació i Modificació</h3>
